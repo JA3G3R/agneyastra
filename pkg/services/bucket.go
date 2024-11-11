@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"github.com/JA3G3R/agneyastra/utils"
 )
 
 // CheckFirebaseDelete tries to delete a file from a list of Firebase Storage buckets
@@ -60,23 +61,6 @@ func CheckFirebaseDelete(buckets []string, fileName string) []DeleteCheckResult 
 	return results
 }
 
-// Struct for prefixes (folders) and items (files)
-type KeysResponse struct {
-	Prefixes []string `json:"prefixes"`
-	Items    []Item   `json:"items"`
-}
-
-// Struct to represent each item (file)
-type Item struct {
-	Name   string `json:"name"`
-	Bucket string `json:"bucket"`
-}
-
-type UploadCheckResult struct {
-	Bucket string
-	Success bool
-	Error string
-}
 
 // CheckFirebaseUpload tries to upload a file to a list of Firebase Storage buckets
 func CheckFirebaseUpload(buckets []string, apiKey string) []UploadCheckResult {

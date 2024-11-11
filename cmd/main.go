@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"github.com/JA3G3R/agneyastra/utils"
-	"github.com/JA3G3R/agneyastra/services"
+	"github.com/JA3G3R/agneyastra/pkg/services"
 )
 
 
@@ -129,6 +129,7 @@ func main() {
 	// } else {
 	// 	fmt.Println("Firestore Write document POC failed.")
 	// }
+
 
 }	
 

@@ -70,6 +70,24 @@ type SignInWithPasswordResponse struct {
 	Registered   bool   `json:"registered"`
 }
 
+// Struct for prefixes (folders) and items (files)
+type KeysResponse struct {
+	Prefixes []string `json:"prefixes"`
+	Items    []Item   `json:"items"`
+}
+
+// Struct to represent each item (file)
+type Item struct {
+	Name   string `json:"name"`
+	Bucket string `json:"bucket"`
+}
+
+type UploadCheckResult struct {
+	Bucket string
+	Success bool
+	Error string
+}
+
 type BucketData struct {
 	Domain string
 	Keys   KeysResponse
