@@ -1,26 +1,22 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 
+	"github.com/JA3G3R/agneyastra/flags"
 	"github.com/JA3G3R/agneyastra/pkg/services"
 	"github.com/JA3G3R/agneyastra/utils"
-	"github.com/JA3G3R/agneyastra/flags"
 )
 
 func main() {
 
-	// Define the API key flag
-	apiKey := flag.String("key", "", "Firebase project API key")
-	// configFilePathArg := flag.String("config", "", "Path to the config file")
-	flag.Parse()
-	
-	// Validate API key
-	if *apiKey == "" {
-		log.Fatal("API key is required. Use -key to provide the Firebase API key.")
+	if err := flags.RootCmd.Execute(); err != nil {
+		log.Fatalf("Error starting the application: %v", err)
 	}
+
+	// Access the API Key
+	apiKey := flags.GetAPIKey()
 
 	// var configFilePath string = ""
 	// if *configFilePathArg == "" {
