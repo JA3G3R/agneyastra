@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/JA3G3R/agneyastra/utils"
 )
 
 // CheckSignInWithPassword checks if email/password sign-in is enabled
@@ -171,7 +170,7 @@ func CheckSendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, e
 	return false, nil, nil
 }
 
-func CheckEmailPasswordAuth(apiKey, email, password string) (bool, *EmailSignUpResponse, error) {
+func SignUp(apiKey, email, password string) (bool, *EmailSignUpResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
 
 	// Create request body
@@ -255,7 +254,7 @@ func CheckAnonymousAuth(apiKey string) (bool, *SignUpResponse, error) {
 
 	// If an idToken is present, anonymous authentication is allowed
 	if signUpResp.IDToken != "" {
-		fmt.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
+		// fmt.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
 		return true, &signUpResp, nil
 	}
 

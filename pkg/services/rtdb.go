@@ -1,17 +1,14 @@
 package services
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-
-	"github.com/gorilla/websocket"
-	"github.com/JA3G3R/agneyastra/utils"
 )
 
-func CheckRTDBReadMisconfiguration(url string) bool {
+func ReadFromRTDB(url string) bool {
     // Append /.json to the URL
     fullURL := fmt.Sprintf("%s/.json", url)
 
@@ -34,81 +31,47 @@ func CheckRTDBReadMisconfiguration(url string) bool {
     return false
 }
 
-func CheckFirebaseURLs(domains []string) []string {
+func CreateRTDBURLs(domains []string) []string {
     var urls []string
-	var validUrls []string
     // Generate URLs with .firebaseio.com and -default-rtdb.firebaseio.com
     for _, domain := range domains {
         urls = append(urls, fmt.Sprintf("https://%s.firebaseio.com", domain))
         urls = append(urls, fmt.Sprintf("https://%s-default-rtdb.firebaseio.com", domain))
     }
-
-    // Iterate over the URLs and check for misconfiguration
-    for _, url := range urls {
-        if CheckRTDBMisconfiguration(url){
-			validUrls = append(validUrls, url)
-		}
-    }
-	return validUrls
+	return urls
 }
 
-func WriteToFirebase(firebaseURL string,path string, data interface{}) bool {
-    // Create a new WebSocket connection
-    conn, _, err := websocket.DefaultDialer.Dial(firebaseURL, nil)
-    if err != nil {
-        log.Println("Error connecting to WebSocket:", err)
-        return false
-    }
-    defer conn.Close()
+func WriteToRTDB(rtdbURL, path string, data interface{}) bool {
+	url := fmt.Sprintf("%s/%s.json", rtdbURL, path)
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("Error marshaling data:", err)
+		return false
+	}
 
-    // Prepare the message for writing data
-    message := Message{
-        T: "d",
-        D: Data{
-            R: 2, // Request ID
-            A: "p", // Action: put
-            B: map[string]interface{}{
-                "p": fmt.Sprintf("%s",path), // Path in the database
-                "d": data, // Data to write
-            },
-        },
-    }
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return false
+	}
+	req.Header.Set("Content-Type", "application/json")
 
-    // Send the message as JSON
-    err = conn.WriteJSON(message)
-    if err != nil {
-        log.Println("Error sending message:", err)
-        return false
-    }
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error making request:", err)
+		return false
+	}
+	defer resp.Body.Close()
 
-    // Read the response from Firebase
-    _, response, err := conn.ReadMessage()
-    if err != nil {
-        log.Println("Error reading response:", err)
-        return false
-    }
-
-    // Check if the response indicates success or failure
-    var respData map[string]interface{}
-    if err := json.Unmarshal(response, &respData); err != nil {
-        log.Println("Error unmarshalling response:", err)
-        return false
-    }
-
-    // Check for success status in the response
-    if respData["t"] == "d" {
-        if respData["d"].(map[string]interface{})["b"].(map[string]interface{})["s"] == "ok" {
-            fmt.Println("Data written successfully.")
-            return true
-        } else {
-            // Handle specific error cases
-            status := respData["d"].(map[string]interface{})["b"].(map[string]interface{})["s"]
-            errorMsg := respData["d"].(map[string]interface{})["b"].(map[string]interface{})["d"]
-            log.Printf("Failed to write data: %s - %s\n", status, errorMsg)
-            return false
-        }
-    }
-
-    log.Println("Unexpected response format:", string(response))
-    return false
+	if resp.StatusCode == 200 {
+		fmt.Println("Write succeeded")
+		return true
+	} else if resp.StatusCode == 401 {
+		fmt.Println("Write failed: Permission denied")
+		return false
+	}
+	
+	fmt.Println("Unexpected status code:", resp.StatusCode)
+	return false
 }

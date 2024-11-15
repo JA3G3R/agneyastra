@@ -6,10 +6,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 
-func getProjectConfig(apiKey string) (*ProjectConfig, error) {
+func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
 	
 	url := fmt.Sprintf("https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key=%s", apiKey)
 
@@ -64,4 +66,23 @@ func ExtractDomainsForStorage(config ProjectConfig) []string {
 	}
 
 	return domains
+}
+
+
+func LoadConfig(path string) (Config, error) {
+    var config Config
+
+    viper.SetConfigName("config")
+    viper.SetConfigType("yaml")
+    viper.AddConfigPath(path)
+
+    if err := viper.ReadInConfig(); err != nil {
+        return config, fmt.Errorf("error reading config file: %w", err)
+    }
+
+    if err := viper.Unmarshal(&config); err != nil {
+        return config, fmt.Errorf("error unmarshaling config: %w", err)
+    }
+
+    return config, nil
 }
