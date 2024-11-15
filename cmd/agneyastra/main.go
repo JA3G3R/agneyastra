@@ -4,22 +4,19 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/JA3G3R/agneyastra/flags"
+	flags "github.com/JA3G3R/agneyastra/flag"
 	"github.com/JA3G3R/agneyastra/pkg/services"
 	"github.com/JA3G3R/agneyastra/utils"
 )
 
 func main() {
 
-	if err := flags.RootCmd.Execute(); err != nil {
-		log.Fatalf("Error starting the application: %v", err)
-	}
-
+	flags.Execute()
 	// Access the API Key
 	apiKey := flags.GetAPIKey()
 
 	// var configFilePath string = ""
-	// if *configFilePathArg == "" {
+	// if *configFilePathArg == "" {s
 	// 	configFilePath = "."
 	// } else {
 	// 	configFilePath = *configFilePathArg
@@ -34,7 +31,7 @@ func main() {
 	
 	// // Step 1: Fetch the project config using the API key
 	fmt.Println("Fetching project config...")
-	projectConfig, err := utils.GetProjectConfig(*apiKey)
+	projectConfig, err := utils.GetProjectConfig(apiKey)
 	fmt.Println("Got config!")
 	fmt.Printf("Project ID: %s\n", projectConfig.ProjectID)
 	fmt.Printf("Authorized Domains: %v\n\n", projectConfig.AuthorizedDomains)
@@ -47,7 +44,7 @@ func main() {
 	// // Firebase auth checks:
 	// bearer_token :=  ""
 
-	// isVulnerable2AnonAuth, sessionInfoAnonymousLogin, err := services.CheckAnonymousAuth(*apiKey)
+	// isVulnerable2AnonAuth, sessionInfoAnonymousLogin, err := services.CheckAnonymousAuth(apiKey)
 	// if err != nil {
 	// 	log.Fatalf("Error checking anonymous auth: %v", err)
 	// }
@@ -66,7 +63,7 @@ func main() {
 	// password := config.Services["auth"]["signin_pass"]
 	// passwordStr, _ := password.(string)
 
-	// isVulnerable2SignUp, sessionInfoEmailPassSignup, err := services.SignUp(*apiKey, emailStr, passwordStr)
+	// isVulnerable2SignUp, sessionInfoEmailPassSignup, err := services.SignUp(apiKey, emailStr, passwordStr)
 
 	// if err != nil {
 	// 	log.Fatalf("Error checking email/password auth: %v", err)
@@ -81,7 +78,7 @@ func main() {
 	// }
 
 	
-	// isVulnerable2SendSignInLink, responseInfoSendSignInLink, err := services.CheckSendSignInLink(*apiKey, emailStr)
+	// isVulnerable2SendSignInLink, responseInfoSendSignInLink, err := services.CheckSendSignInLink(apiKey, emailStr)
 	// if err != nil {
 	// 	log.Fatalf("Error checking SendSignInLink: %v", err)
 	// }
@@ -95,7 +92,7 @@ func main() {
 
 	// What is this below, NOT A BUG
 
-	// isVulnerable, responseInfoSignInEmailPass, err := services.CheckSignInWithPassword(*apiKey, emailStr, passwordStr)
+	// isVulnerable, responseInfoSignInEmailPass, err := services.CheckSignInWithPassword(apiKey, emailStr, passwordStr)
 	// if err != nil {
 	// 	log.Fatalf("Error checking sign-in with email/password: %v", err)
 	// }
@@ -111,7 +108,7 @@ func main() {
 	// flags
 	// -dump-bucket-data : reads all the folders,directories and subdirectories of the public bucket and dumps it to a file.
 
-	results := services.BucketRead(*apiKey, domains)
+	results := services.BucketRead(apiKey, domains)
 	if err != nil {
 		log.Fatalf("Error checking Firebase storage: %v", err)
 	}
@@ -121,7 +118,7 @@ func main() {
 		fmt.Printf("Bucket Data: %+v\n", result.Data)
 	}
 
-	// resultsUpload := services.BucketUpload(domains, *apiKey)
+	// resultsUpload := services.BucketUpload(domains, apiKey)
 
 	// for _, result := range resultsUpload {
 	// 	if result.Success {
