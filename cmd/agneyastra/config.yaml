@@ -1,0 +1,9 @@
+general:
+  debug: false
+
+services:
+  auth:
+    signin_email: "testusersignup@gmail.com"
+    signin_pass: "abcdefgh"
+  firestore:
+    extract_data: false
