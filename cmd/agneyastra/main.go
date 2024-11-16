@@ -11,6 +11,7 @@ import (
 
 func main() {
 
+	fmt.Println("executing flags")
 	flags.Execute()
 	// Access the API Key
 	apiKey := flags.GetAPIKey()

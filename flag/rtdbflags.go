@@ -74,9 +74,13 @@ var rtdbAllCmd = &cobra.Command{
 func init(){
 	rtdbwriteCmd.Flags().String("file", "", "Path to a file containing the data to write")
 	rtdbwriteCmd.Flags().String("json", "", "Raw JSON data to write")
-	
+	rtdbwriteCmd.MarkFlagsMutuallyExclusive("json", "file")
+	rtdbwriteCmd.MarkFlagsOneRequired("json", "file")
+
 	rtdbreadCmd.Flags().Bool("dump", false, "Dump the contents of the database to a file")
 	rtdbreadCmd.Flags().String("file", "", "Path to the file to dump database contents into")
+	rtdbreadCmd.MarkFlagsRequiredTogether("file", "dump")
+
 	rtdbCmd.AddCommand(rtdbreadCmd, rtdbwriteCmd, rtdbAllCmd)
 	RootCmd.AddCommand(rtdbCmd)
 }

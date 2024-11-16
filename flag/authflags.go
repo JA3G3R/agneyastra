@@ -53,10 +53,20 @@ var customTokenLoginCmd = &cobra.Command{
 func init() {
 	
 	authCmd.AddCommand(anonAuthCmd, signUpCmd, sendSigninLinkCmd, customTokenLoginCmd)
-
+	// authCmd.MarkFlagsMutuallyExclusive("anon-auth", "sign-up","send-signin-link","custom-token-login")
+	
 	signUpCmd.Flags().String("email", "", "Email address for signing up")
 	signUpCmd.Flags().String("password", "", "Password for signing up")
+	signUpCmd.MarkFlagRequired("email")
+	signUpCmd.MarkFlagRequired("password")
+	signUpCmd.MarkFlagsRequiredTogether("email","password")
+
 	sendSigninLinkCmd.Flags().String("email", "", "Email address to send the sign-in link to")
+	sendSigninLinkCmd.MarkFlagRequired("email")
+
 	customTokenLoginCmd.Flags().String("token", "", "Custom token for login")
+	customTokenLoginCmd.MarkFlagRequired("token")
+
 	RootCmd.AddCommand(authCmd)
+	RootCmd.MarkFlagsMutuallyExclusive("all", "auth")
 }

@@ -41,9 +41,15 @@ var bucketDeleteCmd = &cobra.Command{
 
 func init() {
 	bucketCmd.AddCommand(bucketReadCmd, bucketUploadCmd, bucketDeleteCmd)
-
+	
 	bucketReadCmd.Flags().String("dump", "", "Directory to dump files (optional)")
+
 	bucketUploadCmd.Flags().String("file", "", "File to upload (required)")
+	bucketUploadCmd.MarkFlagRequired("file")
+
 	bucketDeleteCmd.Flags().String("filename", "", "Filename to delete (required)")
+	bucketDeleteCmd.MarkFlagRequired("filename")
+
 	RootCmd.AddCommand(bucketCmd)
+	
 }

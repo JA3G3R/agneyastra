@@ -68,7 +68,11 @@ func init() {
 	
 	firestorereadCmd.Flags().String("document-id", "", "ID of the document to read")
 	firestorereadCmd.MarkFlagRequired("document-id")
+
 	firestorewriteCmd.Flags().String("file", "", "Path to a file containing the document data")
 	firestorewriteCmd.Flags().String("json", "", "Raw JSON data for the document")
+	firestorewriteCmd.MarkFlagsMutuallyExclusive("file","json")
+	firestorewriteCmd.MarkFlagsOneRequired("file","json")
+
 	firestoreCmd.AddCommand(firestorereadCmd, firestorewriteCmd, firestoreAllCmd)
 }
