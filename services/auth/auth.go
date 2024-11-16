@@ -58,6 +58,8 @@ func SignInWithPassword(apiKey, email, password string) (bool, *SignInWithPasswo
 
 	// If idToken is present, email/password sign-in is enabled
 	if signInResp.IDToken != "" {
+		store := credentials.GetCredentialStore()
+		store.SetToken("user_credentials", signInResp.IDToken)
 		fmt.Println("Email/Password sign-in successful!")
 		return true, &signInResp, nil
 	}
@@ -111,6 +113,8 @@ func LoginWithCustomToken(apiKey, customToken string) (bool, *CustomTokenRespons
 
 	// If idToken is present, login with custom token is enabled
 	if customTokenResp.IDToken != "" {
+		store := credentials.GetCredentialStore()
+		store.SetToken("custom", customTokenResp.IDToken)
 		fmt.Println("Custom token login successful!")
 		return true, &customTokenResp, nil
 	}
@@ -173,7 +177,7 @@ func SendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, error)
 	return false, nil, nil
 }
 
-func SignUp(apiKey, email, password string) (bool, *EmailSignUpResponse, error) {
+func SignUp(apiKey, email, password string) (bool, *SignUpResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
 
 	// Create request body
@@ -204,7 +208,7 @@ func SignUp(apiKey, email, password string) (bool, *EmailSignUpResponse, error) 
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var signUpResp EmailSignUpResponse
+	var signUpResp SignUpResponse
 	err = json.Unmarshal(body, &signUpResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
@@ -212,6 +216,8 @@ func SignUp(apiKey, email, password string) (bool, *EmailSignUpResponse, error) 
 
 	// If an idToken is present, email/password authentication is allowed
 	if signUpResp.IDToken != "" {
+		store := credentials.GetCredentialStore()
+		store.SetToken("signup", signUpResp.IDToken)
 		fmt.Printf("Email/Password sign-up enabled! Session Token: %s\n", signUpResp.IDToken)
 		return true, &signUpResp, nil
 	}
@@ -249,16 +255,18 @@ func AnonymousAuth(apiKey string) (bool, *SignUpResponse, error) {
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var signUpResp SignUpResponse
-	err = json.Unmarshal(body, &signUpResp)
+	var anonsignUpResp SignUpResponse
+	err = json.Unmarshal(body, &anonsignUpResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If an idToken is present, anonymous authentication is allowed
-	if signUpResp.IDToken != "" {
+	if anonsignUpResp.IDToken != "" {
+		store := credentials.GetCredentialStore()
+		store.SetToken("anon", anonsignUpResp.IDToken)
 		// fmt.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
-		return true, &signUpResp, nil
+		return true, &anonsignUpResp, nil
 	}
 
 	return false, nil, nil

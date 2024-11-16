@@ -18,13 +18,7 @@ type EmailSignUpRequest struct {
 	ReturnSecureToken bool  `json:"returnSecureToken"`
 }
 
-type EmailSignUpResponse struct {
-	IDToken      string `json:"idToken"`
-	Email        string `json:"email"`
-	RefreshToken string `json:"refreshToken"`
-	ExpiresIn    string `json:"expiresIn"`
-	LocalID      string `json:"localId"`
-}
+
 type SendSignInLinkRequest struct {
 	RequestType        string `json:"requestType"`
 	Email              string `json:"email"`

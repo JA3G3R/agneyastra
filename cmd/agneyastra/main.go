@@ -11,10 +11,10 @@ import (
 
 func main() {
 
-	fmt.Println("executing flags")
+	// fmt.Println("executing flags")
 	flags.Execute()
 	// Access the API Key
-	apiKey := flags.GetAPIKey()
+	// apiKey := flags.GetAPIKey()
 
 	// var configFilePath string = ""
 	// if *configFilePathArg == "" {s
@@ -31,16 +31,16 @@ func main() {
 	
 	
 	// // Step 1: Fetch the project config using the API key
-	fmt.Println("Fetching project config...")
-	projectConfig, err := utils.GetProjectConfig(apiKey)
-	fmt.Println("Got config!")
-	fmt.Printf("Project ID: %s\n", projectConfig.ProjectID)
-	fmt.Printf("Authorized Domains: %v\n\n", projectConfig.AuthorizedDomains)
-	if err != nil {
-		log.Fatalf("Error fetching project config: %v", err)
-	}
+	// fmt.Println("Fetching project config...")
+	// projectConfig, err := utils.GetProjectConfig(apiKey)
+	// fmt.Println("Got config!")
+	// fmt.Printf("Project ID: %s\n", projectConfig.ProjectID)
+	// fmt.Printf("Authorized Domains: %v\n\n", projectConfig.AuthorizedDomains)
+	// if err != nil {
+	// 	log.Fatalf("Error fetching project config: %v", err)
+	// }
 
-	domains := utils.ExtractDomainsForStorage(*projectConfig)
+	// domains := utils.ExtractDomainsForStorage(*projectConfig)
 
 	// // Firebase auth checks:
 	// bearer_token :=  ""
@@ -109,15 +109,15 @@ func main() {
 	// flags
 	// -dump-bucket-data : reads all the folders,directories and subdirectories of the public bucket and dumps it to a file.
 
-	results := services.BucketRead(apiKey, domains)
-	if err != nil {
-		log.Fatalf("Error checking Firebase storage: %v", err)
-	}
+	// results := services.BucketRead(apiKey, domains)
+	// if err != nil {
+	// 	log.Fatalf("Error checking Firebase storage: %v", err)
+	// }
 
-	for _, result := range results {
-		fmt.Printf("Bucket: %s\n", result.Bucket)
-		fmt.Printf("Bucket Data: %+v\n", result.Data)
-	}
+	// for _, result := range results {
+	// 	fmt.Printf("Bucket: %s\n", result.Bucket)
+	// 	fmt.Printf("Bucket Data: %+v\n", result.Data)
+	// }
 
 	// resultsUpload := services.BucketUpload(domains, apiKey)
 

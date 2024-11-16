@@ -6,11 +6,14 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
 )
 
 var debug bool
 var allServices bool
 var apiKey string
+var configPath string
 
 // RootCmd is the base command for the CLI
 var RootCmd = &cobra.Command{
@@ -29,6 +32,12 @@ and remediation recommendations for each service.`,
 		}
 		if allServices {
 			log.Println("Checking all services for misconfigurations")
+			for _, subCmd := range cmd.Commands() {
+				if subCmd.Run != nil {
+					log.Printf("Running subcommand: %s", subCmd.Name())
+					subCmd.Run(subCmd, nil)
+				}
+			}
 			// Call all services' "all" commands
 		}
 	},
@@ -64,6 +73,28 @@ func ApplyExitOnHelp(c *cobra.Command, exitCode int) {
 	})
 }
 
+func initConfig() {
+
+    if configPath != "" {
+        viper.SetConfigFile(configPath) // Use custom config path
+    } else {
+        viper.SetConfigName("config")  // Default config name
+        viper.SetConfigType("yaml")
+        viper.AddConfigPath(".")
+        viper.AddConfigPath("$HOME/.agneyastra")
+    }
+
+    viper.SetEnvPrefix("AGNEYASTRA")
+    viper.AutomaticEnv()
+
+    if err := viper.ReadInConfig(); err != nil {
+        fmt.Printf("Warning: Config file not found: %s\n", err)
+    } else {
+        fmt.Printf("Using config file: %s\n", viper.ConfigFileUsed())
+    }
+}
+
+
 func init() {
 	
 	ApplyExitOnHelp(RootCmd, 0)
@@ -71,6 +102,12 @@ func init() {
 	RootCmd.MarkFlagRequired("key")
 	RootCmd.PersistentFlags().Bool("debug", false, "Enable debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
+	RootCmd.PersistentFlags().StringVar(&configPath, "config", "", "Custom config file path")
+
+	// Bind Viper to flags
+    viper.BindPFlag("api_key", RootCmd.PersistentFlags().Lookup("key"))
+    viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))
 
 
+	cobra.OnInitialize(initConfig)
 }

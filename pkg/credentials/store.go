@@ -25,7 +25,7 @@ func GetCredentialStore() *CredentialStore {
 }
 
 // Set a token by type
-func (c *CredentialStore) SetToken(tokenType string, token string) {
+func (c *CredentialStore) SetToken(tokenType string, token string)  {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
