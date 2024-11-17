@@ -5,10 +5,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/JA3G3R/agneyastra/flag/auth/authcmd"
-	"github.com/JA3G3R/agneyastra/flag/database/databasecmd"
-	"github.com/JA3G3R/agneyastra/flag/firestore/firestorecmd"
-	"github.com/JA3G3R/agneyastra/flag/storage/storagecmd"
+	"github.com/JA3G3R/agneyastra/flag/authCmd"
+	"github.com/JA3G3R/agneyastra/flag/rtdbCmd"
+	"github.com/JA3G3R/agneyastra/flag/firestoreCmd"
+	"github.com/JA3G3R/agneyastra/flag/bucketCmd"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -102,10 +102,10 @@ func init() {
 	InitConfig()
 
 	// Add subcommands
-	RootCmd.AddCommand(authcmd.AuthCmd)
-	RootCmd.AddCommand(firestorecmd.FirestoreCmd)
-	RootCmd.AddCommand(storagecmd.StorageCmd)
-	RootCmd.AddCommand(databasecmd.DatabaseCmd)
+	RootCmd.AddCommand(auth.AuthCmd)
+	RootCmd.AddCommand(firestore.FirestoreCmd)
+	RootCmd.AddCommand(bucket.StorageCmd)
+	RootCmd.AddCommand(rtdb.DatabaseCmd)
 	
 
 	// Bind Viper to flags

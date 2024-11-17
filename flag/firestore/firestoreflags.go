@@ -1,4 +1,4 @@
-package firestoreCmd
+package firestore
 
 import (
 	"log"

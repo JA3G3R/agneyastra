@@ -1,4 +1,4 @@
-# agneyastra
+# agneyastra - A firebase Misconfiguration Detection Toolkit
 
 Firebase, a versatile platform by Google, powers countless web and mobile applications with its extensive suite of services including real-time databases, authentication, cloud storage, and hosting. Its ubiquity and ease of use make it a popular choice among developers, but also a prime target for misconfigurations that can lead to significant security vulnerabilities.
 

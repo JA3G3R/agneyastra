@@ -1,4 +1,4 @@
-package bucketCmd
+package bucket
 
 import (
 	"log"

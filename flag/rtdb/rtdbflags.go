@@ -1,4 +1,4 @@
-package rtdbCmd
+package rtdb
 
 import (
 	"log"

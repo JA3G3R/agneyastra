@@ -1,4 +1,4 @@
-package authCmd
+package auth
 
 import (
 	"log"
