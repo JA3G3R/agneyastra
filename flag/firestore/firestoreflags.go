@@ -3,7 +3,6 @@ package firestore
 import (
 	"log"
 
-	flags "github.com/JA3G3R/agneyastra/flag"
 	"github.com/spf13/cobra"
 )
 
@@ -58,9 +57,7 @@ var firestorewriteCmd = &cobra.Command{
 		Use:   "all",
 		Short: "Check all Firestore misconfigurations",
 		Run: func(cmd *cobra.Command, args []string) {
-			if flags.Debug {
-				log.Println("Debug: Checking all Firestore misconfigurations")
-			}
+			
 			// Add logic for all Firestore checks
 		},
 	}
