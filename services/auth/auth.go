@@ -5,13 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/JA3G3R/agneyastra/pkg/credentials"
 )
 
 // CheckSignInWithPassword checks if email/password sign-in is enabled
-func SignInWithPassword(apiKey, email, password string) (bool, *SignInWithPasswordResponse, error) {
+func SignInWithPassword(apiKey, email, password string) (bool, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s", apiKey)
 
 	// Create request body
@@ -50,7 +51,7 @@ func SignInWithPassword(apiKey, email, password string) (bool, *SignInWithPasswo
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var signInResp SignInWithPasswordResponse
+	var signInResp LoginResponse
 	err = json.Unmarshal(body, &signInResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
@@ -68,7 +69,7 @@ func SignInWithPassword(apiKey, email, password string) (bool, *SignInWithPasswo
 }
 
 // CheckLoginWithCustomToken checks if login with custom token is enabled
-func LoginWithCustomToken(apiKey, customToken string) (bool, *CustomTokenResponse, error) {
+func LoginWithCustomToken(apiKey, customToken string) (bool, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=%s", apiKey)
 
 	// Create request body
@@ -105,7 +106,7 @@ func LoginWithCustomToken(apiKey, customToken string) (bool, *CustomTokenRespons
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var customTokenResp CustomTokenResponse
+	var customTokenResp LoginResponse
 	err = json.Unmarshal(body, &customTokenResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
@@ -170,14 +171,14 @@ func SendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, error)
 
 	// If a kind and email are present, the sign-in link feature is enabled
 	if signInLinkResp.Kind != "" && signInLinkResp.Email != "" {
-		fmt.Printf("Sign-in link sent to email: %s\n", signInLinkResp.Email)
+		log.Printf("Sign-in link sent to email: %s\n", signInLinkResp.Email)
 		return true, &signInLinkResp, nil
 	}
 
 	return false, nil, nil
 }
 
-func SignUp(apiKey, email, password string) (bool, *SignUpResponse, error) {
+func SignUp(apiKey, email, password string) (bool, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
 
 	// Create request body
@@ -208,7 +209,7 @@ func SignUp(apiKey, email, password string) (bool, *SignUpResponse, error) {
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var signUpResp SignUpResponse
+	var signUpResp LoginResponse
 	err = json.Unmarshal(body, &signUpResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
@@ -218,7 +219,7 @@ func SignUp(apiKey, email, password string) (bool, *SignUpResponse, error) {
 	if signUpResp.IDToken != "" {
 		store := credentials.GetCredentialStore()
 		store.SetToken("signup", signUpResp.IDToken)
-		fmt.Printf("Email/Password sign-up enabled! Session Token: %s\n", signUpResp.IDToken)
+		log.Printf("Email/Password sign-up enabled! Session Token: %s\n", signUpResp.IDToken)
 		return true, &signUpResp, nil
 	}
 
@@ -226,7 +227,7 @@ func SignUp(apiKey, email, password string) (bool, *SignUpResponse, error) {
 }
 
 // CheckAnonymousAuth checks whether the project allows anonymous authentication
-func AnonymousAuth(apiKey string) (bool, *SignUpResponse, error) {
+func AnonymousAuth(apiKey string) (bool, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
 
 	// Create request body
@@ -255,7 +256,7 @@ func AnonymousAuth(apiKey string) (bool, *SignUpResponse, error) {
 		return false, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
-	var anonsignUpResp SignUpResponse
+	var anonsignUpResp LoginResponse
 	err = json.Unmarshal(body, &anonsignUpResp)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
@@ -265,7 +266,7 @@ func AnonymousAuth(apiKey string) (bool, *SignUpResponse, error) {
 	if anonsignUpResp.IDToken != "" {
 		store := credentials.GetCredentialStore()
 		store.SetToken("anon", anonsignUpResp.IDToken)
-		// fmt.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
+		// log.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
 		return true, &anonsignUpResp, nil
 	}
 

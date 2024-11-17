@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"regexp"
 )
@@ -43,7 +44,7 @@ func FirestoreAddDocument(projectID string) (bool, FirestoreDocumentAdded, error
 			// continue
 		}
 		sid := matches[1]
-		fmt.Printf("SID: %v\ngsessionid: %v\n", sid, gsessionid)
+		log.Printf("SID: %v\ngsessionid: %v\n", sid, gsessionid)
 
 		// Second Request
 		url2 := fmt.Sprintf("https://firestore.googleapis.com/google.firestore.v1.Firestore/Write/channel?gsessionid=%s&VER=8&database=projects/%s/databases/(default)&RID=rpc&SID=%s&CI=0&TYPE=xmlhttp&zx=ijirluezcha5&t=1",gsessionid, projectID, sid)
@@ -157,7 +158,7 @@ func FirestoreReadDocument(projectIDs []string, itemID string) (bool, error) {
 			continue
 		}
 		sid := matches[1]
-		fmt.Printf("SID: %v\ngsessionid: %v\n", sid, gsessionid)
+		log.Printf("SID: %v\ngsessionid: %v\n", sid, gsessionid)
 
 		// Second Request
 		url2 := fmt.Sprintf("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=%s&VER=8&database=projects/%s/databases/(default)&RID=rpc&SID=%s&CI=0&TYPE=xmlhttp&zx=ijirluezcha5&t=1",gsessionid, projectID, sid)
@@ -208,7 +209,7 @@ func FirestoreReadDocument(projectIDs []string, itemID string) (bool, error) {
 
 			// Access the "fields" field and print it
 			for key, value := range root.DocumentChange.Document.Fields {
-				fmt.Printf("Field: %s, Value: %s\n", key, value.StringValue)
+				log.Printf("Field: %s, Value: %s\n", key, value.StringValue)
 			}
 			
 		} else {

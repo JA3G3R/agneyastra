@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -15,7 +16,7 @@ func ReadFromRTDB(url string) bool {
     // Make a GET request
     response, err := http.Get(fullURL)
     if err != nil {
-        fmt.Printf("Error making request to %s: %v\n", fullURL, err)
+        log.Printf("Error making request to %s: %v\n", fullURL, err)
         return false
     }
     defer response.Body.Close()
@@ -23,11 +24,11 @@ func ReadFromRTDB(url string) bool {
     // Check if the response status is 200 (OK)
     if response.StatusCode == http.StatusOK {
         body, _ := ioutil.ReadAll(response.Body)
-        fmt.Printf("Potential Misconfiguration found at %s: %s\n", fullURL, body)
+        log.Printf("Potential Misconfiguration found at %s: %s\n", fullURL, body)
         return true
     }
 
-    fmt.Printf("No misconfiguration at %s, Status: %d\n", fullURL, response.StatusCode)
+    log.Printf("No misconfiguration at %s, Status: %d\n", fullURL, response.StatusCode)
     return false
 }
 

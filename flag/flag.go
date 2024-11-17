@@ -5,15 +5,18 @@ import (
 	"log"
 	"os"
 
+	"github.com/JA3G3R/agneyastra/flag/auth/authcmd"
+	"github.com/JA3G3R/agneyastra/flag/database/databasecmd"
+	"github.com/JA3G3R/agneyastra/flag/firestore/firestorecmd"
+	"github.com/JA3G3R/agneyastra/flag/storage/storagecmd"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
 )
 
-var debug bool
+var Debug bool
 var allServices bool
-var apiKey string
-var configPath string
+var ApiKey string
+var ConfigPath string
 
 // RootCmd is the base command for the CLI
 var RootCmd = &cobra.Command{
@@ -23,11 +26,11 @@ var RootCmd = &cobra.Command{
 Realtime Database, Firestore, and Storage Buckets. It provides detailed insights 
 and remediation recommendations for each service.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if apiKey == "" {
+		if ApiKey == "" {
 			fmt.Println("Error: API key is required. Use the -key flag to provide your API key.")
 			os.Exit(1)
 		}
-		if debug {
+		if Debug {
 			log.Println("Debug mode enabled")
 		}
 		if allServices {
@@ -50,20 +53,10 @@ func Execute() {
 	}
 }
 
-func GetAPIKey() string {
-	return apiKey
+func GetApiKey() string {
+	return ApiKey
 }
 
-var HelpCmd = &cobra.Command{
-	Use:   "help",
-	Short: "Help menu",
-	Long: `Help menu for Agneyastra. Use this command to get detailed information about the tool.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Custom help command")
-		RootCmd.Help()
-		os.Exit(0)
-	},
-}
 
 func ApplyExitOnHelp(c *cobra.Command, exitCode int) {
 	helpFunc := c.HelpFunc()
@@ -73,10 +66,10 @@ func ApplyExitOnHelp(c *cobra.Command, exitCode int) {
 	})
 }
 
-func initConfig() {
+func InitConfig() {
 
-    if configPath != "" {
-        viper.SetConfigFile(configPath) // Use custom config path
+    if ConfigPath != "" {
+        viper.SetConfigFile(ConfigPath) // Use custom config path
     } else {
         viper.SetConfigName("config")  // Default config name
         viper.SetConfigType("yaml")
@@ -88,9 +81,9 @@ func initConfig() {
     viper.AutomaticEnv()
 
     if err := viper.ReadInConfig(); err != nil {
-        fmt.Printf("Warning: Config file not found: %s\n", err)
+        log.Printf("Warning: Config file not found: %s\n", err)
     } else {
-        fmt.Printf("Using config file: %s\n", viper.ConfigFileUsed())
+        log.Printf("Using config file: %s\n", viper.ConfigFileUsed())
     }
 }
 
@@ -98,16 +91,25 @@ func initConfig() {
 func init() {
 	
 	ApplyExitOnHelp(RootCmd, 0)
-	RootCmd.PersistentFlags().StringVar(&apiKey, "key", "", "Firebase API key (required)")
+	RootCmd.PersistentFlags().StringVar(&ApiKey, "key", "", "Firebase API key (required)")
 	RootCmd.MarkFlagRequired("key")
-	RootCmd.PersistentFlags().Bool("debug", false, "Enable debug mode for detailed logging")
+	RootCmd.PersistentFlags().Bool("debug", false, "Enable Debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
-	RootCmd.PersistentFlags().StringVar(&configPath, "config", "", "Custom config file path")
+	RootCmd.PersistentFlags().StringVar(&ConfigPath, "config", "", "Custom config file path")
+
+
+	log.Println("Initializing config...")
+	InitConfig()
+
+	// Add subcommands
+	RootCmd.AddCommand(authcmd.AuthCmd)
+	RootCmd.AddCommand(firestorecmd.FirestoreCmd)
+	RootCmd.AddCommand(storagecmd.StorageCmd)
+	RootCmd.AddCommand(databasecmd.DatabaseCmd)
+	
 
 	// Bind Viper to flags
     viper.BindPFlag("api_key", RootCmd.PersistentFlags().Lookup("key"))
-    viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("debug"))
+    viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("Debug"))
 
-
-	cobra.OnInitialize(initConfig)
 }

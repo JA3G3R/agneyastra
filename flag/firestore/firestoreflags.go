@@ -1,13 +1,14 @@
-package flags
+package firestoreCmd
 
 import (
 	"log"
 
+	flags "github.com/JA3G3R/agneyastra/flag"
 	"github.com/spf13/cobra"
 )
 
 
-var firestoreCmd = &cobra.Command{
+var FirestoreCmd = &cobra.Command{
 	Use:   "firestore",
 	Short: "Perform misconfiguration checks on Firestore",
 	Long:  "Commands to test Firestore misconfigurations like read or write access.",
@@ -57,7 +58,7 @@ var firestorewriteCmd = &cobra.Command{
 		Use:   "all",
 		Short: "Check all Firestore misconfigurations",
 		Run: func(cmd *cobra.Command, args []string) {
-			if debug {
+			if flags.Debug {
 				log.Println("Debug: Checking all Firestore misconfigurations")
 			}
 			// Add logic for all Firestore checks
@@ -74,5 +75,6 @@ func init() {
 	firestorewriteCmd.MarkFlagsMutuallyExclusive("file","json")
 	firestorewriteCmd.MarkFlagsOneRequired("file","json")
 
-	firestoreCmd.AddCommand(firestorereadCmd, firestorewriteCmd, firestoreAllCmd)
+	FirestoreCmd.AddCommand(firestorereadCmd, firestorewriteCmd, firestoreAllCmd)
+
 }

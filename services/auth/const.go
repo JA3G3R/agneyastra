@@ -4,14 +4,6 @@ type SignUpRequest struct {
 	ReturnSecureToken bool `json:"returnSecureToken"`
 }
 
-type SignUpResponse struct {
-	IDToken      string `json:"idToken"`
-	Email        string `json:"email"`
-	RefreshToken string `json:"refreshToken"`
-	ExpiresIn    string `json:"expiresIn"`
-	LocalID      string `json:"localId"`
-}
-
 type EmailSignUpRequest struct {
 	Email            string `json:"email"`
 	Password         string `json:"password"`
@@ -36,19 +28,13 @@ type CustomTokenRequest struct {
 	ReturnSecureToken bool   `json:"returnSecureToken"`
 }
 
-type CustomTokenResponse struct {
-	IDToken      string `json:"idToken"`
-	RefreshToken string `json:"refreshToken"`
-	ExpiresIn    string `json:"expiresIn"`
-}
-
 type SignInWithPasswordRequest struct {
 	Email             string `json:"email"`
 	Password          string `json:"password"`
 	ReturnSecureToken bool   `json:"returnSecureToken"`
 }
 
-type SignInWithPasswordResponse struct {
+type LoginResponse struct {
 	IDToken      string `json:"idToken"`
 	Email        string `json:"email"`
 	RefreshToken string `json:"refreshToken"`

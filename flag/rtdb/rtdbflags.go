@@ -1,4 +1,4 @@
-package flags
+package rtdbCmd
 
 import (
 	"log"
@@ -7,7 +7,7 @@ import (
 )
 
 
-var rtdbCmd = &cobra.Command{
+var RtdbCmd = &cobra.Command{
 	Use:   "rtdb",	
 	Short: "Perform misconfiguration checks on Firebase Realtime Database",
 	Long:  "Commands to test Firebase Realtime Database misconfigurations like read or write access.",
@@ -72,6 +72,7 @@ var rtdbAllCmd = &cobra.Command{
 
 
 func init(){
+	log.Println("RTDB flags initialized")
 	rtdbwriteCmd.Flags().String("file", "", "Path to a file containing the data to write")
 	rtdbwriteCmd.Flags().String("json", "", "Raw JSON data to write")
 	rtdbwriteCmd.MarkFlagsMutuallyExclusive("json", "file")
@@ -81,6 +82,5 @@ func init(){
 	rtdbreadCmd.Flags().String("file", "", "Path to the file to dump database contents into")
 	rtdbreadCmd.MarkFlagsRequiredTogether("file", "dump")
 
-	rtdbCmd.AddCommand(rtdbreadCmd, rtdbwriteCmd, rtdbAllCmd)
-	RootCmd.AddCommand(rtdbCmd)
+	RtdbCmd.AddCommand(rtdbreadCmd, rtdbwriteCmd, rtdbAllCmd)
 }

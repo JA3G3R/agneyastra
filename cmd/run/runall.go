@@ -1,15 +1,5 @@
 package run
 
-import (
-	"github.com/JA3G3R/agneyastra/services/auth"
-	"github.com/JA3G3R/agneyastra/services/storage"
-	"github.com/JA3G3R/agneyastra/services/firestore"
-	"github.com/JA3G3R/agneyastra/services/realtime"
-	"github.com/JA3G3R/agneyastra/services/auth"
-	flags "github.com/JA3G3R/agneyastra/flag"
-	"github.com/JA3G3R/agneyastra/pkg/config"
-)
-
 
 func RunAll() {
 
@@ -26,15 +16,6 @@ func RunAll() {
 	// firestore checks
 	// realtime db checks
 	//
-
-	authConfig = config.GetAuthConfig()
-	
-
-
-	apiKey := flags.GetAPIKey()
-	auth.AnonymousAuth(apiKey)
-
-	
 	
 
 }

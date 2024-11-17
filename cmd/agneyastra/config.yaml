@@ -3,7 +3,7 @@ general:
 
 services:
   auth:
-    signin_email: "testusersignup@gmail.com"
-    signin_pass: "abcdefgh"
+    send-link:
+      email: "bhavarth1905kr@gmail.com"
   firestore:
     extract_data: false

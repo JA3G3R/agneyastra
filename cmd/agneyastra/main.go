@@ -1,16 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
 	flags "github.com/JA3G3R/agneyastra/flag"
-	"github.com/JA3G3R/agneyastra/pkg/services"
-	"github.com/JA3G3R/agneyastra/utils"
 )
 
 func main() {
-
+	
 	// fmt.Println("executing flags")
 	flags.Execute()
 	// Access the API Key
@@ -34,8 +29,8 @@ func main() {
 	// fmt.Println("Fetching project config...")
 	// projectConfig, err := utils.GetProjectConfig(apiKey)
 	// fmt.Println("Got config!")
-	// fmt.Printf("Project ID: %s\n", projectConfig.ProjectID)
-	// fmt.Printf("Authorized Domains: %v\n\n", projectConfig.AuthorizedDomains)
+	// log.Printf("Project ID: %s\n", projectConfig.ProjectID)
+	// log.Printf("Authorized Domains: %v\n\n", projectConfig.AuthorizedDomains)
 	// if err != nil {
 	// 	log.Fatalf("Error fetching project config: %v", err)
 	// }
@@ -53,7 +48,7 @@ func main() {
 	// if isVulnerable2AnonAuth {
 	// 	fmt.Println("Anonymous authentication is enabled and the project is vulnerable!\n")
 	// 	bearer_token = sessionInfoAnonymousLogin.IDToken
-	// 	fmt.Printf("Bearer token: %s\n", bearer_token)
+	// 	log.Printf("Bearer token: %s\n", bearer_token)
 	// } else {
 	// 	fmt.Println("Anonymous authentication is not enabled.\n")
 	// }
@@ -73,20 +68,20 @@ func main() {
 	// if isVulnerable2SignUp {
 	// 	fmt.Println("New User signup is enabled and the project is vulnerable!\n")
 	// 	bearer_token = sessionInfoEmailPassSignup.IDToken
-	// 	fmt.Printf("Bearer token: %s\n", bearer_token)
+	// 	log.Printf("Bearer token: %s\n", bearer_token)
 	// } else {
 	// 	fmt.Println("Email/Password authentication is not enabled.\n")
 	// }
 
-	
-	// isVulnerable2SendSignInLink, responseInfoSendSignInLink, err := services.CheckSendSignInLink(apiKey, emailStr)
+	// emailStr := ""
+	// isVulnerable2SendSignInLink, responseInfoSendSignInLink, err := auth.SendSignInLink(apiKey, emailStr)
 	// if err != nil {
 	// 	log.Fatalf("Error checking SendSignInLink: %v", err)
 	// }
 
 	// if isVulnerable2SendSignInLink {
 	// 	fmt.Println("SendSignInLink is enabled and the project is vulnerable!")
-	// 	fmt.Printf("Response Info: %+v\n", responseInfoSendSignInLink)
+	// 	log.Printf("Response Info: %+v\n", responseInfoSendSignInLink)
 	// } else {
 	// 	fmt.Println("SendSignInLink is not enabled.")
 	// }
@@ -100,7 +95,7 @@ func main() {
 
 	// if isVulnerable {
 	// 	fmt.Println("Sign-in with email/password is enabled and the project is vulnerable!\n")
-	// 	fmt.Printf("Response Info: %+v\n", responseInfoSignInEmailPass)
+	// 	log.Printf("Response Info: %+v\n", responseInfoSignInEmailPass)
 	// } else {
 	// 	fmt.Println("Sign-in with email/password is not enabled.\n")
 	// }
@@ -115,26 +110,26 @@ func main() {
 	// }
 
 	// for _, result := range results {
-	// 	fmt.Printf("Bucket: %s\n", result.Bucket)
-	// 	fmt.Printf("Bucket Data: %+v\n", result.Data)
+	// 	log.Printf("Bucket: %s\n", result.Bucket)
+	// 	log.Printf("Bucket Data: %+v\n", result.Data)
 	// }
 
 	// resultsUpload := services.BucketUpload(domains, apiKey)
 
 	// for _, result := range resultsUpload {
 	// 	if result.Success {
-	// 		fmt.Printf("Upload to bucket %s was successful.\n", result.Bucket)
+	// 		log.Printf("Upload to bucket %s was successful.\n", result.Bucket)
 	// 	} else {
-	// 		fmt.Printf("Upload to bucket %s failed. Error: %s\n", result.Bucket, result.Error)
+	// 		log.Printf("Upload to bucket %s failed. Error: %s\n", result.Bucket, result.Error)
 	// 	}
 	// }
 	// resultsDelete := services.BucketDelete(domains, "poc.txt")
 
 	// for _, result := range resultsDelete {
 	// 	if result.Success {
-	// 		fmt.Printf("File '%s' successfully deleted from bucket %s.\n", result.FileName, result.Bucket)
+	// 		log.Printf("File '%s' successfully deleted from bucket %s.\n", result.FileName, result.Bucket)
 	// 	} else {
-	// 		fmt.Printf("Failed to delete file '%s' from bucket %s. Error: %s\n", result.FileName, result.Bucket, result.Error)
+	// 		log.Printf("Failed to delete file '%s' from bucket %s. Error: %s\n", result.FileName, result.Bucket, result.Error)
 	// 	}
 	// }
 
@@ -150,7 +145,7 @@ func main() {
 	// 	}
 	// 	if isVulnerable {
 
-	// 		fmt.Printf("Firestore Write document POC successful with document id: %s, content: %s\n", documentDetails.DocumentID, documentDetails.DocumentContent)
+	// 		log.Printf("Firestore Write document POC successful with document id: %s, content: %s\n", documentDetails.DocumentID, documentDetails.DocumentContent)
 
 	// 	} else {
 	// 		fmt.Println("Firestore Write document POC failed.")
@@ -167,7 +162,7 @@ func main() {
 	// 	}
 	// 	if isVulnerable {
 
-	// 		fmt.Printf("Firestore Read document POC successful with document id: %s, content: %s\n", documentDetails.DocumentID, documentDetails.DocumentContent)
+	// 		log.Printf("Firestore Read document POC successful with document id: %s, content: %s\n", documentDetails.DocumentID, documentDetails.DocumentContent)
 
 	// 	} else {
 	// 		fmt.Println("Firestore Read document POC failed.")
