@@ -1,5 +1,9 @@
 package bucket
 
+import "github.com/JA3G3R/agneyastra/services"
+
+
+
 type KeysResponse struct {
 	Prefixes []string `json:"prefixes"`
 	Items    []Item   `json:"items"`
@@ -17,18 +21,22 @@ type Item struct {
 
 type UploadCheckResult struct {
 	Bucket string
-	Success bool
-	Error string
+	Success services.Status
+	Error error
+	StatusCode string
 }
 
 type BucketData struct {
 	Bucket string
+	Success services.Status
+	Error error
 	Data   KeysResponseRecursive
 }
 
 type DeleteCheckResult struct {
 	Bucket   string
-	Success  bool
-	Error    string
+	Success  services.Status
+	Error    error
 	FileName string
+	StatusCode string
 }

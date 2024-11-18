@@ -1,13 +1,23 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	flags "github.com/JA3G3R/agneyastra/flag"
+	"github.com/JA3G3R/agneyastra/pkg/report"
 )
 
 func main() {
 	
 	// fmt.Println("executing flags")
 	flags.Execute()
+	finalReport, err := report.GlobalReport.ReportToJSON()
+	if err != nil {
+		log.Println("Error converting report to JSON: ", err)
+		return
+	}
+	fmt.Printf("Final Report:\n%v", finalReport)
 	// Access the API Key
 	// apiKey := flags.GetAPIKey()
 

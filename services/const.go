@@ -1,11 +1,12 @@
 package services
 
-// auth service structs
+type Status string
 
-
-// storage bucket service structs
-
-
-// Firestore
+const ( 
+	StatusVulnerable Status = "vulnerable:true"
+	StatusSafe Status = "vulnerable:false"
+	StatusError Status = "error"
+	StatusUnknown Status = "vulnerable:unknown"
+)
 
 

@@ -5,5 +5,13 @@ services:
   auth:
     send-link:
       email: "bhavarth1905kr@gmail.com"
+    custom-token:
+      token: "abbajabbajabba"
+    signup:
+      email: "testmail@testing.com"
+      password: "password"
+  bucket:
+    upload:
+      filename: "/home/bhavarth/blackhat_london/agneyastra/cmd/agneyastra/poc.txt"
   firestore:
     extract_data: false

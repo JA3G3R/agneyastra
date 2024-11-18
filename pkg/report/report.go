@@ -5,39 +5,52 @@ import (
 	"sync"
 )
 
-// Report is the global structure for the JSON report.
+type APIKeyReport struct {
+	APIKey   string                          `json:"api_key"`
+	Services map[string]map[string]any       `json:"services"` // Flexible for service-specific formats
+}
+
 type Report struct {
-	Services map[string]map[string]SubServiceReport `json:"services"`
-	mu       sync.Mutex
+	APIKeys []APIKeyReport `json:"api_keys"`
+	mu      sync.Mutex
 }
 
-// SubServiceReport represents the details for each sub-service.
-type SubServiceReport struct {
-	Vulnerable bool                   `json:"vulnerable"`
-	Details    map[string]interface{} `json:"details,omitempty"` // To store other undecided parameters
-}
-
-// GlobalReport is the global instance of the report.
 var GlobalReport = &Report{
-	Services: make(map[string]map[string]SubServiceReport),
+	APIKeys: []APIKeyReport{},
 }
 
-// AddSubService adds or updates a sub-service report.
-func (r *Report) AddSubService(serviceName, subServiceName string, report SubServiceReport) {
+// AddServiceReport adds or updates a service-specific report for a given API key.
+func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string, data any) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if r.Services[serviceName] == nil {
-		r.Services[serviceName] = make(map[string]SubServiceReport)
+	var apiKeyReport *APIKeyReport
+	for i := range r.APIKeys {
+		if r.APIKeys[i].APIKey == apiKey {
+			apiKeyReport = &r.APIKeys[i]
+			break
+		}
 	}
-	r.Services[serviceName][subServiceName] = report
+	if apiKeyReport == nil {
+		newReport := APIKeyReport{
+			APIKey:   apiKey,
+			Services: make(map[string]map[string]any),
+		}
+		r.APIKeys = append(r.APIKeys, newReport)
+		apiKeyReport = &r.APIKeys[len(r.APIKeys)-1]
+	}
+
+	if apiKeyReport.Services[serviceName] == nil {
+		apiKeyReport.Services[serviceName] = make(map[string]any)
+	}
+	apiKeyReport.Services[serviceName][subServiceName] = data
 }
 
-// ToJSON converts the report to JSON format.
-func (r *Report) ToJSON() (string, error) {
+func (r *Report) ReportToJSON() (string, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
+	// Convert the entire report to JSON with indentation
 	jsonData, err := json.MarshalIndent(r, "", "  ")
 	if err != nil {
 		return "", err

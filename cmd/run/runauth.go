@@ -16,9 +16,9 @@ func AnonymousAuth(apiKey string) {
 	}
 
 	if isVulnerable {
-		report.GlobalReport.AddSubService("auth", "anon-auth", report.SubServiceReport{
-			Vulnerable: isVulnerable,
-			Details: map[string]interface{}{
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "anon-auth", map[string]any{
+			"vulnerable": isVulnerable,
+			"details": map[string]interface{}{
 				"idToken": sessionInfo.IDToken,
 				"refreshToken": sessionInfo.RefreshToken,
 				"expiresIn": sessionInfo.ExpiresIn,
@@ -27,9 +27,10 @@ func AnonymousAuth(apiKey string) {
 		})
 	} else {
 		log.Println("Anonymous auth is not enabled.")
-		report.GlobalReport.AddSubService("auth", "anon-auth", report.SubServiceReport{
-			Vulnerable: isVulnerable,
-		})
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "anon-auth", map[string]any{
+			"vulnerable": isVulnerable,
+		},	
+		)
 	}
 
 }
@@ -43,9 +44,9 @@ func SignUp(email, password, apiKey string) {
 			log.Printf("Error checking new user sign up check: %v", err)
 	}
 	if isVulnerable {
-		report.GlobalReport.AddSubService("auth", "signup", report.SubServiceReport{
-			Vulnerable: isVulnerable,
-			Details: map[string]interface{}{
+		report.GlobalReport.AddServiceReport(apiKey,"auth", "signup", map[string]any{
+			"vulnerable": isVulnerable,
+			"details": map[string]interface{}{
 				"idToken": sessionInfo.IDToken,
 				"refreshToken": sessionInfo.RefreshToken,
 				"expiresIn": sessionInfo.ExpiresIn,
@@ -56,8 +57,8 @@ func SignUp(email, password, apiKey string) {
 		})
 	} else {
 		log.Println("Sign-up is not enabled.")
-		report.GlobalReport.AddSubService("auth", "signup", report.SubServiceReport{
-			Vulnerable: isVulnerable,
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "signup", map[string]any{
+			"vulnerable": isVulnerable,
 		})
 	}
 
@@ -71,16 +72,16 @@ func SendSignInLink(email, apiKey string) {
 		log.Printf("Error checking send sign in link check: %v", err)
 	}
 	if isVulnerable {
-		report.GlobalReport.AddSubService("auth", "send-signin-link", report.SubServiceReport{
-			Vulnerable: isVulnerable,
-			Details: map[string]interface{}{
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "send-signin-link", map[string]any{
+			"vulnerable": isVulnerable,
+			"details": map[string]interface{}{
 				"email": sessionInfo.Email,
 			},
 		})
 	} else {
 		log.Println("Send sign-in link is not enabled.")
-		report.GlobalReport.AddSubService("auth", "send-signin-link", report.SubServiceReport{
-			Vulnerable: isVulnerable,
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "send-signin-link", map[string]any{
+			"vulnerable": isVulnerable,
 		})
 	}
 }
@@ -94,9 +95,9 @@ func CustomTokenLogin(token, apiKey string) {
 	}
 	if isVulnerable {
 		
-		report.GlobalReport.AddSubService("auth", "custom-token-login", report.SubServiceReport{
-			Vulnerable: isVulnerable,
-			Details: map[string]interface{}{
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "custom-token-login", map[string]any{
+			"vulnerable": isVulnerable,
+			"details": map[string]interface{}{
 				"idToken": sessionInfo.IDToken,
 				"refreshToken": sessionInfo.RefreshToken,
 				"expiresIn": sessionInfo.ExpiresIn,
@@ -105,8 +106,8 @@ func CustomTokenLogin(token, apiKey string) {
 		})
 	} else {
 		log.Println("Custom token login is not enabled.")
-		report.GlobalReport.AddSubService("auth", "custom-token-login", report.SubServiceReport{
-			Vulnerable: isVulnerable,
+		report.GlobalReport.AddServiceReport(apiKey, "auth", "custom-token-login", map[string]any{
+			"vulnerable": isVulnerable,
 		})
 	}
 	
@@ -120,6 +121,5 @@ func SignIn(email, password, apiKey string) {
 	if	err != nil {
 		log.Printf("Error checking anonymous auth: %v", err)
 	}
-	
 
 }

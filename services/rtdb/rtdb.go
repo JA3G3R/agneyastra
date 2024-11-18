@@ -7,64 +7,147 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/JA3G3R/agneyastra/services"
+	"github.com/JA3G3R/agneyastra/utils"
 )
 
-func ReadFromRTDB(url string) bool {
-    // Append /.json to the URL
-    fullURL := fmt.Sprintf("%s/.json", url)
 
-    // Make a GET request
-    response, err := http.Get(fullURL)
-    if err != nil {
-        log.Printf("Error making request to %s: %v\n", fullURL, err)
-        return false
-    }
-    defer response.Body.Close()
+func ReadFromRTDB(rtdbURLs map[string][]string, filepath string) []Result {
 
-    // Check if the response status is 200 (OK)
-    if response.StatusCode == http.StatusOK {
-        body, _ := ioutil.ReadAll(response.Body)
-        log.Printf("Potential Misconfiguration found at %s: %s\n", fullURL, body)
-        return true
-    }
+	var results []Result
+	for domain,urls := range rtdbURLs {
 
-    log.Printf("No misconfiguration at %s, Status: %d\n", fullURL, response.StatusCode)
-    return false
+		for _, url := range urls {
+			url := fmt.Sprintf("%s/.json", url)
+			resp, err := http.Get(url)
+			if err != nil {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error marshaling data: %v", err), Body: nil})
+				continue
+			}
+
+			if resp.StatusCode == 200 {
+				body, err := ioutil.ReadAll(resp.Body)
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), Body: body})
+				if filepath != "" {
+					if err != nil {
+						log.Printf("Error reading response body: %v", err)
+					}
+					err = os.WriteFile(filepath, body, 0644)
+					if err != nil {
+						log.Printf("Error writing to file: %v", err)
+					}
+				}
+			
+			} else if resp.StatusCode == 401 {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf(""), Body: nil})
+			}
+			
+			fmt.Println("Unexpected status code:", resp.StatusCode)
+		}
+		
+	}
+	return results
 }
 
 
 
-func WriteToRTDB(rtdbURL, path string, data interface{}) bool {
-	url := fmt.Sprintf("%s/%s.json", rtdbURL, path)
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println("Error marshaling data:", err)
-		return false
+func WriteToRTDB(rtdbURLs map[string][]string, data,filePath string) ([]Result, error) {
+
+	var results []Result
+	path := "agneyastrapoc"+utils.RandomString(6)
+	var jsonData []byte
+	var checkFormat map[string]interface{}
+
+	if data == "" && filePath != "" {
+
+		data = "{\"poc\": \"You are vulnerable to public write!}\"}"
+
+	} else if data == "" && filePath != "" {
+		jsonData, err := os.ReadFile(filePath)
+		if err != nil {
+			return nil, fmt.Errorf("error reading file: %v", err)
+		}
+		err = json.Unmarshal(jsonData, &checkFormat)
+		if err != nil {
+			return nil, fmt.Errorf("error writing data from file(%s): %v", err)
+		}
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	jsonData, err := json.Marshal([]byte(data))
 	if err != nil {
-		fmt.Println("Error creating request:", err)
-		return false
+		return nil, fmt.Errorf("error marshaling data: %v", err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	for domain,urls := range rtdbURLs {
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error making request:", err)
-		return false
-	}
-	defer resp.Body.Close()
+		for _, url := range urls {
+			url := fmt.Sprintf("%s/%s.json", url, path)
 
-	if resp.StatusCode == 200 {
-		fmt.Println("Write succeeded")
-		return true
-	} else if resp.StatusCode == 401 {
-		fmt.Println("Write failed: Permission denied")
-		return false
+			req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+			if err != nil {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error creating request: %v", err)})
+				continue
+			}
+			req.Header.Set("Content-Type", "application/json")
+
+			client := &http.Client{}
+			resp, err := client.Do(req)
+			if err != nil {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error making request: %v", err)})
+				continue
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode == 200 {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf("")})
+			
+			} else if resp.StatusCode == 401 {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf("")})
+			}
+			
+			fmt.Println("Unexpected status code:", resp.StatusCode)
+		}
+		
 	}
-	
-	fmt.Println("Unexpected status code:", resp.StatusCode)
-	return false
+	return results,nil
+}
+
+func DeleteFromRTDB(rtdbURLs map[string][]string) []Result {
+
+	var results []Result
+	path := "agneyastrapoc"+utils.RandomString(6)
+	for domain,urls := range rtdbURLs {
+
+		for _, url := range urls {
+			url := fmt.Sprintf("%s/%s.json", url, path)
+
+			req, err := http.NewRequest("DELETE", url, nil)
+			if err != nil {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error creating request: %v", err)})
+				continue
+			}
+			req.Header.Set("Content-Type", "application/json")
+
+			client := &http.Client{}
+			resp, err := client.Do(req)
+			if err != nil {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error making request: %v", err)})
+				continue
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode == 200 || resp.StatusCode == 404 {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
+			
+			} else if resp.StatusCode == 401 {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf(""), StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
+			} else {
+				results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Unexpected status code: %d", resp.StatusCode), StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
+			}
+
+		}
+		
+	}
+	return results
 }

@@ -1,22 +1,13 @@
 package config
 
-type Config struct {
-    APIKey string
-}
+import (
+	"github.com/JA3G3R/agneyastra/utils"
+)
 
-type AuthConfig struct {
-	
-}
+var ApiKey string
+var Debug bool
+var ProjectConfig utils.ProjectConfig
+var ProjectIds []string
+var RTDBUrls map[string][]string
 
-type StorageConfig struct {
-
-}
-
-type FirestoreConfig struct {
-
-}
-
-type ServiceConfig struct {
-
-
-}
+// to avoid cyclic dependency between packages
