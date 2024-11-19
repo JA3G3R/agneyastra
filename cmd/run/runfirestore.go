@@ -8,10 +8,10 @@ import (
 	"github.com/JA3G3R/agneyastra/services/firestore"
 )
 
-func RunFirestoreRead() {
+func RunFirestoreRead(apiKey string) {
 	// Fetch the project config using the API key and the project IDs
 	
-	readData := firestore.FirestoreReadDocument(config.ProjectIds)
+	readData := firestore.FirestoreReadDocument(config.ProjectIds[apiKey])
 	readreport := map[string]map[string]any{}
 	for _, data := range readData {
 
@@ -23,14 +23,14 @@ func RunFirestoreRead() {
 	}
 	fmt.Printf("Writing to report: %v\n", readreport)
 
-	report.GlobalReport.AddServiceReport(config.ApiKey,"firestore", "read", readreport)
+	report.GlobalReport.AddServiceReport(apiKey,"firestore", "read", readreport)
 
 
 }
 
-func RunFirestoreWrite() {
+func RunFirestoreWrite(apiKey string) {
 
-	uploadResults:= firestore.FirestoreAddDocument(config.ProjectIds)
+	uploadResults:= firestore.FirestoreAddDocument(config.ProjectIds[apiKey])
 
 	writeReport := map[string]map[string]any{}
 	for _, result := range uploadResults {
@@ -44,13 +44,13 @@ func RunFirestoreWrite() {
 		}
 	}
 	fmt.Printf("Writing to report: %v\n", writeReport)
-	report.GlobalReport.AddServiceReport(config.ApiKey,"firestore", "write",writeReport)
+	report.GlobalReport.AddServiceReport(apiKey,"firestore", "write",writeReport)
 
 }
 
-func RunFirestoreDelete() {
+func RunFirestoreDelete(apiKey string) {
 
-	deleteResults := firestore.FirestoreDeleteDocument(config.ProjectIds)
+	deleteResults := firestore.FirestoreDeleteDocument(config.ProjectIds[apiKey])
 	fmt.Printf("Delete results: %v\n", deleteResults)
 
 	deleteReport := map[string]map[string]any{}
@@ -66,6 +66,6 @@ func RunFirestoreDelete() {
 	}
 	fmt.Printf("Writing to report: %v\n", deleteReport)
 
-	report.GlobalReport.AddServiceReport(config.ApiKey,"firestore", "delete",deleteReport)
+	report.GlobalReport.AddServiceReport(apiKey,"firestore", "delete",deleteReport)
 
 }

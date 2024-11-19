@@ -8,7 +8,7 @@ services:
     custom-token:
       token: "abbajabbajabba"
     signup:
-      email: "testmail@testing.com"
+      email: "testmail1234@testing.com"
       password: "password"
   bucket:
     upload:

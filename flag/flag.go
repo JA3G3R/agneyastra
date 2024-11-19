@@ -16,6 +16,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+var apiKey string
 var allServices bool
 var ConfigPath string
 
@@ -28,22 +29,39 @@ Realtime Database, Firestore, and Storage Buckets. It provides detailed insights
 and remediation recommendations for each service.`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the API key is provided
-		if config.ApiKey == "" {
-			return fmt.Errorf("Error: API key is required. Use the -key flag to provide your API key.")
+		if apiKey == "" && config.ApiKeyFile == "" {
+			return fmt.Errorf("Error: API key is required. Use the -key flag to provide your API key or the -kf to provide a file containing list of apiKeys.")
 		}
+
+		if apiKey != "" && config.ApiKeyFile != "" {
+			return fmt.Errorf("Error: Both API key and API key file cannot be provided. Use either -key or -kf flag.")
+		}
+		if apiKey != "" {
+			config.ApiKeys = append(config.ApiKeys, apiKey)
+		} else {
+			// Read API keys from file
+			keys, err := utils.ReadApiKeysFromFile(config.ApiKeyFile)
+			if err != nil {
+				return fmt.Errorf("Error reading API keys from file: %v", err)
+			}
+			config.ApiKeys = append(config.ApiKeys, keys...)
+		}
+
 		// Fetch project config
-		var err error
-		fmt.Printf("Fetching project config using API key: %s\n", config.ApiKey)
-		projectConfig, err := utils.GetProjectConfig(config.ApiKey)
-		if err != nil {
-			return fmt.Errorf("Error fetching project config: %v", err)
+
+		// fmt.Printf("Fetching project config using API key: %s\n", apiKey)
+		for _, key := range config.ApiKeys {
+			projectConfig, err := utils.GetProjectConfig(key)
+			if err != nil {
+				log.Printf("Error fetching project config for key %s: %v", key, err)
+				continue
+			}
+			config.ProjectConfig[key] = *projectConfig
+			config.ProjectIds[key] = utils.ExtractDomainsForStorage(*projectConfig)
+			config.RTDBUrls[key] = rtdbService.CreateRTDBURLs(config.ProjectIds[key])
+			log.Printf("RTDB URLs: %v\n", config.RTDBUrls)
 		}
-		config.ProjectConfig = *projectConfig
-		config.ProjectIds = utils.ExtractDomainsForStorage(*projectConfig)
-		config.RTDBUrls = rtdbService.CreateRTDBURLs(config.ProjectIds)
-		log.Printf("RTDB URLs: %v\n", config.RTDBUrls)
-		log.Println("Initializing config...")
-		InitConfig()
+
 		// Enable debug mode if required
 		if config.Debug {
 			log.Println("Debug mode enabled")
@@ -108,10 +126,13 @@ func InitConfig() {
 
 func init() {
 
+	log.Println("Initializing config...")
+	InitConfig()
 
 	ApplyExitOnHelp(RootCmd, 0)
-	RootCmd.PersistentFlags().StringVar(&config.ApiKey, "key", "", "Firebase API key (required)")
-	RootCmd.MarkFlagRequired("key")
+	RootCmd.PersistentFlags().StringVar(&apiKey, "key", "", "Firebase API key (required)")
+	RootCmd.PersistentFlags().StringVar(&config.ApiKeyFile, "key-file", "", "Path to a file containing Firebase API keys")
+
 	RootCmd.PersistentFlags().BoolVarP(&config.Debug,"debug","d", false, "Enable Debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
 	RootCmd.PersistentFlags().StringVar(&ConfigPath, "config", "", "Custom config file path")

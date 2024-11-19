@@ -24,10 +24,12 @@ type UploadCheckResult struct {
 	Success services.Status
 	Error error
 	StatusCode string
+	AuthType string
 }
 
 type BucketData struct {
 	Bucket string
+	AuthType string
 	Success services.Status
 	Error error
 	Data   KeysResponseRecursive
@@ -39,4 +41,5 @@ type DeleteCheckResult struct {
 	Error    error
 	FileName string
 	StatusCode string
+	AuthType string
 }

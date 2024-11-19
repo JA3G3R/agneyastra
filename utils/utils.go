@@ -1,17 +1,36 @@
 package utils
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/spf13/viper"
 )
 
+func ReadApiKeysFromFile(filePath string) ([]string, error) {
+	var keys []string
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line != "" {
+			keys = append(keys, line)
+		}
+	}
+	return keys, scanner.Err()
+}
 
 func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
 	

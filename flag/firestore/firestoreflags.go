@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/JA3G3R/agneyastra/cmd/run"
+	"github.com/JA3G3R/agneyastra/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +40,9 @@ var firestorereadCmd = &cobra.Command{
 		// }
 		// log.Printf("Attempting to read document with ID: %s\n", docID)
 		// Add your function call here, e.g., ReadDocument(docID)
-		run.RunFirestoreRead()
+		for _, apiKey := range config.ApiKeys {
+			run.RunFirestoreRead(apiKey)
+		}
 	},
 }
 
@@ -62,7 +65,9 @@ var firestorewriteCmd = &cobra.Command{
 			// 		log.Printf("Writing document with data: %s\n", jsonData)
 			// 		// Add your function call here, e.g., WriteDocumentFromJSON(jsonData)
 		// 	}
-		run.RunFirestoreWrite()
+		for _, apiKey := range config.ApiKeys {
+			run.RunFirestoreWrite(apiKey)
+		}
 	},
 }
 
@@ -84,7 +89,9 @@ var firestoredeleteCmd = &cobra.Command{
 			// 		log.Printf("Writing document with data: %s\n", jsonData)
 			// 		// Add your function call here, e.g., WriteDocumentFromJSON(jsonData)
 		// 	}
-		run.RunFirestoreDelete()
+		for _, apiKey := range config.ApiKeys {
+			run.RunFirestoreDelete(apiKey)
+		}
 	},
 }
 	

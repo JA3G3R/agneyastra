@@ -31,91 +31,121 @@ sign-in link handling, and custom token logins.`,
 	},
 }
 
-var anonAuthCmd = &cobra.Command{
+var AnonAuthCmd = &cobra.Command{
 	Use:   "anon-auth",
 	Short: "Check for anonymous authentication misconfiguration",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("Checking anonymous authentication misconfiguration...")
-		run.AnonymousAuth(config.ApiKey)
-
+		for _, apiKey := range config.ApiKeys {
+			run.AnonymousAuth(apiKey)
+		}
 	},
 }
 
 
-var signUpCmd = &cobra.Command{
+var SignUpCmd = &cobra.Command{
 	Use:   "sign-up",
 	Short: "Check for sign-up misconfiguration",
 	Run: func(cmd *cobra.Command, args []string) {
 		email := viper.GetString("services.auth.signup.email")
 		password:= viper.GetString("services.auth.signup.password")
 		log.Printf("Checking sign-up misconfiguration with email: %s, password: %s\n", email, password)
-		run.SignUp(email, password, config.ApiKey)
+		for _, apiKey := range config.ApiKeys {
+			run.SignUp(email, password, apiKey)
+		}
+		
 	},
 }
 
-var sendSigninLinkCmd = &cobra.Command{
+var SendSigninLinkCmd = &cobra.Command{
 	Use:   "send-signin-link",
 	Short: "Check for sign-in link misconfiguration",
 	Run: func(cmd *cobra.Command, args []string) {
 		email:= viper.GetString("services.auth.send-link.email")
 		log.Printf("Sending sign-in link to: %s\n", email)
-		run.SendSignInLink(email, config.ApiKey)
+		for _, apiKey := range config.ApiKeys {
+			run.SendSignInLink(email, apiKey)
+		}
+
 	},
 }
 
-var customTokenLoginCmd = &cobra.Command{
+var CustomTokenLoginCmd = &cobra.Command{
 	Use:   "custom-token-login",
 	Short: "Check for custom token login misconfiguration",
 	Run: func(cmd *cobra.Command, args []string) {
 		token, _ := cmd.Flags().GetString("token")
 		log.Printf("Logging in with custom token: %s\n", token)
-		run.CustomTokenLogin(token, config.ApiKey)
+		for _, apiKey := range config.ApiKeys {
+			run.CustomTokenLogin(token, apiKey)
+		}
 	},
 }
 
-var signInCmd = &cobra.Command{
+var SignInCmd = &cobra.Command{
 	Use:  "sign-in",
 	Short: "Check for sign-in with user defined credentials",
 	Run: func(cmd *cobra.Command, args []string) {
 		email := viper.GetString("services.auth.signin.email")
 		password := viper.GetString("services.auth.signin.password")
 		log.Printf("Signing in with email: %s, password: %s\n", email, password)
-		run.SignIn(email, password, config.ApiKey)
+		for _, apiKey := range config.ApiKeys {
+			run.SignIn(email, password, apiKey)
+		}
+		
 	},
 }
 
 func Init() {
 	
-	AuthCmd.PersistentFlags().BoolVarP(&allFlag, "all", "a", true, "Check all services for misconfigurations")
+	AuthCmd.PersistentFlags().BoolVarP(&allFlag, "all", "a", false, "Check all services for misconfigurations")
 
-	AuthCmd.AddCommand(anonAuthCmd, signUpCmd, sendSigninLinkCmd, customTokenLoginCmd)
+	AuthCmd.AddCommand(AnonAuthCmd, SignUpCmd, SendSigninLinkCmd, CustomTokenLoginCmd)
 	// AuthCmd.MarkFlagsMutuallyExclusive("anon-auth", "sign-up","send-signin-link","custom-token-login")
 	
-	signInCmd.Flags().String("email", "", "Email address for signing in")
-	signInCmd.Flags().String("password", "", "Password for signing in")
-	signInCmd.MarkFlagRequired("email")
-	signInCmd.MarkFlagRequired("password")
+	if !viper.IsSet("services.auth.signin.email") {
+		log.Printf("signin email not set")
+		SignInCmd.Flags().String("email", "", "Email address for signing in")
+		SignInCmd.MarkFlagRequired("email")
+	}
+	if !viper.IsSet("services.auth.signin.password") {
+		log.Printf("signin pass not set")
 
-	viper.BindPFlag("services.auth.signin.email", signInCmd.Flags().Lookup("email"))
-	viper.BindPFlag("services.auth.signin.password", signInCmd.Flags().Lookup("password"))
+		SignInCmd.Flags().String("password", "", "Password for signing in")
+		SignInCmd.MarkFlagRequired("password")
+	}
 
-	signUpCmd.Flags().String("email", "", "Email address for signing up")
-	signUpCmd.Flags().String("password", "", "Password for signing up")
-	signUpCmd.MarkFlagRequired("email")
-	signUpCmd.MarkFlagRequired("password")
+	viper.BindPFlag("services.auth.signin.email", SignInCmd.Flags().Lookup("email"))
+	viper.BindPFlag("services.auth.signin.password", SignInCmd.Flags().Lookup("password"))
 
+	if !viper.IsSet("services.auth.signup.email") {
+		log.Printf("signup email not set")
 
-	viper.BindPFlag("services.auth.signup.email", signUpCmd.Flags().Lookup("email"))
-	viper.BindPFlag("services.auth.signup.password", signUpCmd.Flags().Lookup("password"))
+		SignUpCmd.Flags().String("email", "", "Email address for signing in")
+		SignUpCmd.MarkFlagRequired("email")
+	}
+	if !viper.IsSet("services.auth.signup.password") {
+		log.Printf("signup password not set")
 
-	sendSigninLinkCmd.Flags().String("email", "", "Email address to send the sign-in link to")
-	sendSigninLinkCmd.MarkFlagRequired("email")
+		SignUpCmd.Flags().String("password", "", "Password for signing in")
+		SignUpCmd.MarkFlagRequired("password")
+	}
+	
+	viper.BindPFlag("services.auth.signup.email", SignUpCmd.Flags().Lookup("email"))
+	viper.BindPFlag("services.auth.signup.password", SignUpCmd.Flags().Lookup("password"))
 
-	viper.BindPFlag("services.auth.send-link.email", sendSigninLinkCmd.Flags().Lookup("email"))
+	if !viper.IsSet("services.auth.send-link.email") {
+		SendSigninLinkCmd.Flags().String("email", "", "Email address for signing in")
+		SendSigninLinkCmd.MarkFlagRequired("email")
+	}
 
-	customTokenLoginCmd.Flags().String("token", "", "Custom token for login")
-	customTokenLoginCmd.MarkFlagRequired("token")
+	viper.BindPFlag("services.auth.send-link.email", SendSigninLinkCmd.Flags().Lookup("email"))
 
-	viper.BindPFlag("services.auth.custom-token.token", customTokenLoginCmd.Flags().Lookup("token"))
+	if !viper.IsSet("services.auth.custom-token.email") {
+		CustomTokenLoginCmd.Flags().String("email", "", "Email address for signing in")
+		CustomTokenLoginCmd.MarkFlagRequired("email")
+	}
+
+	viper.BindPFlag("services.auth.custom-token.token", CustomTokenLoginCmd.Flags().Lookup("token"))
 
 }

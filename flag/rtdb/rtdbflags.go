@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/JA3G3R/agneyastra/cmd/run"
+	"github.com/JA3G3R/agneyastra/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -34,7 +35,10 @@ var rtdbreadCmd = &cobra.Command{
 	Long:  "Checks if the Firebase Realtime Database allows unrestricted reading of its data.",
 	Run: func(cmd *cobra.Command, args []string) {
 		dump, _ := cmd.Flags().GetString("dump")
-		run.RunRtdbRead(dump)
+		for _, apiKey := range config.ApiKeys {
+			run.RunRtdbRead(dump, apiKey)
+		}
+
 	},
 }
 
@@ -47,7 +51,9 @@ var rtdbwriteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		file, _ := cmd.Flags().GetString("file")
 		jsonData, _ := cmd.Flags().GetString("json")
-		run.RunRtdbWrite(jsonData, file)
+		for _, apiKey := range config.ApiKeys {
+			run.RunRtdbWrite(jsonData, file, apiKey)
+		}
 	},
 }
 
@@ -56,7 +62,9 @@ var rtdbdeleteCmd = &cobra.Command{
 	Short: "Delete data from Firebase RTDB",
 	Long:  "Checks if the Firebase Realtime Database allows deletion of data.",
 	Run: func(cmd *cobra.Command, args []string) {
-		run.RunRtdbDelete()
+		for _, apiKey := range config.ApiKeys {
+			run.RunRtdbDelete(apiKey)
+		}
 	},
 }
 

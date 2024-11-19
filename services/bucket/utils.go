@@ -5,53 +5,81 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/JA3G3R/agneyastra/pkg/credentials"
 	"github.com/JA3G3R/agneyastra/services"
 )
 
-func recursiveContentReadFromBucket(bucket string, prefix string) (KeysResponseRecursive, error) {
+func recursiveContentReadFromBucket(bucket string, prefix string, authType string, isVulnerable bool) (KeysResponseRecursive,bool,string, error) {
 	url := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s.appspot.com/o?prefix=%s&delimiter=%%2F", bucket, prefix)
+	req,err  := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to create request: %w", err)
+	}
 
 	// Send GET request to the Firebase Storage API
-	resp, err := http.Get(url)
+	resp , err := http.DefaultClient.Do(req)
 	if err != nil {
-		return KeysResponseRecursive{}, fmt.Errorf("failed to make request: %w",  err)
+		return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to make request: %w",  err)
 	}
 	defer resp.Body.Close()
 
 	// Handle non-200 status codes (e.g., 404)
-	if resp.StatusCode != http.StatusOK {
-		return KeysResponseRecursive{}, fmt.Errorf("received status code %d", resp.StatusCode)
+	log.Printf("Bucket: %s, Prefix: %s, Status: %d", bucket, prefix, resp.StatusCode)
+	if resp.StatusCode == http.StatusForbidden || resp.StatusCode == http.StatusUnauthorized {
+		credentialStore := credentials.GetCredentialStore()
+		for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
+
+			cred := credentialStore.GetToken(credentials.CredTypes[authTypeIdx])
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+			resp, err = http.DefaultClient.Do(req)
+			if err != nil {
+				return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to make request: %w", err)
+			}
+			if (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
+				continue
+			} else if resp.StatusCode == http.StatusOK {
+				isVulnerable = true
+				authType = credentials.CredTypes[authTypeIdx]
+				break
+			}
+		} 
+		if !isVulnerable {
+			return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to make request: %w", err)
+		}
+	} else if resp.StatusCode != http.StatusOK {
+		return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("Unexpected response code: %w", err)
 	}
 
 	// Read response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return KeysResponseRecursive{}, fmt.Errorf("failed to read response body: %w", err)
+		return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	// Parse JSON response
 	var keys KeysResponse
 	err = json.Unmarshal(body, &keys)
 	if err != nil {
-		return KeysResponseRecursive{}, fmt.Errorf("failed to parse response JSON: %w", err)
+		return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 	recPrefix := make(map[string]KeysResponseRecursive)
 	if keys.Prefixes == nil {
-		return KeysResponseRecursive{Prefixes: nil, Items: keys.Items} , nil
+		return KeysResponseRecursive{Prefixes: nil, Items: keys.Items},isVulnerable,authType , nil
 	}
 	for _, respprefix := range keys.Prefixes {
-		keysRec, err := recursiveContentReadFromBucket(bucket, respprefix)
+		keysRec,_,_, err := recursiveContentReadFromBucket(bucket, respprefix, authType, isVulnerable)
 		if err != nil {
-			return KeysResponseRecursive{} , err
+			return KeysResponseRecursive{},isVulnerable,authType , err
 		}
 		recPrefix[respprefix] = keysRec
 	}
-	return KeysResponseRecursive{Prefixes: recPrefix, Items: keys.Items}, nil
+	return KeysResponseRecursive{Prefixes: recPrefix, Items: keys.Items},isVulnerable,authType, nil
 }
 
 // downloadBucketContents downloads all the contents from a bucket into the parent folder.

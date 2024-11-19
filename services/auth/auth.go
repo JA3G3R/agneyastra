@@ -180,7 +180,7 @@ func SendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, error)
 
 func SignUp(apiKey, email, password string) (bool, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
-
+	fmt.Printf("Signing up with email: %s, password: %s\n", email, password)
 	// Create request body
 	payload := EmailSignUpRequest{
 		Email:            email,

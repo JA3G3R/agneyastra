@@ -9,11 +9,11 @@ import (
 	"github.com/JA3G3R/agneyastra/services/rtdb"
 )
 
-func RunRtdbRead(dumpFile string) {
+func RunRtdbRead(dumpFile string, apiKey string) {
 
 	// Fetch the project config using the API key and the project IDs
 	
-	readData := rtdb.ReadFromRTDB(config.RTDBUrls, dumpFile)
+	readData := rtdb.ReadFromRTDB(config.RTDBUrls[apiKey], dumpFile)
 	readreport := map[string]map[string]any{}
 	for _, data := range readData {
 
@@ -28,13 +28,13 @@ func RunRtdbRead(dumpFile string) {
 	}
 	fmt.Printf("Writing to report: %v\n", readreport)
 
-	report.GlobalReport.AddServiceReport(config.ApiKey,"rtdb", "read", readreport)
+	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "read", readreport)
 
 }
 
-func RunRtdbWrite(data, filepath string) {
+func RunRtdbWrite(data, filepath string, apiKey string) {
 
-	uploadResults, err := rtdb.WriteToRTDB(config.RTDBUrls, data , filepath)
+	uploadResults, err := rtdb.WriteToRTDB(config.RTDBUrls[apiKey], data , filepath)
 	if err != nil {
 		log.Printf("Error performing RTDB write check: %v", err)
 		return
@@ -55,13 +55,13 @@ func RunRtdbWrite(data, filepath string) {
 		}
 	}
 	fmt.Printf("Writing to report: %v\n", writeReport)
-	report.GlobalReport.AddServiceReport(config.ApiKey,"rtdb", "write",writeReport)
+	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "write",writeReport)
 
 }
 
-func RunRtdbDelete() {
+func RunRtdbDelete(apiKey string) {
 
-	deleteResults := rtdb.DeleteFromRTDB(config.RTDBUrls)
+	deleteResults := rtdb.DeleteFromRTDB(config.RTDBUrls[apiKey])
 	fmt.Printf("Delete results: %v\n", deleteResults)
 
 	deleteReport := map[string]map[string]any{}
@@ -80,6 +80,6 @@ func RunRtdbDelete() {
 	}
 	fmt.Printf("Writing to report: %v\n", deleteReport)
 
-	report.GlobalReport.AddServiceReport(config.ApiKey,"rtdb", "delete",deleteReport)
+	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "delete",deleteReport)
 
 }
