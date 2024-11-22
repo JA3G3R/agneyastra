@@ -1,0 +1,185 @@
+{
+  "api_keys": [
+    {
+      "api_key": "AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI",
+      "services": {
+        "auth": {
+          "anon-auth": {
+            "details": {
+              "expiresIn": "3600",
+              "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlNTIxYmY1ZjdhNDAwOGMzYmQ3MjFmMzk2OTcwOWI1MzY0MzA5NjEiLCJ0eXAiOiJKV1QifQ.eyJwcm92aWRlcl9pZCI6ImFub255bW91cyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9hZ25leWFzdHJhLXRlc3RpbmcyIiwiYXVkIjoiYWduZXlhc3RyYS10ZXN0aW5nMiIsImF1dGhfdGltZSI6MTczMjAzNjA3NywidXNlcl9pZCI6ImF2MGhCWWp6ZExWSHBHWExXVU5sc29JU1c2bDEiLCJzdWIiOiJhdjBoQllqemRMVkhwR1hMV1VObHNvSVNXNmwxIiwiaWF0IjoxNzMyMDM2MDc3LCJleHAiOjE3MzIwMzk2NzcsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiYW5vbnltb3VzIn19.f1sq35KZXZ7b646_ZUFFIYmHgDjaD_Js8oXM6coidpwg2KziSc9TEcBdotHCfhy0DxBIza31ZqbWUK6p4K3v2qS6ZjLVi2O3e3CzCGm5JdSAPGAlA6XVhP9taJHMvPaTzRgTvPJsJTcuF7sAFF9qrzqpovklyZsDQreIPn74VdBcBZaHJj_6p6IvQVqSFIaJBBwuXwdXkf_K4Gxldidi9h7mExK-z8dpgJgJO_ylo-qzVVX_g4BYyaznQLKMjynsF1Hg2yLA8sNTHkOVhMU15jDFsK5jWjFmNlUTdsgAf-KqF7LqwEW_nuRat4N86qnmO0CiSkMyg0FJVQcYNXuWeA",
+              "localId": "av0hBYjzdLVHpGXLWUNlsoISW6l1",
+              "refreshToken": "AMf-vBxVlMENfpUNqRSqByfL8ITObvD-JwDaiEnwaJr4xYSkvFQ9TT6bsdTIHISoiCZ9YQR2ECRVnYzgHyGhorhOatfODZu7hpVVYhwAnEXFX3Ff9KTWqXNrgzTwr7L34G_kY8nmeuTtOdIiwipmlMKnXr9NRiPgEdgncalexOVkKdTJcYVT-Fg5vJ8sNA1XBVAkFRlcqgsf"
+            },
+            "vulnerable": true
+          },
+          "custom-token-login": {
+            "vulnerable": false
+          },
+          "send-signin-link": {
+            "details": {
+              "email": "bhavarth1905kr@gmail.com"
+            },
+            "vulnerable": true
+          },
+          "signup": {
+            "details": {
+              "email": "testmail1234@testing.com",
+              "expiresIn": "3600",
+              "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlNTIxYmY1ZjdhNDAwOGMzYmQ3MjFmMzk2OTcwOWI1MzY0MzA5NjEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWduZXlhc3RyYS10ZXN0aW5nMiIsImF1ZCI6ImFnbmV5YXN0cmEtdGVzdGluZzIiLCJhdXRoX3RpbWUiOjE3MzIwMzYwNzgsInVzZXJfaWQiOiJDa29Fa3c0Vk9QUWU2OHFJMHR2Q3ZDZnNHMHQxIiwic3ViIjoiQ2tvRWt3NFZPUFFlNjhxSTB0dkN2Q2ZzRzB0MSIsImlhdCI6MTczMjAzNjA3OCwiZXhwIjoxNzMyMDM5Njc4LCJlbWFpbCI6InRlc3RtYWlsMTIzNEB0ZXN0aW5nLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0bWFpbDEyMzRAdGVzdGluZy5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.XXENyoE5zyiJyoee_xvS8BqreDkjAn0kMKUsOgFXfw7b4ZoL1gO78TRBb7zgMl9WrTzBitSg4pGSXlHIyFuf1ybUyZl-6YdGOSk1yTaEkw07k9SXDW0FeqA8fFb-1xHwL96sJ6qr2pahJy80RZdMTCHIEI4S02GSvWVzX3vIHTT3vSjBEzwcbJO8R-uKFoLwjQ4kVvk6sHZUsF7d1vqNw8-TYIPo30din4vMaXQXmBjy1kp_KHK39tblqUV0MC-xqJ_nRaTp4u2WBzpFT-sA3ZfhjPd98BxGLqTZwayrH9bqwwsZeI67766OTJAcqbNYBeVrnJEIcN-goc4X3w9jcA",
+              "localId": "CkoEkw4VOPQe68qI0tvCvCfsG0t1",
+              "password": "password",
+              "refreshToken": "AMf-vBzcZIME6eG3kD54X-4aOBN7Wu7eVL4nYB0Zjs03aEBo97pbx1ukJDDGEhAgBbvvxufwUogfepzFnBw9tFiWzp7FP1_CArmOo58LzsldhXl02KPujXBr6_UbD7TA-Co2sN3sPzjWitMCPRtD2HeeQAIyW9EpNg_7glBhNsu6wFGaAtvrEGxFkrTDvI2_mlMN9YgzV413NwDMwwpHwxVkrHPjjy9J29xwFhHljEPB_b5qlUIw5MY"
+            },
+            "vulnerable": true
+          }
+        },
+        "bucket": {
+          "delete": {
+            "104159166443": {
+              "error": "",
+              "status_code": "",
+              "vulnerable": "vulnerable:true"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "status_code": "",
+              "vulnerable": "vulnerable:true"
+            }
+          },
+          "read": {
+            "104159166443": {
+              "Contents": {
+                "prefixes": null,
+                "items": null
+              },
+              "error": {},
+              "vulnerable": "error"
+            },
+            "agneyastra-testing2": {
+              "Contents": {
+                "prefixes": {
+                  "testing/": {
+                    "prefixes": {
+                      "testing/inner-folder/": {
+                        "prefixes": {},
+                        "items": [
+                          {
+                            "name": "testing/inner-folder/burpcert.der",
+                            "bucket": "agneyastra-testing2.appspot.com"
+                          }
+                        ]
+                      }
+                    },
+                    "items": [
+                      {
+                        "name": "testing/2",
+                        "bucket": "agneyastra-testing2.appspot.com"
+                      }
+                    ]
+                  }
+                },
+                "items": [
+                  {
+                    "name": "1",
+                    "bucket": "agneyastra-testing2.appspot.com"
+                  },
+                  {
+                    "name": "firebase.html",
+                    "bucket": "agneyastra-testing2.appspot.com"
+                  },
+                  {
+                    "name": "poc.txt",
+                    "bucket": "agneyastra-testing2.appspot.com"
+                  }
+                ]
+              },
+              "error": {},
+              "vulnerable": "vulnerable:true"
+            }
+          },
+          "write": {
+            "104159166443": {
+              "error": "",
+              "status_code": "404",
+              "vulnerable": "vulnerable:unknown"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "status_code": "200",
+              "vulnerable": "vulnerable:true"
+            }
+          }
+        },
+        "firestore": {
+          "delete": {
+            "104159166443": {
+              "error": "bad request error in 2nd request",
+              "vulnerable": "error"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "vulnerable": "vulnerable:false"
+            }
+          },
+          "read": {
+            "104159166443": {
+              "error": "bad request error in 2nd request",
+              "vulnerable": "error"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "vulnerable": "vulnerable:false"
+            }
+          },
+          "write": {
+            "104159166443": {
+              "error": "bad request error in 2nd request",
+              "vulnerable": "error"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "vulnerable": "vulnerable:false"
+            }
+          }
+        },
+        "rtdb": {
+          "delete": {
+            "104159166443": {
+              "error": "",
+              "project_id": "104159166443",
+              "rtdb_url": "https://104159166443-default-rtdb.firebaseio.com/agneyastrapoc6DazTW.json",
+              "status_code": "404",
+              "vulnerable": "vulnerable:true"
+            },
+            "agneyastra-testing2": {
+              "error": "",
+              "project_id": "agneyastra-testing2",
+              "rtdb_url": "https://agneyastra-testing2-default-rtdb.firebaseio.com/agneyastrapoc6DazTW.json",
+              "status_code": "401",
+              "vulnerable": "vulnerable:false"
+            }
+          },
+          "read": {
+            "agneyastra-testing2": {
+              "error": {},
+              "project_id": "agneyastra-testing2",
+              "rtdb_url": "https://agneyastra-testing2-default-rtdb.firebaseio.com/.json",
+              "status_code": "",
+              "vulnerable": "vulnerable:true"
+            }
+          },
+          "write": {
+            "agneyastra-testing2": {
+              "error": "",
+              "project_id": "agneyastra-testing2",
+              "rtdb_url": "https://agneyastra-testing2-default-rtdb.firebaseio.com/agneyastrapocBszZrW.json",
+              "status_code": "",
+              "vulnerable": "vulnerable:false"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

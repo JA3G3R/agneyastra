@@ -5,7 +5,10 @@ import (
 	"log"
 
 	flags "github.com/JA3G3R/agneyastra/flag"
+	"github.com/JA3G3R/agneyastra/pkg/config"
+	"github.com/JA3G3R/agneyastra/pkg/correlation"
 	"github.com/JA3G3R/agneyastra/pkg/report"
+	"github.com/JA3G3R/agneyastra/pkg/secrets"
 )
 
 func main() {
@@ -17,7 +20,21 @@ func main() {
 		log.Println("Error converting report to JSON: ", err)
 		return
 	}
+	if config.Correlate {
+		fmt.Println("Correlating data...")
+		correlation.AddCorelationScore()
+	}
+	if config.SecretsExtract {
+		fmt.Println("Extracting secrets...")
+		secrets.ExtractSecrets()
+	}
 	fmt.Printf("Final Report:\n%v", finalReport)
+	fmt.Println("Generating HTML Report")
+	err = report.GlobalReport.GenerateHTMLReport(config.ReportPath, config.TemplateFile)
+	if err != nil {
+		log.Println("Error generating HTML report: ", err)
+		return
+	}
 	// Access the API Key
 	// apiKey := flags.GetAPIKey()
 

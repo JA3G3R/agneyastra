@@ -12,4 +12,5 @@ type Result struct {
 	Error error
 	StatusCode string
 	Body []byte
+	AuthType string
 }

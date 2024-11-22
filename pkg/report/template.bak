@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agneyastra Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            margin: 0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        h2 {
+            margin-top: 20px;
+            font-size: 22px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Agneyastra Report</h1>
+        <span>{{.Date}}</span>
+    </div>
+    <div class="content">
+        {{range .APIKeys}}
+            <h2>API Key: {{.APIKey}}</h2>
+            {{range $service, $subservice := .Services}}
+                <h3>{{capitalize $service}} Configuration</h3>
+                {{range $subservice, $serviceReport := $subservice}}
+                    <h4> {{capitalize $subservice}}</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .}}
+                                <tr>
+                                    <td>{{.AuthType}}</td>
+                                    <td>{{.Vulnerable}}</td>
+                                    <td>{{.VulnConfig}}</td>
+                                    <td>{{.Remedy}}</td>
+                                    <td>{{.Error}}</td>
+                                </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <p>{{.Details}}</p>
+                    </div>
+                {{end}}
+            {{end}}
+        {{end}}
+    </div>
+</body>
+</html>

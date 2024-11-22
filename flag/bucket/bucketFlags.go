@@ -29,7 +29,7 @@ var BucketCmd = &cobra.Command{
 			log.Println("Running all firebase storage bucket misconfiguration checks")
 			for _, subCmd := range cmd.Commands() {
 				if subCmd.Run != nil {
-					log.Printf("Running subcommand: %s", subCmd.Name())
+					// log.Printf("Running subcommand: %s", subCmd.Name())
 					subCmd.Run(subCmd, nil)
 				}
 			}
@@ -60,7 +60,7 @@ var bucketUploadCmd = &cobra.Command{
 			runAuthSubcommands(uploadAuthFlag)
 		}
 		file := viper.GetString("services.bucket.upload.filename")
-		log.Printf("Uploading file: %s\n", file)
+		// log.Printf("Uploading file: %s\n", file)
 		for _, apiKey := range config.ApiKeys {
 			run.RunBucketWrite(file, apiKey)
 		}
@@ -90,17 +90,17 @@ func runAuthSubcommands(authFlag string) {
 		"custom-token-login": auth.CustomTokenLoginCmd,
 		"sign-in":           auth.SignInCmd,
 	}
-
+	args := []string{"no-report"}
 	if authFlag == "all" {
 		log.Println("Running all auth subcommands...")
-		for name, cmd := range authCmdMap {
-			log.Printf("Running subcommand: %s\n", name)
-			cmd.Run(cmd, nil)
-		}
+		for _, cmd := range authCmdMap {
+			// log.Printf("Running subcommand: %s\n", name)
+			cmd.SetArgs(args)
+			cmd.Run(cmd,args)	}
 	} else if cmd, exists := authCmdMap[authFlag]; exists {
 		log.Printf("Running specific auth subcommand: %s\n", authFlag)
-		cmd.Run(cmd, nil)
-	} else {
+		cmd.SetArgs(args)
+		cmd.Run(cmd,args)} else {
 		log.Printf("Invalid auth flag: %s. Valid options: all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in\n", authFlag)
 		os.Exit(1)
 	}

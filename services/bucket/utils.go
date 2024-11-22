@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -30,7 +29,7 @@ func recursiveContentReadFromBucket(bucket string, prefix string, authType strin
 	defer resp.Body.Close()
 
 	// Handle non-200 status codes (e.g., 404)
-	log.Printf("Bucket: %s, Prefix: %s, Status: %d", bucket, prefix, resp.StatusCode)
+	// log.Printf("Bucket: %s, Prefix: %s, Status: %d", bucket, prefix, resp.StatusCode)
 	if resp.StatusCode == http.StatusForbidden || resp.StatusCode == http.StatusUnauthorized {
 		credentialStore := credentials.GetCredentialStore()
 		for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
@@ -176,4 +175,34 @@ func downloadFile(filePath, url string) error {
 	}
 
 	return nil
+}
+
+func getBucketReq (filePath, url, auth string) (*http.Request, error) {
+
+	// Read the file content
+	fileContent, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file: %w", err)
+	}
+	
+
+	body:= fmt.Sprintf(`--549469432485475937301754847166047
+Content-Type: application/json; charset=utf-8
+
+{"name":"uploads/poc.txt","contentType":"text/plain"}
+--549469432485475937301754847166047
+Content-Type: text/plain
+
+%s
+--549469432485475937301754847166047--`, string(fileContent))
+	req, err := http.NewRequest("POST", url, strings.NewReader(body))
+	req.Header.Set("Content-Type", "multipart/related; boundary=549469432485475937301754847166047" )
+	req.Header.Set("User-Agent","curl/7.81.0" )
+	// req.Header.Set("Content-Type", "multipart/related; boundary=00047502390770604039595222756427073")
+	req.Header.Set("X-Goog-Upload-Protocol", "multipart")
+	if auth != "" {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", auth))
+	}
+	return req, nil
+
 }

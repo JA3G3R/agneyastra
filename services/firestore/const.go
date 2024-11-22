@@ -13,4 +13,5 @@ type Result struct {
 	Success services.Status
 	Error error
 	StatusCode string
+	AuthType string
 }

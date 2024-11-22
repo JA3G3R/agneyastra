@@ -77,7 +77,7 @@ and remediation recommendations for each service.`,
 			for _, subCmd := range cmd.Commands() {
 				if subCmd.Name() != "help" && subCmd.Name() != "completion" {
 					if subCmd.Run != nil {
-						log.Printf("Running subcommand: %s", subCmd.Name())
+						// log.Printf("Running subcommand: %s", subCmd.Name())
 						subCmd.Run(subCmd, nil)
 					}
 				}
@@ -118,29 +118,37 @@ func InitConfig() {
 
     if err := viper.ReadInConfig(); err != nil {
         log.Printf("Warning: Config file not found: %s\n", err)
-    } else {
-        log.Printf("Using config file: %s\n", viper.ConfigFileUsed())
-    }
+     }// else {
+    //     log.Printf("Using config file: %s\n", viper.ConfigFileUsed())
+    // }
 }
 
 
 func init() {
 
-	log.Println("Initializing config...")
+	// log.Println("Initializing config...")
 	InitConfig()
 
 	ApplyExitOnHelp(RootCmd, 0)
 	RootCmd.PersistentFlags().StringVar(&apiKey, "key", "", "Firebase API key (required)")
+	RootCmd.PersistentFlags().StringVar(&config.ReportPath, "report-path", "./report.html", "Path to store the HTML report (default: ./report.html)")
+	RootCmd.PersistentFlags().StringVar(&config.TemplateFile, "template-file", "./template.html", "Template file to use for report (default: ./template.html)")
+	RootCmd.PersistentFlags().StringVar(&config.PentestDataFilePath, "pentest-data", "", "Path to the pentest data file")
+	RootCmd.PersistentFlags().StringVar(&ConfigPath, "config", "", "Custom config file path")
 	RootCmd.PersistentFlags().StringVar(&config.ApiKeyFile, "key-file", "", "Path to a file containing Firebase API keys")
+	RootCmd.PersistentFlags().StringVar(&config.SecretsRegexFile, "secrets-regex-file", "", "Path to a file containing secrets regexes")
 
+	RootCmd.PersistentFlags().BoolVar(&config.Correlate, "correlate", false, "Correlate the results with the API key used")
 	RootCmd.PersistentFlags().BoolVarP(&config.Debug,"debug","d", false, "Enable Debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
-	RootCmd.PersistentFlags().StringVar(&ConfigPath, "config", "", "Custom config file path")
+	RootCmd.PersistentFlags().BoolVar(&config.SecretsExtract, "secrets-extract", false, "Extract secrets from extracted data")
+
 	// Add subcommands
 	RootCmd.AddCommand(auth.AuthCmd)
 	RootCmd.AddCommand(firestore.FirestoreCmd)
 	RootCmd.AddCommand(bucket.BucketCmd)
 	RootCmd.AddCommand(rtdb.RtdbCmd)
+	RootCmd.CompletionOptions.DisableDefaultCmd = true
 
 	// Bind Viper to flags
     viper.BindPFlag("api_key", RootCmd.PersistentFlags().Lookup("key"))

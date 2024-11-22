@@ -9,10 +9,11 @@ import (
 	"net/http"
 
 	"github.com/JA3G3R/agneyastra/pkg/credentials"
+	"github.com/JA3G3R/agneyastra/services"
 )
 
 // CheckSignInWithPassword checks if email/password sign-in is enabled
-func SignInWithPassword(apiKey, email, password string) (bool, *LoginResponse, error) {
+func SignInWithPassword(apiKey, email, password string) (services.Status, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s", apiKey)
 
 	// Create request body
@@ -24,37 +25,37 @@ func SignInWithPassword(apiKey, email, password string) (bool, *LoginResponse, e
 
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to marshal request body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
 
 	// Send POST request to the Firebase Auth API
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to create request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to make request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to make request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return false, nil, fmt.Errorf("failed to sign in with email/password, status code: %d", resp.StatusCode)
+		return services.StatusError, nil, fmt.Errorf("failed to sign in with email/password, status code: %d", resp.StatusCode)
 	}
 
 	// Read and parse the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to read response body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var signInResp LoginResponse
 	err = json.Unmarshal(body, &signInResp)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If idToken is present, email/password sign-in is enabled
@@ -62,14 +63,14 @@ func SignInWithPassword(apiKey, email, password string) (bool, *LoginResponse, e
 		store := credentials.GetCredentialStore()
 		store.SetToken("user_credentials", signInResp.IDToken)
 		fmt.Println("Email/Password sign-in successful!")
-		return true, &signInResp, nil
+		return services.StatusVulnerable, &signInResp, nil
 	}
 
-	return false, nil, nil
+	return services.StatusSafe, nil, nil
 }
 
 // CheckLoginWithCustomToken checks if login with custom token is enabled
-func LoginWithCustomToken(apiKey, customToken string) (bool, *LoginResponse, error) {
+func LoginWithCustomToken(apiKey, customToken string) (services.Status, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=%s", apiKey)
 
 	// Create request body
@@ -79,37 +80,37 @@ func LoginWithCustomToken(apiKey, customToken string) (bool, *LoginResponse, err
 	}
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to marshal request body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
 
 	// Send POST request to the Firebase Auth API
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to create request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to make request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to make request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return false, nil, fmt.Errorf("failed to log in with custom token, status code: %d", resp.StatusCode)
+		return services.StatusError, nil, fmt.Errorf("failed to log in with custom token, status code: %d", resp.StatusCode)
 	}
 
 	// Read and parse the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to read response body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var customTokenResp LoginResponse
 	err = json.Unmarshal(body, &customTokenResp)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If idToken is present, login with custom token is enabled
@@ -117,14 +118,14 @@ func LoginWithCustomToken(apiKey, customToken string) (bool, *LoginResponse, err
 		store := credentials.GetCredentialStore()
 		store.SetToken("custom", customTokenResp.IDToken)
 		fmt.Println("Custom token login successful!")
-		return true, &customTokenResp, nil
+		return services.StatusVulnerable, &customTokenResp, nil
 	}
 
-	return false, nil, nil
+	return services.StatusSafe, nil, nil
 }
 
 // CheckSendSignInLink checks if sending a sign-in link to email is enabled
-func SendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, error) {
+func SendSignInLink(apiKey, email string) (services.Status, *SendSignInLinkResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=%s", apiKey)
 
 	// Create request body
@@ -136,51 +137,51 @@ func SendSignInLink(apiKey, email string) (bool, *SendSignInLinkResponse, error)
 	}
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to marshal request body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
 
 	// Send POST request to the Firebase Auth API
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to create request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to create request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to make request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to make request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return false, nil, fmt.Errorf("failed to send sign-in link, status code: %d", resp.StatusCode)
+		return services.StatusError, nil, fmt.Errorf("failed to send sign-in link, status code: %d", resp.StatusCode)
 	}
 
 	// Read and parse the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to read response body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var signInLinkResp SendSignInLinkResponse
 	err = json.Unmarshal(body, &signInLinkResp)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If a kind and email are present, the sign-in link feature is enabled
 	if signInLinkResp.Kind != "" && signInLinkResp.Email != "" {
 		log.Printf("Sign-in link sent to email: %s\n", signInLinkResp.Email)
-		return true, &signInLinkResp, nil
+		return services.StatusVulnerable, &signInLinkResp, nil
 	}
 
-	return false, nil, nil
+	return services.StatusSafe, nil, nil
 }
 
-func SignUp(apiKey, email, password string) (bool, *LoginResponse, error) {
+func SignUp(apiKey, email, password string) (services.Status, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
-	fmt.Printf("Signing up with email: %s, password: %s\n", email, password)
+	// fmt.Printf("Signing up with email: %s, password: %s\n", email, password)
 	// Create request body
 	payload := EmailSignUpRequest{
 		Email:            email,
@@ -189,30 +190,30 @@ func SignUp(apiKey, email, password string) (bool, *LoginResponse, error) {
 	}
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to marshal request body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
 
 	// Send POST request to the Firebase Auth API
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(reqBody))
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to make request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to make request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return false, nil, fmt.Errorf("failed to sign up with email/password, status code: %d", resp.StatusCode)
+		return services.StatusError, nil, fmt.Errorf("failed to sign up with email/password, status code: %d", resp.StatusCode)
 	}
 
 	// Read and parse the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to read response body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var signUpResp LoginResponse
 	err = json.Unmarshal(body, &signUpResp)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If an idToken is present, email/password authentication is allowed
@@ -220,14 +221,14 @@ func SignUp(apiKey, email, password string) (bool, *LoginResponse, error) {
 		store := credentials.GetCredentialStore()
 		store.SetToken("signup", signUpResp.IDToken)
 		log.Printf("Email/Password sign-up enabled! Session Token: %s\n", signUpResp.IDToken)
-		return true, &signUpResp, nil
+		return services.StatusVulnerable, &signUpResp, nil
 	}
 
-	return false, nil, nil
+	return services.StatusSafe, nil, nil
 }
 
 // CheckAnonymousAuth checks whether the project allows anonymous authentication
-func AnonymousAuth(apiKey string) (bool, *LoginResponse, error) {
+func AnonymousAuth(apiKey string) (services.Status, *LoginResponse, error) {
 	url := fmt.Sprintf("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", apiKey)
 
 	// Create request body
@@ -236,30 +237,30 @@ func AnonymousAuth(apiKey string) (bool, *LoginResponse, error) {
 	}
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to marshal request body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to marshal request body: %w", err)
 	}
 
 	// Send POST request to the Firebase Auth API
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(reqBody))
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to make request: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to make request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return false, nil, fmt.Errorf("failed to sign up anonymously, status code: %d", resp.StatusCode)
+		return services.StatusError, nil, fmt.Errorf("failed to sign up anonymously, status code: %d", resp.StatusCode)
 	}
 
 	// Read and parse the response body
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to read response body: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var anonsignUpResp LoginResponse
 	err = json.Unmarshal(body, &anonsignUpResp)
 	if err != nil {
-		return false, nil, fmt.Errorf("failed to parse response JSON: %w", err)
+		return services.StatusError, nil, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
 
 	// If an idToken is present, anonymous authentication is allowed
@@ -267,8 +268,8 @@ func AnonymousAuth(apiKey string) (bool, *LoginResponse, error) {
 		store := credentials.GetCredentialStore()
 		store.SetToken("anon", anonsignUpResp.IDToken)
 		// log.Printf("Anonymous login enabled! Session Token: %s\n", signUpResp.IDToken)
-		return true, &anonsignUpResp, nil
+		return services.StatusVulnerable, &anonsignUpResp, nil
 	}
 
-	return false, nil, nil
+	return services.StatusSafe, nil, nil
 }

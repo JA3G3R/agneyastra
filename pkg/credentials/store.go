@@ -13,7 +13,7 @@ type CredentialStore struct {
 	UserCredentialsToken string
 }
 
-var CredTypes = []string{"user_credentials","user_defined","signup","anon", "custom"}
+var CredTypes = []string{"public", "user_credentials","user_defined","signup","anon", "custom-token"}
 
 var store *CredentialStore
 var once sync.Once

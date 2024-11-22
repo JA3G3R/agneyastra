@@ -1,7 +1,6 @@
 package bucket
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -64,7 +63,7 @@ func BucketDelete(buckets []string) []DeleteCheckResult {
 				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
 				resp, err = http.DefaultClient.Do(req)
 				if err != nil || (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
-					log.Printf("Failed with auth type: %s, err: %v", authType, err)
+					// log.Printf("Failed with auth type: %s, err: %v", authType, err)
 					continue
 
 				} else if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
@@ -102,6 +101,147 @@ func BucketDelete(buckets []string) []DeleteCheckResult {
 // CheckFirebaseUpload tries to upload a file to a list of Firebase Storage buckets
 
 // TODO: Fix this!!!
+// func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error){
+
+// 	var results []UploadCheckResult
+// 	// Loop through each bucket
+// 	for _, bucket := range buckets {
+// 		result := UploadCheckResult{Bucket: bucket}
+// 		var buf bytes.Buffer
+// 		writer := multipart.NewWriter(&buf)
+// 		file, err := os.Open(filePath) // Open your file
+// 		if err != nil {
+// 			result.Success = services.StatusError
+// 			result.Error = fmt.Errorf("Failed to read file: %v", err)
+// 			results = append(results, result)
+// 			continue
+// 		}
+// 		defer file.Close()
+// 		metadata := `{"name":"uploads/poc.txt","contentType":"text/plain"}`
+
+// 		part, err := writer.CreateFormField("metadata")
+// 		if err != nil {
+// 			log.Printf("Error creating metadata part: %v", err)
+			
+// 		}
+// 		_, err = part.Write([]byte(metadata))
+// 		if err != nil {
+// 			log.Printf("Error writing metadata part: %v", err)
+			
+// 		}
+
+// 		part, err = writer.CreateFormFile("file", "file.txt") // "file" is the form field name
+// 		if err != nil {
+// 			log.Println("Error creating form file:", err)
+// 			continue
+// 		}
+// 		_, err = io.Copy(part, file)
+// 		if err != nil {
+// 			log.Println("Error copying file:", err)
+// 			continue
+// 		}
+// 		writer.Close()
+// 		// //fetch the fileContent
+// 		// fileContent, err := ioutil.ReadFile(filePath)
+
+// 		// Construct the Firebase Storage API URL with the bucket name
+		
+// 		url := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s.appspot.com/o?name=poc.txt", bucket)
+	
+	
+// 		// log.Printf("Req Body: %s", string(body))
+// 		log.Printf("buf: %s", buf.String())
+// 		req, err := http.NewRequest("POST", url, &buf)
+// 		if err != nil {
+// 			result.Success = services.StatusError
+// 			result.Error = fmt.Errorf("Request creation failed: %v", err)
+// 			result.StatusCode = ""
+// 			results = append(results, result)
+// 			continue
+// 		}
+
+// 		// Set the required headers
+// 		// req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+// 		contentType := strings.Replace(writer.FormDataContentType(), "form-data", "related", 1)
+// 		req.Header.Set("Content-Type", contentType )
+// 		log.Printf("Content-Type: %s", contentType)
+
+// 		// req.Header.Set("Content-Type", "multipart/related; boundary=00047502390770604039595222756427073")
+// 		req.Header.Set("x-goog-upload-protocol", "multipart")
+
+// 		// Execute the request
+// 		client := &http.Client{}
+// 		resp, err := client.Do(req)
+// 		defer resp.Body.Close()
+// 		if err != nil {	
+// 			result.Success = services.StatusError
+// 			result.Error = fmt.Errorf("HTTP request failed: %v", err)
+// 			result.StatusCode = ""
+// 			results = append(results, result)
+// 			continue
+// 		}
+
+// 		// Check if the upload was successful
+// 		if resp.StatusCode == http.StatusOK {
+// 			result.Success = services.StatusVulnerable
+// 			result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
+// 			result.Error = fmt.Errorf("")
+// 		} else if resp.StatusCode == http.StatusForbidden || resp.StatusCode == http.StatusUnauthorized {
+// 			credentialStore := credentials.GetCredentialStore()
+// 			isVulnerable := false
+// 			var authType string
+// 			for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
+// 				authType = credentials.CredTypes[authTypeIdx]
+// 				cred := credentialStore.GetToken(authType)
+// 				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+// 				resp, err = http.DefaultClient.Do(req)
+// 				if err != nil || (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
+
+// 					continue
+
+// 				} else if resp.StatusCode == http.StatusOK {
+// 					result.Success = services.StatusVulnerable
+// 					result.Error = fmt.Errorf("")
+// 					result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
+// 					result.AuthType = authType
+// 					isVulnerable = true
+// 					err = nil
+// 					break
+// 				} else {
+// 					respBody, err := ioutil.ReadAll(resp.Body)
+// 					if err != nil {
+// 						log.Printf("Failed to read response body: %v", err)
+// 					}
+// 					log.Printf("Response body: %s", string(respBody))
+// 					result.Success = services.StatusUnknown
+// 					result.Error = fmt.Errorf("", err)
+// 					result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
+// 				}
+// 			}
+// 			if !isVulnerable {
+// 				result.Success = services.StatusSafe
+// 				result.Error = fmt.Errorf("")
+// 				result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
+// 				result.AuthType = "public"
+// 			} 
+// 		} else {
+// 			respBody, err := ioutil.ReadAll(resp.Body)
+// 			if err != nil {
+// 				log.Printf("Failed to read response body: %v", err)
+// 			}
+// 			log.Printf("Response body: %s", string(respBody))
+// 			result.Success = services.StatusUnknown
+// 			result.Error = fmt.Errorf("")
+// 			result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
+// 		}
+
+// 		// Append the result to the list
+// 		results = append(results, result)
+// 	}
+
+// 	return results, nil
+// }
+
 func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error){
 
 	var results []UploadCheckResult
@@ -109,8 +249,13 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 	for _, bucket := range buckets {
 		result := UploadCheckResult{Bucket: bucket}
 
-		//fetch the fileContent
-		fileContent, err := ioutil.ReadFile(filePath)
+		// file, err := os.Open(filePath) // Open your file
+		
+		// defer file.Close()
+		
+		// //fetch the fileContent
+		url := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s.appspot.com/o?name=poc.txt", bucket)
+		req, err := getBucketReq(filePath, url, "")
 		if err != nil {
 			result.Success = services.StatusError
 			result.Error = fmt.Errorf("Failed to read file: %v", err)
@@ -118,36 +263,10 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 			continue
 		}
 
-		// Construct the Firebase Storage API URL with the bucket name
-		
-		url := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s.appspot.com/o?name=poc.txt", bucket)
-	
-		
-		body := fmt.Sprintf(`--549469432485475937301754847166047
-Content-Type: application/json; charset=utf-8
-
-{"name":"uploads/poc.txt","contentType":"text/plain"}
---549469432485475937301754847166047
-Content-Type: text/plain
-
-%s
---549469432485475937301754847166047--`, fileContent)
-
-		req, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(body)))
-		if err != nil {
-			result.Success = services.StatusError
-			result.Error = fmt.Errorf("Request creation failed: %v", err)
-			result.StatusCode = ""
-			results = append(results, result)
-			continue
-		}
-
 		// Set the required headers
-		req.Header.Set("Content-Type", "multipart/related; boundary=00047502390770604039595222756427073")
-		req.Header.Set("x-goog-upload-protocol", "multipart")
-
-		// Execute the request
+		// req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		client := &http.Client{}
+		// Execute the request
 		resp, err := client.Do(req)
 		defer resp.Body.Close()
 		if err != nil {	
@@ -169,13 +288,14 @@ Content-Type: text/plain
 			var authType string
 			for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
 				authType = credentials.CredTypes[authTypeIdx]
-				cred := credentialStore.GetToken(authType)
-				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+				cred := credentialStore.GetToken(authType) 
+				req, err = getBucketReq(filePath, url, cred)
+				if err != nil {	
+					continue
+				}
 				resp, err = http.DefaultClient.Do(req)
 				if err != nil || (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
-
 					continue
-
 				} else if resp.StatusCode == http.StatusOK {
 					result.Success = services.StatusVulnerable
 					result.Error = fmt.Errorf("")
@@ -185,11 +305,11 @@ Content-Type: text/plain
 					err = nil
 					break
 				} else {
-					respBody, err := ioutil.ReadAll(resp.Body)
+					_, err := ioutil.ReadAll(resp.Body)
 					if err != nil {
 						log.Printf("Failed to read response body: %v", err)
 					}
-					log.Printf("Response body: %s", string(respBody))
+					// log.Printf("Response body: %s", string(respBody))
 					result.Success = services.StatusUnknown
 					result.Error = fmt.Errorf("", err)
 					result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
@@ -202,11 +322,11 @@ Content-Type: text/plain
 				result.AuthType = "public"
 			} 
 		} else {
-			respBody, err := ioutil.ReadAll(resp.Body)
+			_, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
 				log.Printf("Failed to read response body: %v", err)
 			}
-			log.Printf("Response body: %s", string(respBody))
+			// log.Printf("Response body: %s", string(respBody))
 			result.Success = services.StatusUnknown
 			result.Error = fmt.Errorf("")
 			result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
@@ -225,7 +345,7 @@ func BucketRead(buckets []string) ([]BucketData) {
 	var bucketResults []BucketData
 
 	for _, bucket := range buckets {
-		fmt.Printf("Attempting to read bucket %s\n", bucket)
+		// fmt.Printf("Attempting to read bucket %s\n", bucket)
 		bucketContents, vulnerable,authType, err := recursiveContentReadFromBucket(bucket, "","public", false)
 		if vulnerable && err != nil {
 			log.Printf("Error reading bucket %s: %v", bucket, err)
