@@ -9,7 +9,7 @@
 <a href="https://twitter.com/BhavarthKr"><img src="https://img.shields.io/twitter/follow/BhavarthKr.svg?logo=twitter"></a>
 </p>
 <p align="center">
-  <a href="#installation-guide-for-varunastra">Installation</a>
+  <a href="#installation-guide-for-agneyastra">Installation</a>
   <a href="#usage">Usage</a>
 </p>
 
