@@ -199,7 +199,7 @@ func calculateConfidenceScore(input PentesterInput, firebaseData FirebaseData) f
 		weightTotal += domainWeight
 	}
 
-	log.Printf("Score: %f, Weight: %f", score, weightTotal)
+	// log.Printf("Score: %f, Weight: %f", score, weightTotal)
 
     // Normalize score with a scaling factor to ensure it's always < 1.0
     const scalingFactor = 1.2 // Adjust this factor as needed to ensure score < 1.0
@@ -297,7 +297,7 @@ func AddCorelationScore() {
 	firebaseData := getRTDBData()
 	for apiKey, data := range firebaseData {
 		score := calculateConfidenceScore(input, data)
-		fmt.Println("Score: ", score)
+		// fmt.Println("Score: ", score)
 		report.GlobalReport.AddCorelationScore(apiKey, score*10)
 	}
 }
