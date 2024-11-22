@@ -30,7 +30,7 @@ func main() {
 		return
 	}
 	fmt.Printf("Final Report:\n%v", finalReport)
-	fmt.Println("Generating HTML Report")
+	// fmt.Println("Generating HTML Report")
 	err = report.GlobalReport.GenerateHTMLReport(config.ReportPath, config.TemplateFile)
 	if err != nil {
 		log.Println("Error generating HTML report: ", err)
