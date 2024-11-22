@@ -2,7 +2,6 @@ package report
 
 import (
 	"encoding/json"
-	"log"
 	"sync"
 
 	"github.com/JA3G3R/agneyastra/services"
