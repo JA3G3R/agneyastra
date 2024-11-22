@@ -6,7 +6,7 @@
 <a href="https://www.gnu.org/licenses/gpl-3.0.en.html/"><img src="https://img.shields.io/badge/license-GPL_3.0-_red.svg"></a>
 <a href="https://goreportcard.com/badge/github.com/JA3G3R/agneyastra"><img src="https://goreportcard.com/badge/github.com/JA3G3R/agneyastra"></a>
 <a href="https://go.dev/blog/go1.22.5"><img src="https://img.shields.io/github/go-mod/go-version/JA3G3R/agneyastra"></a>
-<a href="https://twitter.com/BhavarthKr"><img src="https://img.shields.io/twitter/follow/devangsolankii.svg?logo=twitter"></a>
+<a href="https://twitter.com/BhavarthKr"><img src="https://img.shields.io/twitter/follow/BhavarthKr.svg?logo=twitter"></a>
 </p>
 <p align="center">
   <a href="#installation-guide-for-varunastra">Installation</a>
