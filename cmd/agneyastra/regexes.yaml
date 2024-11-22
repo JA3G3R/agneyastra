@@ -1,0 +1,70 @@
+Amazon Access Key: (?:A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA|ABIA|ACCA)[A-Z0-9]{16}
+Amazon Secret Access Key Variable: (?i)(amazon|amz|aws)[-_]{0,1}(secret)[-_]{0,1}((access)[-_]{0,1}){0,1}key
+Amazon RDS Password: (?i)(rds\-master\-password|db\-password)
+Amazon S3 Private Key Variable: (?i)AWS_S3_PRIVATE_KEY|s3_key|S3_PRIVATE_KEY
+Amazon Security Token Header Variable: (?i)X-Amz-Security-Token
+Amazon API Gateway Key Source Header Variable: (?i)x-amazon-apigateway-api-key-source
+Amazon S3 Bucket: (?i)AWS_S3_BUCKET|s3_bucket
+Amazon SNS Confirmation URL: (?i)https:\/\/sns\.[a-z0-9-]+\.amazonaws\.com\/?Action=ConfirmSubscription&Token=[a-zA-Z0-9-=_]+
+Amazon SES SMTP Password Variable: (?i)ses_smtp_password
+Amazon AWS Private Key Variable: (?i)ec2\-private\-key|EC2_PRIVATE_KEY
+Amazon MWS Token: (amzn\.mws\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+Amazon AppSync GraphQL Key: \bda2-[a-z0-9]{26}
+Microsoft Azure API Key Variable: (?i)Ocp-Apim-Subscription-Key
+Microsoft Azure Functions Key Header Variable: (?i)x-functions-key
+Microsoft Azure Connection String: (?i)(.*.windows.net).+(password)
+Microsoft Azure Endpoint Key: (?i)(defaultendpointsprotocol).+(key).+
+Microsoft Client Secret: (?i)(?:client_secret|ClientSecret)[\s:\"]{0,3}[a-zA-Z0-9\-_]{36,}
+Microsoft Graph API Key: (?i)MSGRAPH_[a-zA-Z0-9\-_]{20,40}
+Microsoft Outlook Webhook URL: (?i)https:\/\/outlook\.office\.com\/webhook\/[A-Za-z0-9\-]{60,}
+Microsoft OneDrive Access Token Variable: (?i)onedrive_access_token
+Microsoft SQL Connection Password Variable: mssql.connection.password
+DigitalOcean API Key: (?i)do_[a-z0-9]{60}
+DigitalOcean Environment Variable: (?i)\b(DO|DIGITALOCEAN).+(API|OAUTH|ACCESS)*(TOKEN|KEY)\b
+DigitalOcean Custom App Token: (?i)shpca_[a-fA-F0-9]{32}
+DigitalOcean Shared Secret Token: (?i)shpss_[a-fA-F0-9]{32}
+DigitalOcean Access Token: (?i)shpat_[a-fA-F0-9]{32}
+DigitalOcean Private Access Token: (?i)shppa_[a-fA-F0-9]{32}
+Twilio SendGrid API Key: \b(?i)SG\.[\w\-_]{20,24}\.[\w\-_]{39,50}\b
+Twilio Account SID: \bAC[a-zA-Z0-9_\-]{32}\b
+Twilio App SID: \bAP[a-zA-Z0-9_\-]{32}\b
+Twilio API Key: \bSK[0-9a-fA-F]{32}\b
+Twilio Access Token: \b(?i)55[0-9a-fA-F]{32}\b
+Atlassian JIRA Token: (?i)(jira_token)
+Atlassian Bitbucket Data Center Access Token: BBDC-[a-zA-Z0-9+]{44}
+Atlassian Confluence API Key: (?i)confluence[a-zA-Z0-9_]{12,}
+Atlassian App Password: (?i)(bbp_[a-zA-Z0-9]{32})
+Cloud API Key: AIza[0-9A-Za-z_-]{35}
+Cloud OAuth Secret: (?i)(GOCSPX-[-0-9A-Za-z_]{24,32})
+OAuth Key: ya29\.[0-9A-Za-z_-]{64,256}
+Firebase URL: (?i)https:\/\/[a-z0-9-]+\.firebaseio\.com\/.*.json
+Firebase Cloud Messaging API Key: (?i)([0-9a-zA-Z_-]{11}:APA91b[0-9a-zA-Z_-]{134})
+Signed URL: (?i)https:\/\/storage\.googleapis\.com\/[A-Za-z0-9\/-]+?GoogleAccessId=[A-Za-z0-9-]+&Expires=\d+&Signature=[A-Za-z0-9%]+
+Cloud Service Account Private Key: (?i)"-----BEGIN PRIVATE KEY-----[A-Za-z0-9\/+=\n]+-----END PRIVATE KEY-----"
+Cloud Service Account Key ID: (?i)"private_key_id":\s*"[a-f0-9]{32}"
+Cloud Project Number: (?i)"project_number":\s*"\d{12}"
+API Key Header Variable: (?i)x-goog-api-key
+Client ID: "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
+GitHub Access Token: \b(?i)ghp_[A-Za-z0-9_]{35,38}
+GitHub OAuth Token: \b(?i)gho_[A-Za-z0-9_]{35,38}
+GitHub App Installation Token: \b(?i)ghu_[A-Za-z0-9_]{35,38}
+GitHub App user Token: \b(?i)ghs_[A-Za-z0-9_]{35,38}
+GitHub Device Code: \bGH_[a-zA-Z0-9_]{9,30}
+GitHub Refresh Token: (\b?i)ghr_[A-Za-z0-9_]{35,38}
+GitHub Webhook Secret: (?i)whsec_[A-Za-z0-9]{31,38}
+GitHub Authentication URL: (?i)(?:(http|https):)//[\S]{1,256}:[\S]{1,256}@github.com[\S]+
+GitLab Personal Access Token: (?i)glpat-[A-Za-z0-9\-_]{20}
+GitLab OAuth Access Token: (?i)glOauth-[A-Za-z0-9\-_]{20,50}
+GitLab GitLab CI Token Variable: (?i)gitlab(?:-|_|.)(?:ci(?:-|_|.))?(?:job(?:-|_|.))?token
+GitLab Repository Access Token: (?i)glrepo-[A-Za-z0-9\-_]{20,50}
+GitLab Secret File Token: (?i)(?:secret_token|CI_JOB_TOKEN)[^{}]{0,20}( ){0,1}[=:]( ){0,1}([A-Za-z0-9\-_]{20,50})
+GitLab Project Secret Token: (?i)glproj-[A-Za-z0-9\-_]{20,50}
+Slack User Token: (xox[ps]-[0-9]{8,13}-[0-9]{8,13}-[0-9]{8,13}-[a-zA-Z0-9-]{10,32})
+Slack Bot Token: (xox[b]-[0-9]{8,13}-[0-9]{8,13}-[a-zA-Z0-9-]{20,30})
+Slack Workspace Access Token: (xoxa-[0-9]{8,13}-[0-9]{8,13}-[a-zA-Z0-9-]{8,128})
+Slack Workspace Refresh Token: (xoxr-[0-9]{8,13}-[0-9]{8,13}-[a-zA-Z0-9-]{8,128})
+Slack Configuration Access Token: (xoxe.xoxp-[0-9]{0,2}-[a-zA-Z0-9-]{130,170})
+Slack Signing Secret: (?i)xox[a-z]-[0-9a-zA-Z-]{10,}
+Slack Configuration Refresh Token: (xoxe-[0-9]{0,2}-[a-zA-Z0-9-]{130,170})
+Slack App Token: (xapp-[0-9]{0,2}-[A-Z0-9]{8,13}-[0-9]{12,15}-[a-zA-Z0-9-]{60,70})
+Slack Webhook URL: https://hooks\.slack\.com/services/.{8,128}

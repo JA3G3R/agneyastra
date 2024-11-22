@@ -2,6 +2,7 @@ package report
 
 import (
 	"encoding/json"
+	"log"
 	"sync"
 
 	"github.com/JA3G3R/agneyastra/services"
@@ -35,7 +36,7 @@ var GlobalReport = &Report{
 func (r *Report) AddCorelationScore(apiKey string, score float64) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-
+	log.Printf("Adding correlation score: %f for API key: %s\n", score, apiKey)
 	var apiKeyReport *APIKeyReport
 	for i := range r.APIKeys {
 		if r.APIKeys[i].APIKey == apiKey {
@@ -135,4 +136,5 @@ func (r *Report) ReportToJSON() (string, error) {
 		return "", err
 	}
 	return string(jsonData), nil
+	
 }

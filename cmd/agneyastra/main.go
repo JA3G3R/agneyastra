@@ -15,11 +15,7 @@ func main() {
 	
 	// fmt.Println("executing flags")
 	flags.Execute()
-	finalReport, err := report.GlobalReport.ReportToJSON()
-	if err != nil {
-		log.Println("Error converting report to JSON: ", err)
-		return
-	}
+
 	if config.Correlate {
 		fmt.Println("Correlating data...")
 		correlation.AddCorelationScore()
@@ -27,6 +23,11 @@ func main() {
 	if config.SecretsExtract {
 		fmt.Println("Extracting secrets...")
 		secrets.ExtractSecrets()
+	}
+	finalReport, err := report.GlobalReport.ReportToJSON()
+	if err != nil {
+		log.Println("Error converting report to JSON: ", err)
+		return
 	}
 	fmt.Printf("Final Report:\n%v", finalReport)
 	fmt.Println("Generating HTML Report")

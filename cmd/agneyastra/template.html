@@ -58,7 +58,11 @@
     </div>
     <div class="content">
         {{range .APIKeys}}
-            <h2>API Key: {{.APIKey}} {{if .CorrelationScore}}(Correlation Score: {{.CorrelationScore}}){{end}}</h2>
+            <h2>API Key: {{.APIKey}} {{if .CorrelationScore}} 
+        <span style="color: {{if lt .CorrelationScore 3.0}}#F44336{{else if lt .CorrelationScore 7.0}}#FFC107{{else}}#4CAF50{{end}};">
+            (Correlation Score: {{.CorrelationScore}})
+        </span> 
+    {{end}}</h2>
             <div class="auth-report">
                 <h3>Authentication Report</h3>
                 {{range $authType, $authReport := .AuthReport}}

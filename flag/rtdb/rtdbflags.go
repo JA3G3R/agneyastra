@@ -116,7 +116,7 @@ func Init(){
 	rtdbwriteCmd.MarkFlagsMutuallyExclusive("json", "file")
 
 	rtdbreadCmd.Flags().Bool("dump", false, "specify the file to dump database contents to")
-	rtdbreadCmd.Flags().Bool("correlate", false, "correlate the data with other services")
+	// rtdbreadCmd.Flags().Bool("correlate", false, "correlate the data with other services")
 	rtdbreadCmd.Flags().StringVar(&readAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 	rtdbwriteCmd.Flags().StringVar(&uploadAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 	rtdbdeleteCmd.Flags().StringVar(&deleteAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")

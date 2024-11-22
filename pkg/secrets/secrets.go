@@ -10,6 +10,7 @@ import (
 
 	"github.com/JA3G3R/agneyastra/pkg/config"
 	"github.com/JA3G3R/agneyastra/pkg/report"
+	"gopkg.in/yaml.v3"
 )
 
 type SecretsRegexes map[string]string
@@ -30,7 +31,7 @@ func extractSecrets(secretsRegexes SecretsRegexes, data string) map[string][]str
 
 func ExtractSecrets() {
 	var secretsRegexes SecretsRegexes
-	fmt.Println("Secrets file: ", config.SecretsRegexFile)
+	// fmt.Println("Secrets file: ", config.SecretsRegexFile)
 	if config.SecretsRegexFile == "" {
 		// download and load a json file containing secret_type : secret_regex from the url : https://devanghacks.in/varunastra/regexes.json
 		// store the file in /tmp/regexes.json
@@ -47,11 +48,15 @@ func ExtractSecrets() {
 			log.Fatalf("Error decoding regexes.json: %v", err)
 			return
 		}
-		fmt.Println("Secrets regexes: ", secretsRegexes)
+		// fmt.Println("Secrets regexes: ", secretsRegexes)
 	} else {
 		// read the file and load the regexes
 		// use the file to extract secrets
+		//check if file ends with .yml or .yaml
 		data, err := ioutil.ReadFile(config.SecretsRegexFile)
+		if config.SecretsRegexFile[len(config.SecretsRegexFile)-4:] == ".yml" || config.SecretsRegexFile[len(config.SecretsRegexFile)-5:] == ".yaml" {
+			err = yaml.Unmarshal([]byte(data), &secretsRegexes)
+		}
 		if err != nil {
 			log.Fatalf("Error reading regex file: %v", err)
 			return
