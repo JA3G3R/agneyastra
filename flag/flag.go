@@ -59,7 +59,7 @@ and remediation recommendations for each service.`,
 			config.ProjectConfig[key] = *projectConfig
 			config.ProjectIds[key] = utils.ExtractDomainsForStorage(*projectConfig)
 			config.RTDBUrls[key] = rtdbService.CreateRTDBURLs(config.ProjectIds[key])
-			log.Printf("RTDB URLs: %v\n", config.RTDBUrls)
+			// log.Printf("RTDB URLs: %v\n", config.RTDBUrls)
 		}
 
 		// Enable debug mode if required

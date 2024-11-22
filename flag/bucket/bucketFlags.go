@@ -45,7 +45,7 @@ var bucketReadCmd = &cobra.Command{
 			runAuthSubcommands(readAuthFlag)
 		}
 		dumpDir, _ := cmd.Flags().GetString("dump")
-		log.Printf("Checking public read access. Dump directory: %s\n", dumpDir)
+		// log.Printf("Checking public read access. Dump directory: %s\n", dumpDir)
 		for _, apiKey := range config.ApiKeys {
 			run.RunBucketRead(dumpDir, apiKey)
 		}
@@ -75,7 +75,7 @@ var bucketDeleteCmd = &cobra.Command{
 		if deleteAuthFlag != "" {
 			runAuthSubcommands(deleteAuthFlag)
 		}
-		log.Println("Checking public delete access")
+		// log.Println("Checking public delete access")
 		for _, apiKey := range config.ApiKeys {
 			run.RunBucketDelete(apiKey)
 		}
