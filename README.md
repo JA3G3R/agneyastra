@@ -33,6 +33,7 @@ Key Features:
 
 ## Usage
 
+```
 ./agneyastra --key AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI --all
 2024/11/22 23:17:40 Checking all services for misconfigurations
 2024/11/22 23:17:42 Sign-in link sent to email: bhavarth1905kr@gmail.com
