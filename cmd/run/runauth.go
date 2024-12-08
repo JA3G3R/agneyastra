@@ -28,7 +28,7 @@ func AnonymousAuth(apiKey string, noReport bool) {
 				Error: err_,
 				Remedy: services.Remedies["auth"]["anon"]["this"],
 				VulnConfig : services.VulnConfigs["auth"]["anon-auth"]["this"],
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		} else {
 			// log.Println("Anonymous auth is not enabled.")
 			report.GlobalReport.AddServiceReport(apiKey, "auth", "anon-auth", report.ServiceResult{
@@ -36,7 +36,7 @@ func AnonymousAuth(apiKey string, noReport bool) {
 				Error: err_,
 				Remedy: "",
 				VulnConfig : "",
-			},	map[string]report.ServiceResult{},
+			},	map[string][]report.ServiceResult{},
 			)
 		}
 	}
@@ -65,14 +65,14 @@ func SignUp(email, password, apiKey string, noReport bool) {
 				Error: err_,
 				Remedy:services.Remedies["auth"]["signup"]["this"],
 				VulnConfig: services.VulnConfigs["auth"]["signup"]["this"],
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		} else {
 			report.GlobalReport.AddServiceReport(apiKey, "auth", "signup", report.ServiceResult{
 				Vulnerable: isVulnerable,
 				Error: err_,
 				Remedy:  "",
 				VulnConfig:   "",
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		}
 	}
 
@@ -96,7 +96,7 @@ func SendSignInLink(email, apiKey string, noReport bool) {
 				Remedy:  services.Remedies["auth"]["send-signin-link"]["this"],
 				VulnConfig:   services.VulnConfigs["auth"]["send-signin-link"]["this"],
 
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		} else {
 			log.Println("Send sign-in link is not enabled.")
 			report.GlobalReport.AddServiceReport(apiKey, "auth", "send-signin-link", report.ServiceResult{
@@ -105,7 +105,7 @@ func SendSignInLink(email, apiKey string, noReport bool) {
 				Remedy:  "",
 				VulnConfig:   "",
 
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		}
 	}
 }
@@ -132,14 +132,14 @@ func CustomTokenLogin(token, apiKey string, noReport bool) {
 				Remedy:  services.Remedies["auth"]["custom-token-login"]["this"],
 				VulnConfig:   services.VulnConfigs["auth"]["custom-token-login"]["this"],
 
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		} else {
 			report.GlobalReport.AddServiceReport(apiKey, "auth", "custom-token-login", report.ServiceResult{
 				Vulnerable: isVulnerable,
 				Error: err_,
 				Remedy:  "",
 				VulnConfig:   "",
-			}, map[string]report.ServiceResult{},)
+			}, map[string][]report.ServiceResult{},)
 		}
 	}
 

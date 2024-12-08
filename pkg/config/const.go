@@ -16,4 +16,5 @@ var Correlate bool
 var SecretsExtract bool
 var PentestDataFilePath string
 var SecretsRegexFile string
+var ProjectId string
 // to avoid cyclic dependency between packages

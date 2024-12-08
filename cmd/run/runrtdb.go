@@ -11,11 +11,14 @@ import (
 
 func RunRtdbRead(dump bool, apiKey string) {
 
+	log.Printf("RunRtdbRead called with dump: %v, apiKey: %v\n", dump, apiKey)
 	// Fetch the project config using the API key and the project IDs
 	
 	readData := rtdb.ReadFromRTDB(config.RTDBUrls[apiKey], dump, apiKey)
-	readreport := map[string]report.ServiceResult{}
+	// log.Printf("RTDB data: %v\n", readData)
+	readreport := map[string][]report.ServiceResult{}
 	for _, data := range readData {
+		log.Printf("vulnerable: %v, error: %v, authType: %v, statusCode: %v, rtdbUrl: %v\n", data.Success, data.Error, data.AuthType, data.StatusCode, data.RTDBUrl)
 		var remedy string
 		var vulnconf string
 		if data.Success == services.StatusVulnerable {
@@ -25,18 +28,18 @@ func RunRtdbRead(dump bool, apiKey string) {
 			}
 			remedy = services.Remedies["bucket"]["read"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["read"][auth_type]
+			readreport[data.ProjectId] = append(readreport[data.ProjectId], report.ServiceResult{
+				Vulnerable: data.Success,
+				Error: data.Error.Error(),
+				AuthType: data.AuthType,
+				Remedy: remedy,
+				VulnConfig: vulnconf,
+				Details: map[string]string{
+				"status_code": data.StatusCode,
+				"rtdb_url": data.RTDBUrl,
+				},
+			})
 		} 
-		readreport[data.ProjectId] = report.ServiceResult{
-			Vulnerable: data.Success,
-			Error: data.Error.Error(),
-			AuthType: data.AuthType,
-			Remedy: remedy,
-			VulnConfig: vulnconf,
-			Details: map[string]string{
-			"status_code": data.StatusCode,
-			"rtdb_url": data.RTDBUrl,
-			},
-		}
 		
 	}
 	// fmt.Printf("Writing to report: %v\n", readreport)
@@ -53,7 +56,7 @@ func RunRtdbWrite(data, filepath string, apiKey string) {
 		return
 	}
 
-	writeReport := map[string]report.ServiceResult{}
+	writeReport := map[string][]report.ServiceResult{}
 	for _, result := range uploadResults {
 		err := ""
 		if result.Error != nil {
@@ -68,18 +71,18 @@ func RunRtdbWrite(data, filepath string, apiKey string) {
 			}
 			remedy = services.Remedies["bucket"]["write"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["write"][auth_type]
+			writeReport[result.ProjectId] = append(writeReport[result.ProjectId], report.ServiceResult{
+				Details: map[string]string{
+					"rtdb_url": result.RTDBUrl,
+					"status_code": result.StatusCode,
+				},
+				Vulnerable: result.Success,
+				Error: err,
+				AuthType: result.AuthType,
+				Remedy: remedy,
+				VulnConfig: vulnconf,
+			})
 		} 
-		writeReport[result.ProjectId] = report.ServiceResult{
-			Details: map[string]string{
-				"rtdb_url": result.RTDBUrl,
-				"status_code": result.StatusCode,
-			},
-			Vulnerable: result.Success,
-			Error: err,
-			AuthType: result.AuthType,
-			Remedy: remedy,
-			VulnConfig: vulnconf,
-		}
 	}
 	// fmt.Printf("Writing to report: %v\n", writeReport)
 	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "write", report.ServiceResult{},writeReport)
@@ -91,7 +94,7 @@ func RunRtdbDelete(apiKey string) {
 	deleteResults := rtdb.DeleteFromRTDB(config.RTDBUrls[apiKey])
 	// fmt.Printf("Delete results: %v\n", deleteResults)
 
-	deleteReport := map[string]report.ServiceResult{}
+	deleteReport := map[string][]report.ServiceResult{}
 	for _, result := range deleteResults {
 		err := ""
 		if result.Error != nil {
@@ -106,18 +109,18 @@ func RunRtdbDelete(apiKey string) {
 			}
 			remedy = services.Remedies["bucket"]["delete"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["delete"][auth_type]
+			deleteReport[result.ProjectId] = append(deleteReport[result.ProjectId], report.ServiceResult{
+				Details: map[string]string{
+					"rtdb_url": result.RTDBUrl,
+					"status_code": result.StatusCode,
+				},
+				Vulnerable: result.Success,
+				Error: err,
+				AuthType: result.AuthType,
+				Remedy: remedy,
+				VulnConfig: vulnconf,
+			})
 		} 
-		deleteReport[result.ProjectId] = report.ServiceResult{
-			Details: map[string]string{
-				"rtdb_url": result.RTDBUrl,
-				"status_code": result.StatusCode,
-			},
-			Vulnerable: result.Success,
-			Error: err,
-			AuthType: result.AuthType,
-			Remedy: remedy,
-			VulnConfig: vulnconf,
-		}
 	}
 	// fmt.Printf("Writing to report: %v\n", deleteReport)
 

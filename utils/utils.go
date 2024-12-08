@@ -14,11 +14,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func ReadApiKeysFromFile(filePath string) ([]string, error) {
-	var keys []string
+func ReadApiKeysFromFile(filePath string) ([]string, map[string][]string, error) {
+	var apiKeys []string
+	projectMap := make(map[string][]string)
+
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	defer file.Close()
 
@@ -26,10 +28,39 @@ func ReadApiKeysFromFile(filePath string) ([]string, error) {
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if line != "" {
-			keys = append(keys, line)
+			// Split the line by commas
+			parts := strings.Split(line, ",")
+			var res []string 
+			for _, str := range parts { 
+				if str != "" { 
+					res = append(res, str) 
+				} 
+			}
+			parts = res
+			apiKey := strings.TrimSpace(parts[0]) // The first part is the API key
+
+			// Append the API key to the list of keys
+			apiKeys = append(apiKeys, apiKey)
+
+			// If there are project IDs (i.e., more than one part)
+			if len(parts) > 1 {
+				projectIds := []string{}
+				for i := 1; i < len(parts); i++ {
+					projectId := strings.TrimSpace(parts[i])
+					if projectId != "" {
+						projectIds = append(projectIds, projectId)
+					}
+				}
+				// Map the API key to the list of project IDs
+				projectMap[apiKey] = projectIds
+			} else {
+				// If no project IDs are present, map the API key to an empty slice
+				projectMap[apiKey] = []string{}
+			}
 		}
 	}
-	return keys, scanner.Err()
+
+	return apiKeys, projectMap, scanner.Err()
 }
 
 func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
@@ -61,7 +92,7 @@ func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
 }
 
 
-func ExtractDomainsForStorage(config ProjectConfig) []string {
+func ExtractDomainsFromProjectConfig(config ProjectConfig) []string {
 	domainSet := make(map[string]struct{}) // Use a map to track unique domains
 	var domains []string
 

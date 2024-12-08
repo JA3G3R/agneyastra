@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/JA3G3R/agneyastra/flag/auth"
 	"github.com/JA3G3R/agneyastra/flag/bucket"
@@ -19,6 +20,7 @@ import (
 var apiKey string
 var allServices bool
 var ConfigPath string
+var projectId string
 
 // RootCmd is the base command for the CLI
 var RootCmd = &cobra.Command{
@@ -30,22 +32,33 @@ and remediation recommendations for each service.`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the API key is provided
 		if apiKey == "" && config.ApiKeyFile == "" {
-			return fmt.Errorf("Error: API key is required. Use the -key flag to provide your API key or the -kf to provide a file containing list of apiKeys.")
+			return fmt.Errorf("Error: API key is required. Use the --key flag to provide your API key or the --kf to provide a file containing list of apiKeys.")
 		}
 
-		if apiKey != "" && config.ApiKeyFile != "" {
-			return fmt.Errorf("Error: Both API key and API key file cannot be provided. Use either -key or -kf flag.")
-		}
+		var projectIdsFromFile = make(map[string][]string)
+
 		if apiKey != "" {
 			config.ApiKeys = append(config.ApiKeys, apiKey)
+			if projectId != "" {
+				idsfromcli := strings.Split(projectId, ",")
+				var res []string 
+				for _, str := range idsfromcli { 
+					if str != "" { 
+						res = append(res, str) 
+					} 
+				} 
+				projectIdsFromFile[apiKey] = res
+			}
 		} else {
 			// Read API keys from file
-			keys, err := utils.ReadApiKeysFromFile(config.ApiKeyFile)
+			keys, pIdsFromFile, err := utils.ReadApiKeysFromFile(config.ApiKeyFile)
+			projectIdsFromFile = pIdsFromFile
 			if err != nil {
 				return fmt.Errorf("Error reading API keys from file: %v", err)
 			}
 			config.ApiKeys = append(config.ApiKeys, keys...)
 		}
+
 
 		// Fetch project config
 
@@ -57,7 +70,11 @@ and remediation recommendations for each service.`,
 				continue
 			}
 			config.ProjectConfig[key] = *projectConfig
-			config.ProjectIds[key] = utils.ExtractDomainsForStorage(*projectConfig)
+			if len(projectIdsFromFile[key]) == 0 {			
+				config.ProjectIds[key] = utils.ExtractDomainsFromProjectConfig(*projectConfig)
+			} else {
+				config.ProjectIds[key] = projectIdsFromFile[key]
+			}
 			config.RTDBUrls[key] = rtdbService.CreateRTDBURLs(config.ProjectIds[key])
 			// log.Printf("RTDB URLs: %v\n", config.RTDBUrls)
 		}
@@ -131,6 +148,7 @@ func init() {
 
 	ApplyExitOnHelp(RootCmd, 0)
 	RootCmd.PersistentFlags().StringVar(&apiKey, "key", "", "Firebase API key (required)")
+	RootCmd.PersistentFlags().StringVar(&projectId, "project-id", "", "Firebase project ID")
 	RootCmd.PersistentFlags().StringVar(&config.ReportPath, "report-path", "./report.html", "Path to store the HTML report (default: ./report.html)")
 	RootCmd.PersistentFlags().StringVar(&config.TemplateFile, "template-file", "./template.html", "Template file to use for report (default: ./template.html)")
 	RootCmd.PersistentFlags().StringVar(&config.PentestDataFilePath, "pentest-data", "", "Path to the pentest data file")

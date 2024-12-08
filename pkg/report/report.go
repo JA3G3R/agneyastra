@@ -2,6 +2,7 @@ package report
 
 import (
 	"encoding/json"
+	"log"
 	"sync"
 
 	"github.com/JA3G3R/agneyastra/services"
@@ -83,7 +84,7 @@ func (r *Report) AddSecrets(apiKey string, serviceType string, secrets map[strin
 
 
 // AddServiceReport adds or updates a service-specific report for a given API key.
-func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,authResult ServiceResult,data map[string]ServiceResult) {
+func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,authResult ServiceResult,data map[string][]ServiceResult) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -118,8 +119,33 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 		if apiKeyReport.Services[serviceName][subServiceName] == nil {
 			apiKeyReport.Services[serviceName][subServiceName] = make(map[string]ServiceResult)
 		}
-		for bucket, result := range data {
-			apiKeyReport.Services[serviceName][subServiceName][bucket] = result
+		// for bucket, result := range data {
+		// 	apiKeyReport.Services[serviceName][subServiceName][bucket] = result
+		// }
+		
+		if serviceName == "rtdb" && subServiceName == "read"{
+			log.Printf("Adding service report for: %s, %s, %s\n", serviceName, subServiceName)
+			log.Printf("data: %v\n", data)
+		}
+		for bucket, results := range data {
+			// result contains a list of ServiceResult objects.
+			for _, result := range results {
+				
+	// Check if the bucket key already exists.
+				if existingResult, exists := apiKeyReport.Services[serviceName][subServiceName][bucket]; exists {
+				// Check if both existing and current results are vulnerable.
+					if existingResult.Vulnerable == services.StatusVulnerable && result.Vulnerable == services.StatusVulnerable {
+						// Append the current AuthType to the existing AuthType with a comma delimiter.
+						existingResult.AuthType = existingResult.AuthType + "," + result.AuthType
+						// Update the map with the modified result.
+						apiKeyReport.Services[serviceName][subServiceName][bucket] = existingResult
+						continue
+					}
+				} else {
+					apiKeyReport.Services[serviceName][subServiceName][bucket] = result
+				}
+			}
+		// If the bucket doesn't exist or isn't vulnerable, add the result directly.
 		}
 	}
 }

@@ -63,7 +63,7 @@ func main() {
 	// 	log.Fatalf("Error fetching project config: %v", err)
 	// }
 
-	// domains := utils.ExtractDomainsForStorage(*projectConfig)
+	// domains := utils.ExtractDomainsFromProjectConfig(*projectConfig)
 
 	// // Firebase auth checks:
 	// bearer_token :=  ""

@@ -19,9 +19,11 @@ import (
 
 func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Result {
 	var results []Result
+	log.Printf("RTDB URLs: %v\n", rtdbURLs)
 	for domain,urls := range rtdbURLs {
 		credStore := credentials.GetCredentialStore()
 		var authType string
+
 		for _, url := range urls {
 			for _, credType := range credentials.CredTypes {
 				auth := credStore.GetToken(credType)
@@ -39,9 +41,12 @@ func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Resu
 					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error creating request: %v", err), Body: nil})
 					continue
 				}
+
 				req.Header.Set("Authorization", "Bearer "+auth)
 				client := &http.Client{}
+				log.Printf("Trying bucket read from url: %s, for projectid: %s, auth type: %s\n", url, domain, authType)
 				resp, err := client.Do(req)
+				log.Printf("Got response from url: %s, for projectid: %s, status_code: %d\n", url, domain, resp.StatusCode)
 				if err != nil {
 					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error marshaling data: %v", err), Body: nil})
 					continue
