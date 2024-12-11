@@ -102,7 +102,7 @@ func RunRtdbDelete(apiKey string) {
 		}
 		var remedy string
 		var vulnconf string
-		if result.Success == services.StatusVulnerable {
+		// if result.Success == services.StatusVulnerable {
 			auth_type := result.AuthType
 			if result.AuthType == "" {
 				auth_type = "public"
@@ -120,7 +120,7 @@ func RunRtdbDelete(apiKey string) {
 				Remedy: remedy,
 				VulnConfig: vulnconf,
 			})
-		} 
+		// } 
 	}
 	// fmt.Printf("Writing to report: %v\n", deleteReport)
 

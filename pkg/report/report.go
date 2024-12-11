@@ -3,6 +3,7 @@ package report
 import (
 	"encoding/json"
 	"log"
+	"strings"
 	"sync"
 
 	"github.com/JA3G3R/agneyastra/services"
@@ -135,11 +136,31 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 				if existingResult, exists := apiKeyReport.Services[serviceName][subServiceName][bucket]; exists {
 				// Check if both existing and current results are vulnerable.
 					if existingResult.Vulnerable == services.StatusVulnerable && result.Vulnerable == services.StatusVulnerable {
-						// Append the current AuthType to the existing AuthType with a comma delimiter.
-						existingResult.AuthType = existingResult.AuthType + "," + result.AuthType
-						// Update the map with the modified result.
-						apiKeyReport.Services[serviceName][subServiceName][bucket] = existingResult
-						continue
+						if !strings.Contains(existingResult.AuthType, "public") {
+
+							existingAuthTypes := strings.Split(existingResult.AuthType, ",")
+							isPresent := false
+							for _, authType := range existingAuthTypes {
+								if authType == result.AuthType {
+									isPresent = true
+									break
+								}
+							}
+	
+							// Add result.AuthType only if it's not already in the list
+							if !isPresent {
+								if existingResult.AuthType == "" {
+									existingResult.AuthType = result.AuthType
+								} else {
+									existingResult.AuthType += "," + result.AuthType
+								}
+							}
+							// Append the current AuthType to the existing AuthType with a comma delimiter.
+							// existingResult.AuthType = existingResult.AuthType + "," + result.AuthType
+							// Update the map with the modified result.
+							apiKeyReport.Services[serviceName][subServiceName][bucket] = existingResult
+						}
+						
 					}
 				} else {
 					apiKeyReport.Services[serviceName][subServiceName][bucket] = result

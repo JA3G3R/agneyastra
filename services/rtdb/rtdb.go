@@ -33,7 +33,9 @@ func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Resu
 				// if credType != "public" {
 				// 	//log.Printf("Found token for authtype: %s\n", credType)
 				// }
+				
 				authType = credType
+				log.Printf("Trying read with authType: %s, found token: %s, url: %s\n",authType, auth, url)
 
 				url := fmt.Sprintf("%s/.json", url)
 				req, err := http.NewRequest("GET", url, nil)
@@ -51,21 +53,22 @@ func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Resu
 					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error marshaling data: %v", err), Body: nil})
 					continue
 				}
+				log.Printf("Got status code: %d\n", resp.StatusCode)
 
-				if resp.StatusCode == 200 {
+				if resp.StatusCode == 200{
 					body, err := ioutil.ReadAll(resp.Body)
 					if err != nil {
 						results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error reading response body: %v", err), Body: nil})
 						continue
 					}
-					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), Body: body, AuthType: authType})
+					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), Body: body, AuthType: authType,StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
 					if dump || config.Correlate || config.SecretsExtract {
 						// Ensure the directories exist
 						baseDir := "dump/rtdb"
 						if err := os.MkdirAll(baseDir, 0755); err != nil {
 							log.Printf("Error creating directories: %v", err)
 							continue
-						}
+						} 
 
 						// Generate the filepath for the dump file
 						filepath := filepath.Join(baseDir, apiKey)// + "-" + domain + ".json")
@@ -80,7 +83,7 @@ func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Resu
 					}
 				
 				} else if resp.StatusCode == 401 {
-					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf(""), Body: nil})
+					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf(""), Body: nil,StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
 				}
 				
 				// fmt.Println("Unexpected status code:", resp.StatusCode)
@@ -101,7 +104,7 @@ func WriteToRTDB(rtdbURLs map[string][]string, data,filePath string) ([]Result, 
 
 	if data == "" && filePath != "" {
 
-		data = "{\"poc\": \"You are vulnerable to public write!}\"}"
+		data = "{\"poc\": \"You are vulnerable to probably unauthorized write!}\"}"
 
 	} else if data == "" && filePath != "" {
 		jsonData, err := os.ReadFile(filePath)
@@ -127,10 +130,12 @@ func WriteToRTDB(rtdbURLs map[string][]string, data,filePath string) ([]Result, 
 				if auth == "" && credType != "public" {
 					continue
 				}
+				
 				// if credType != "public" {
-				// 	//log.Printf("Found token for authtype: %s\n", credType)
-				// }
+					// 	//log.Printf("Found token for authtype: %s\n", credType)
+					// }
 				authType = credType
+				log.Printf("Trying write with authType: %s, found token: %s, url: %s\n",authType, auth, url)
 
 				url := fmt.Sprintf("%s/%s.json", url, path)
 
@@ -148,12 +153,13 @@ func WriteToRTDB(rtdbURLs map[string][]string, data,filePath string) ([]Result, 
 					continue
 				}
 				defer resp.Body.Close()
+				log.Printf("Got status code: %d\n", resp.StatusCode)
 
 				if resp.StatusCode == 200 {
-					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), AuthType: authType})
+					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable, Error: fmt.Errorf(""), AuthType: authType,StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
 				
 				} else if resp.StatusCode == 401 {
-					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf("")})
+					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusSafe,Error: fmt.Errorf(""),StatusCode: fmt.Sprintf("%d", resp.StatusCode)})
 				}
 				
 			}
@@ -178,9 +184,10 @@ func DeleteFromRTDB(rtdbURLs map[string][]string) []Result {
 					continue
 				}
 				// if credType != "public" {
-				// 	//log.Printf("Found token for authtype: %s\n", credType)
-				// }
+					// 	//log.Printf("Found token for authtype: %s\n", credType)
+					// }
 				authType = credType
+				log.Printf("Trying delete with authType: %s, found token: %s, url: %s\n",authType, auth, url)
 
 				url := fmt.Sprintf("%s/%s.json", url, path)
 
@@ -200,6 +207,8 @@ func DeleteFromRTDB(rtdbURLs map[string][]string) []Result {
 					continue
 				}
 				defer resp.Body.Close()
+				log.Printf("Got status code: %d\n", resp.StatusCode)
+
 
 				if resp.StatusCode == 200 || resp.StatusCode == 404 {
 					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusVulnerable,AuthType: authType, Error: fmt.Errorf(""), StatusCode: fmt.Sprintf("%d", resp.StatusCode)})

@@ -2,6 +2,7 @@ package flags
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -32,7 +33,7 @@ and remediation recommendations for each service.`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the API key is provided
 		if apiKey == "" && config.ApiKeyFile == "" {
-			return fmt.Errorf("Error: API key is required. Use the --key flag to provide your API key or the --kf to provide a file containing list of apiKeys.")
+			return fmt.Errorf("Error: API key is required. Use the --key flag to provide your API key or the --key-file to provide a file containing list of apiKeys.")
 		}
 
 		var projectIdsFromFile = make(map[string][]string)
@@ -57,6 +58,10 @@ and remediation recommendations for each service.`,
 				return fmt.Errorf("Error reading API keys from file: %v", err)
 			}
 			config.ApiKeys = append(config.ApiKeys, keys...)
+		}
+
+		if !config.Debug {
+			log.SetOutput(ioutil.Discard)
 		}
 
 

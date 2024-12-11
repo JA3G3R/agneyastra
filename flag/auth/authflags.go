@@ -52,6 +52,14 @@ var SignUpCmd = &cobra.Command{
 		noReport := slices.Contains(args, "no-report")
 		email := viper.GetString("services.auth.signup.email")
 		password:= viper.GetString("services.auth.signup.password")
+		if email == "" {
+			email = generateRandomEmail()
+		}
+
+		if password == "" {
+			password = generateRandomPassword()
+		}
+		
 		for _, apiKey := range config.ApiKeys {
 			run.SignUp(email, password, apiKey, noReport)
 		}

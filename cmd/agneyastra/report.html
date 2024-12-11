@@ -54,11 +54,218 @@
 <body>
     <div class="navbar">
         <h1>Agneyastra Report</h1>
-        <span>December 6, 2024</span>
+        <span>December 11, 2024</span>
     </div>
     <div class="content">
         
-            <h2>API Key: AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI </h2>
+            <h2>API Key: AIzaSyCWdjms6NgW_i2U7a1WpwDqV0S0pNJd_9I </h2>
+            <div class="auth-report">
+                <h3>Authentication Report</h3>
+                
+                    <h3>Auth Type: anon-auth</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to sign up anonymously, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+                    <h3>Auth Type: custom-token-login</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to log in with custom token, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+                    <h3>Auth Type: send-signin-link</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to send sign-in link, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+                    <h3>Auth Type: signup</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to sign up with email/password, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+            </div>
+            
+                <h3>Bucket Configuration</h3>
+                
+                    <h4>Delete</h4>
+                    
+                        <h4>Project ID / Bucket Name: ferrari-prod</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;status_code&#34;: &#34;&#34;
+}</p>
+                        </div>
+                    
+                
+                    <h4>Read</h4>
+                    
+                
+                    <h4>Write</h4>
+                    
+                
+            
+                <h3>Firestore Configuration</h3>
+                
+                    <h4>Delete</h4>
+                    
+                
+                    <h4>Read</h4>
+                    
+                
+                    <h4>Write</h4>
+                    
+                
+            
+                <h3>Rtdb Configuration</h3>
+                
+                    <h4>Delete</h4>
+                    
+                        <h4>Project ID / Bucket Name: ferrari-prod</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;rtdb_url&#34;: &#34;https://ferrari-prod.firebaseio.com/agneyastrapoclDlV0B.json&#34;,
+  &#34;status_code&#34;: &#34;404&#34;
+}</p>
+                        </div>
+                    
+                
+                    <h4>Read</h4>
+                    
+                
+                    <h4>Write</h4>
+                    
+                
+            
+        <div class="secrets-section">
+        <h3>Secrets</h3>
+        
+            <p>No secrets found for this API key.</p>
+        
+    </div>
+
+        
+            <h2>API Key: AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI  
+        <span style="color: #4CAF50;">
+            (Correlation Score: 9.848484848484846)
+        </span> 
+    </h2>
             <div class="auth-report">
                 <h3>Authentication Report</h3>
                 
@@ -76,7 +283,7 @@
                             <tr>
                                 <td>vulnerable:true</td>
                                 <td></td>
-                                <td>Disable Anonymous Authentication</td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -85,9 +292,9 @@
                         <h4>Details:</h4>
                         <pre>{
   &#34;expiresIn&#34;: &#34;3600&#34;,
-  &#34;idToken&#34;: &#34;eyJhbGciOiJSUzI1NiIsImtpZCI6IjNmZDA3MmRmYTM4MDU2NzlmMTZmZTQxNzM4YzJhM2FkM2Y5MGIyMTQiLCJ0eXAiOiJKV1QifQ.eyJwcm92aWRlcl9pZCI6ImFub255bW91cyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9hZ25leWFzdHJhLXRlc3RpbmcyIiwiYXVkIjoiYWduZXlhc3RyYS10ZXN0aW5nMiIsImF1dGhfdGltZSI6MTczMzUwMDYyNiwidXNlcl9pZCI6ImtYYnZCQzg2VmhmSEs4OUV0Z0hrSnRaMFZNNjIiLCJzdWIiOiJrWGJ2QkM4NlZoZkhLODlFdGdIa0p0WjBWTTYyIiwiaWF0IjoxNzMzNTAwNjI2LCJleHAiOjE3MzM1MDQyMjYsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiYW5vbnltb3VzIn19.wFDJexnjuuZc8fnvi-BuYuP1P6UPUWrxaahUSQUdtBRILjxgpT_GxtRGSKzFclfO_Ze793gAfobgYq6TvLiB4S0IA6K91tzvEs13C_bPh9XZigyfDCGm-PDEEWTw__3HF5HQ4MwJqw29mSWcVFRCmORgxk430iu2xCxQgDztRuEhC9myCj3l0PT7-CZk2anaGHza-7-Yymfxhu19pq8x6wunhuVqGDJMrS8U3cZyWfX7_8lqV2Ofyc45P7P5NHhVUOjwkdH2q1T8oAPnfKeGH_J022VSp_nconb9ai1dCr0mw2nMlst4laybFhAuoHI5BosEhwrDWnj6cAS_Ah_ckg&#34;,
-  &#34;localId&#34;: &#34;kXbvBC86VhfHK89EtgHkJtZ0VM62&#34;,
-  &#34;refreshToken&#34;: &#34;AMf-vBxAd4t8-AmIQ9_mvEwXfZfYUarLy-FDM2AS6lP7-VCVI6b2G8RVDOguN_IsYi-GM55jSMDw3CAr7xnuKbXHzRN2vsRH3Bw8OPGxnLNtUEU33mKG2DDKjATcOwocD3mPmF-7rf39YGS6QLlreXOQGqdqfORMvsPEwxeUNig-XuNuh-nrR9CfZFh1lwI_08bNOS1jRQRy&#34;
+  &#34;idToken&#34;: &#34;eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJwcm92aWRlcl9pZCI6ImFub255bW91cyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9hZ25leWFzdHJhLXRlc3RpbmcyIiwiYXVkIjoiYWduZXlhc3RyYS10ZXN0aW5nMiIsImF1dGhfdGltZSI6MTczMzg5ODU1OSwidXNlcl9pZCI6ImV5cGtpSWpxWlBWZnRLUlptTFV3cVQ1VEIwTzIiLCJzdWIiOiJleXBraUlqcVpQVmZ0S1JabUxVd3FUNVRCME8yIiwiaWF0IjoxNzMzODk4NTU5LCJleHAiOjE3MzM5MDIxNTksImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiYW5vbnltb3VzIn19.jSK75__ViBQ9phTJ7B_MyphARjE81zVwvPy7hED6Hm_mR3-vTtqlMG53wEvbRktlLOQCmjSnJiwS64xbfs85layxa4rpYShdWcXMN058pvDnKwspoDO2EPc9d2rSA1vHPYKaNR-eFEAVzdw7VJaiCGCCDOiq0fy8HLPcyo-fzgW4hw3dISjNlwXUA5VVCyqKfblOjmx8iJLMfZPaZeOTeIKGt6bSS14bNI2ay4vVKHYZ1kdSfCVOFZkKvHRKGCvBDSRPn50wpeaDZj7bSSGIXrJ1eSNQyGH7cOKKyBSVKr3CAgriv_BBopZ_X7vJWwp-ga8FbVgCwnw-hoIn9dwRbQ&#34;,
+  &#34;localId&#34;: &#34;eypkiIjqZPVftKRZmLUwqT5TB0O2&#34;,
+  &#34;refreshToken&#34;: &#34;AMf-vBx8FwupklsEbVm3OwM32kfuhK-w4kd1w3JxySeWRJh0ucdf-C1rBj-67B-agF5_36gzvpGVJkjpF17PqkEuhjZ9mDC9E4Ltyc2UECHQz577IXSvbKel666igZCMBLcOKpQjCJfrz0PK38X5tqIpUvOz_oiCcopQpf0Z9u-FEsghdvO9XmBrASV5YuoNn9H7bO12uadg&#34;
 }</pre>
                     </div>
                 
@@ -127,18 +334,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>vulnerable:true</td>
-                                <td>Send Sign in Link enabled in Firebase project.</td>
-                                <td>Disable Send Sign in Link from Firebase Console</td>
+                                <td>error</td>
                                 <td></td>
+                                <td></td>
+                                <td>failed to send sign-in link, status code: 400</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="details">
                         <h4>Details:</h4>
-                        <pre>{
-  &#34;email&#34;: &#34;bhavarth1905kr@gmail.com&#34;
-}</pre>
+                        <pre>null</pre>
                     </div>
                 
                     <h3>Auth Type: signup</h3>
@@ -153,16 +358,23 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>error</td>
+                                <td>vulnerable:true</td>
                                 <td></td>
                                 <td></td>
-                                <td>failed to sign up with email/password, status code: 400</td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="details">
                         <h4>Details:</h4>
-                        <pre>null</pre>
+                        <pre>{
+  &#34;email&#34;: &#34;zfryvuytml@example.com&#34;,
+  &#34;expiresIn&#34;: &#34;3600&#34;,
+  &#34;idToken&#34;: &#34;eyJhbGciOiJSUzI1NiIsImtpZCI6ImJkMGFlMTRkMjhkMTY1NzhiMzFjOGJlNmM4ZmRlZDM0ZDVlMWExYzEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWduZXlhc3RyYS10ZXN0aW5nMiIsImF1ZCI6ImFnbmV5YXN0cmEtdGVzdGluZzIiLCJhdXRoX3RpbWUiOjE3MzM4OTg1NjEsInVzZXJfaWQiOiJUaXZhZWhGcEVuUDE5Tld2cm1JeWxLd1AwZEEzIiwic3ViIjoiVGl2YWVoRnBFblAxOU5XdnJtSXlsS3dQMGRBMyIsImlhdCI6MTczMzg5ODU2MSwiZXhwIjoxNzMzOTAyMTYxLCJlbWFpbCI6Inpmcnl2dXl0bWxAZXhhbXBsZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiemZyeXZ1eXRtbEBleGFtcGxlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.BrA90frNLCucVt4QpTh5-iYPGNlAUMYJBaUfbQjrGAnPaQKwOsKxESd9jsA5DgN528G7PvDzTdJUzQ16Uuo4tR6LpBjCN38eW9yEsLdSzGmosXrQShnlD23VS3_EaSLj4OSRiaoYP7ni2O1WB9HP9NEYD9Mb5Q9P3izsGSEusk38wwY3Wdp6ekGHK4H1yVhXiiJCJPWxsuvHq4L4GYzbtQIwHVD_pM3vfDT9f1dt-P0OXU3HbljTM8LLaWOYXMAG4BsJuCc3j2zDKYA_ohBuQTStjj2cKugXf_iKLNp4w_-78zykcA8RsufpSD2yNrlFp6sxS3vmp_kfCHjpLHF7Pg&#34;,
+  &#34;localId&#34;: &#34;TivaehFpEnP19NWvrmIylKwP0dA3&#34;,
+  &#34;password&#34;: &#34;#M=rnBJq&#43;O#@&#34;,
+  &#34;refreshToken&#34;: &#34;AMf-vBwx8ZUkoi7FkLqoQUjY4GdFMtcHqRhLMGkD2uQYqRhzqlL4-wf1QmHwo0MQuheDG35DtOqfwG70JmC6sNh86z81vKueJpiTYxbftcGWBn9ih_QIbDiuL6ahk1fs_YPmzDTsDYBF8R90kv5k1fneU-PL5RYldtEYa04YR4FUdbbU4iYp8ATUGqCV59UaHi5Ewuv3Bf0BsBcZQoedsfe0czVorQau8X2P6IK3mr00XA4Q_HXVroI&#34;
+}</pre>
                     </div>
                 
             </div>
@@ -184,10 +396,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>anon</td>
+                                    <td>signup</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow delete: if request.auth == null; // Permits unauthenticated users to delete storage objects.</td>
-                                    <td>Restrict deletes to authenticated users: &#39;allow delete: if request.auth != null;&#39;.</td>
+                                    <td>allow delete: if request.auth != null; // Permits all authenticated users without role/userid validation.</td>
+                                    <td>Allow for specific roles or users: &#39;allow delete: if request.auth.token.role == &#34;admin&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow delete: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -215,10 +427,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>anon</td>
+                                    <td>signup</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow read: if request.auth == null; // Allows unauthenticated access to storage objects.</td>
-                                    <td>Restrict to authenticated users: &#39;allow read: if request.auth != null;&#39;.</td>
+                                    <td>allow read: if request.auth != null; // Permits access to all authenticated users without role/userid validation.</td>
+                                    <td>Restrict to specific roles or verified users: &#39;allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow read: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -282,10 +494,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>anon</td>
+                                    <td>signup</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow write: if request.auth == null; // Allows unauthenticated access to write storage objects.</td>
-                                    <td>Restrict to authenticated users: &#39;allow write: if request.auth != null;&#39;.</td>
+                                    <td>allow write: if request.auth != null; // Permits all authenticated users without role/userid validation.</td>
+                                    <td>Restrict writes to verified roles: &#39;allow write: if request.auth.token.role == &#34;editor&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow write: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -306,6 +518,32 @@
                 
                     <h4>Read</h4>
                     
+                        <h4>Project ID / Bucket Name: agneyastra-testing2</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>signup</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow read: if request.auth != null; // Permits access to all authenticated users without role/userid validation.</td>
+                                    <td>Restrict to specific roles or verified users: &#39;allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow read: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>null</p>
+                        </div>
+                    
                 
                     <h4>Write</h4>
                     
@@ -322,10 +560,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>anon</td>
+                                    <td>signup,anon</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow write: if request.auth == null; // Allows unauthenticated access to write storage objects.</td>
-                                    <td>Restrict to authenticated users: &#39;allow write: if request.auth != null;&#39;.</td>
+                                    <td>allow write: if request.auth != null; // Permits all authenticated users without role/userid validation.</td>
+                                    <td>Restrict writes to verified roles: &#39;allow write: if request.auth.token.role == &#34;editor&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow write: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -354,10 +592,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>public,anon,public</td>
+                                    <td>public</td>
                                     <td>vulnerable:true</td>
                                     <td>allow delete: if true; // Allows public delete access to storage objects.</td>
-                                    <td>Disable public delete access: &#39;allow delete: if false;&#39;.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -365,7 +603,7 @@
                         <div class="details">
                             <h4>Details:</h4>
                             <p>{
-  &#34;rtdb_url&#34;: &#34;https://agneyastra-testing2.firebaseio.com/agneyastrapocFOnk2N.json&#34;,
+  &#34;rtdb_url&#34;: &#34;https://agneyastra-testing2.firebaseio.com/agneyastrapocMznzj9.json&#34;,
   &#34;status_code&#34;: &#34;404&#34;
 }</p>
                         </div>
@@ -389,7 +627,7 @@
                                     <td>public</td>
                                     <td>vulnerable:true</td>
                                     <td>allow read: if true; // Allows unrestricted public access to storage objects.</td>
-                                    <td>Disable public read access: &#39;allow read: if false;&#39;.</td>
+                                    <td>Disable public read access: &#39;allow read: if request.auth != null;&#39; or allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -398,7 +636,7 @@
                             <h4>Details:</h4>
                             <p>{
   &#34;rtdb_url&#34;: &#34;https://agneyastra-testing2-default-rtdb.firebaseio.com/.json&#34;,
-  &#34;status_code&#34;: &#34;&#34;
+  &#34;status_code&#34;: &#34;200&#34;
 }</p>
                         </div>
                     
@@ -421,7 +659,7 @@
                                     <td>public</td>
                                     <td>vulnerable:true</td>
                                     <td>allow write: if true; // Allows public write access to storage objects.</td>
-                                    <td>Disable public write access: &#39;allow write: if false;&#39;.</td>
+                                    <td>Disable public write access: &#39;allow write: if request.auth != null;&#39; or allow write: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -429,8 +667,8 @@
                         <div class="details">
                             <h4>Details:</h4>
                             <p>{
-  &#34;rtdb_url&#34;: &#34;https://agneyastra-testing2-default-rtdb.firebaseio.com/agneyastrapoc8a7N9U.json&#34;,
-  &#34;status_code&#34;: &#34;&#34;
+  &#34;rtdb_url&#34;: &#34;https://agneyastra-testing2-default-rtdb.firebaseio.com/agneyastrapocTfeOhH.json&#34;,
+  &#34;status_code&#34;: &#34;200&#34;
 }</p>
                         </div>
                     
@@ -439,7 +677,82 @@
         <div class="secrets-section">
         <h3>Secrets</h3>
         
-            <p>No secrets found for this API key.</p>
+            
+                <h4>Service: rtdb</h4>
+                
+                    <h5>Sub-Service: Amazon Secret Access Key Variable</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Secret Type</th>
+                                <th>Secret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td>0</td>
+                                    <td><code>aws_secret_key</code></td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                
+                    <h5>Sub-Service: GitLab GitLab CI Token Variable</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Secret Type</th>
+                                <th>Secret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td>0</td>
+                                    <td><code>gitlab_token</code></td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                
+                    <h5>Sub-Service: Password in URL</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Secret Type</th>
+                                <th>Secret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td>0</td>
+                                    <td><code>postgresql://admin:password@db.company.com:5432/appdb&#34;,&#34;system_config&#34;:{&#34;admin_password&#34;:&#34;supersecurepassword&#34;,&#34;admin_user&#34;:&#34;</code></td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                
+                    <h5>Sub-Service: Slack Signing Secret</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Secret Type</th>
+                                <th>Secret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <tr>
+                                    <td>0</td>
+                                    <td><code>xoxb-1234567890-0987654321-AbCdEfGhIjKlMnOpQr</code></td>
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                
+            
         
     </div>
 

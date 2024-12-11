@@ -8,8 +8,8 @@ services:
     custom-token:
       token: "abbajabbajabba"
     signup:
-      email: "testmail12456@testing.com"
-      password: "password"
+      email: ""
+      password: ""
   bucket:
     upload:
       filename: "/home/bhavarth/blackhat_london/agneyastra/cmd/agneyastra/poc.txt"
