@@ -6,7 +6,7 @@
     "PGP private key block": "-----BEGIN PGP PRIVATE KEY BLOCK-----",
     "AWS API Key": "((?:A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16})",
     "Amazon MWS Auth Token": "amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-    "AWS Access Key": "\\b((?:A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA|ABIA|ACCA)[A-Z0-9]{16})\\b",
+    "AWS Access Key": "\\b((?:A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA|ABIA|ACCA)[A-Z0-9]{11})\\b",
     "AWS Secret Access Key": "(?:[\\\"\\'`]?(?:[aA][wW][sS])?_?(?:[sS][eE][cC][rR][eE][tT])_?(?:[aA][cC]{2}[eE][sS]{2})_?(?:[kK][eE][yY])?_?(?:[iI][dD])?[\\\"\\'`]?\\s{0,50}(?::|=>|=|,)\\s{0,50}[\\\"\\'`]?([A-Za-z0-9/+=]{40})[\\\"\\'`]?)",
     "AWS AppSync GraphQL Key": "da2-[a-z0-9]{26}",
     "Facebook Access Token": "EAACEdEose0cBA[0-9A-Za-z]+",

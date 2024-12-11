@@ -29,7 +29,7 @@ func main() {
 		log.Println("Error converting report to JSON: ", err)
 		return
 	}
-	fmt.Printf("Final Report:\n%v", finalReport)
+	fmt.Printf("%v\n", finalReport)
 	// fmt.Println("Generating HTML Report")
 	err = report.GlobalReport.GenerateHTMLReport(config.ReportPath, config.TemplateFile)
 	if err != nil {
