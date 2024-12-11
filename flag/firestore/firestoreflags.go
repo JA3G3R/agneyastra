@@ -12,7 +12,7 @@ import (
 
 var allFlag bool
 var authFlag string
-
+var rootAuthFlag string
 var readAuthFlag string
 var uploadAuthFlag string
 var deleteAuthFlag string
@@ -142,6 +142,8 @@ func runAuthSubcommands(authFlag string) {
 func Init() {
 
 	FirestoreCmd.PersistentFlags().BoolVarP(&allFlag, "all", "a", false, "Check all services for misconfigurations")
+	// FirestoreCmd.Flags().StringVar(&rootAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
+
 	firestorereadCmd.Flags().StringVar(&readAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 	firestorewriteCmd.Flags().StringVar(&uploadAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 	firestoredeleteCmd.Flags().StringVar(&deleteAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
