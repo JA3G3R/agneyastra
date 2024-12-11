@@ -26,8 +26,8 @@ func AnonymousAuth(apiKey string, noReport bool) {
 					"localId": sessionInfo.LocalID,
 				},
 				Error: err_,
-				Remedy: services.Remedies["auth"]["anon"]["this"],
-				VulnConfig : services.VulnConfigs["auth"]["anon-auth"]["this"],
+				Remedy: services.Remedies["auth"]["anon"]["remedy"],
+				VulnConfig : services.VulnConfigs["auth"]["anon"]["config"],
 			}, map[string][]report.ServiceResult{},)
 		} else {
 			// log.Println("Anonymous auth is not enabled.")
@@ -63,8 +63,8 @@ func SignUp(email, password, apiKey string, noReport bool) {
 					"password": password,
 				},
 				Error: err_,
-				Remedy:services.Remedies["auth"]["signup"]["this"],
-				VulnConfig: services.VulnConfigs["auth"]["signup"]["this"],
+				Remedy:services.Remedies["auth"]["signup"]["remedy"],
+				VulnConfig: services.VulnConfigs["auth"]["signup"]["config"],
 			}, map[string][]report.ServiceResult{},)
 		} else {
 			report.GlobalReport.AddServiceReport(apiKey, "auth", "signup", report.ServiceResult{
@@ -93,8 +93,8 @@ func SendSignInLink(email, apiKey string, noReport bool) {
 					"email": sessionInfo.Email,
 				},
 				Error: err_,
-				Remedy:  services.Remedies["auth"]["send-signin-link"]["this"],
-				VulnConfig:   services.VulnConfigs["auth"]["send-signin-link"]["this"],
+				Remedy:  services.Remedies["auth"]["send-signin-link"]["remedy"],
+				VulnConfig:   services.VulnConfigs["auth"]["send-signin-link"]["config"],
 
 			}, map[string][]report.ServiceResult{},)
 		} else {
@@ -129,8 +129,8 @@ func CustomTokenLogin(token, apiKey string, noReport bool) {
 					
 				},
 				Error: err_,
-				Remedy:  services.Remedies["auth"]["custom-token-login"]["this"],
-				VulnConfig:   services.VulnConfigs["auth"]["custom-token-login"]["this"],
+				Remedy:  services.Remedies["auth"]["custom-token-login"]["remedy"],
+				VulnConfig:   services.VulnConfigs["auth"]["custom-token-login"]["config"],
 
 			}, map[string][]report.ServiceResult{},)
 		} else {
