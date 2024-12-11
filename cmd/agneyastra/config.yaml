@@ -13,5 +13,3 @@ services:
   bucket:
     upload:
       filename: "/home/bhavarth/blackhat_london/agneyastra/cmd/agneyastra/poc.txt"
-  firestore:
-    extract_data: false
