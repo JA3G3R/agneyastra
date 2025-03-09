@@ -1,0 +1,15 @@
+general:
+  debug: false
+
+services:
+  auth:
+    send-link:
+      email: "bhavarth1905kr@gmail.com"
+    custom-token:
+      token: ""
+    signup:
+      email: ""
+      password: ""
+  bucket:
+    upload:
+      filename: "./poc.txt"
