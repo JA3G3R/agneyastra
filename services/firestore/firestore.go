@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"regexp"
 	"sync"
@@ -39,7 +40,10 @@ func FirestoreAddDocument(projectIDs []string) []Result {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create first request: %v", err), Success: services.StatusError})
 				continue
 			}
-			req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+
+				req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 			client := &http.Client{}
 			resp1, err := client.Do(req1)
 			if err != nil {
@@ -76,7 +80,10 @@ func FirestoreAddDocument(projectIDs []string) []Result {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create second request: %v", err), Success: services.StatusError})
 				continue
 			}
-			req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
+
 			badRequestRegex := regexp.MustCompile(`Error 400 \(Bad Request\)\!\!1`)
 			permissionDeniedRegex := regexp.MustCompile(`Missing or insufficient permissions`)
 			reStreamToken := regexp.MustCompile(`"streamToken":\s*"(.*?)"`)
@@ -162,7 +169,9 @@ func FirestoreAddDocument(projectIDs []string) []Result {
 			// Set headers
 			req3.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			req3.Header.Set("Accept", "*/*")
-			req3.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req3.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 
 			resp, err := client.Do(req3)
 			if err != nil {
@@ -213,7 +222,9 @@ func FirestoreDeleteDocument(projectIDs []string) []Result {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create first request: %v", err), Success: services.StatusError})
 				continue
 			}
-			req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 			client := &http.Client{}
 			resp1, err := client.Do(req1)
 			if err != nil {
@@ -246,7 +257,9 @@ func FirestoreDeleteDocument(projectIDs []string) []Result {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create second request: %v", err), Success: services.StatusError})
 				continue
 			}
-			req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 			reStreamToken := regexp.MustCompile(`"streamToken":\s*"([^"]+)"`)
 			permissionDeniedRegex := regexp.MustCompile(`Missing or insufficient permissions\.`)
 			badRequestRegex := regexp.MustCompile(`Error 400 \(Bad Request\)\!\!1`)
@@ -333,7 +346,9 @@ func FirestoreDeleteDocument(projectIDs []string) []Result {
 			// Set headers
 			req3.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 			req3.Header.Set("Accept", "*/*")
-			req3.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req3.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 
 			resp3, err := client.Do(req3)
 			
@@ -388,7 +403,10 @@ func FirestoreReadDocument(projectIDs []string) []Result {
 
 			req1, err := http.NewRequest("POST", url1, bytes.NewBuffer([]byte(data)))
 			
-			req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+
+				req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 			
 			if err != nil {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create first request: %v", err), Success: services.StatusError})
@@ -419,15 +437,16 @@ func FirestoreReadDocument(projectIDs []string) []Result {
 			// log.Printf("SID: %v, gsessionid: %v\n", sid, gsessionid)
 
 			// Second Request
-			url2 := fmt.Sprintf("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=%s&VER=8&database=projects%%2F%s%%2Fdatabases%%2F(default)&RID=rpc&SID=%s&CI=0&TYPE=xmlhttp&zx=ijirluezcha5&t=1",gsessionid, projectID, sid)
+			url2 := fmt.Sprintf("https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=%s&VER=8&database=projects%%2F%s%%2Fdatabases%%2F(default)&RID=rpc&SID=%s&CI=0&TYPE=xmlhttp&zx=ijirluezcha5&t=1",gsessionid, projectID, sid)	
 
 			req2, err := http.NewRequest("GET", url2, nil)
 			if err != nil {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to create second request: %v", err), Success: services.StatusError})
 				continue
 			}
-			
-			req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			if auth != "" {
+				req2.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
+			}
 			resp2, err := client.Do(req2)
 			if err != nil {
 				results = append(results, Result{ProjectId: projectID, Error: fmt.Errorf("failed to execute second request: %v", err), Success: services.StatusError})

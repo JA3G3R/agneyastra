@@ -9,11 +9,13 @@ import (
 	"github.com/JA3G3R/agneyastra/pkg/correlation"
 	"github.com/JA3G3R/agneyastra/pkg/report"
 	"github.com/JA3G3R/agneyastra/pkg/secrets"
+	"github.com/JA3G3R/agneyastra/utils"
 )
 
 func main() {
 	
 	// fmt.Println("executing flags")
+	utils.Init()
 	flags.Execute()
 
 	if config.Correlate {

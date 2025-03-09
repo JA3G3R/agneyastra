@@ -43,8 +43,9 @@ func ReadFromRTDB(rtdbURLs map[string][]string, dump bool, apiKey string) []Resu
 					results = append(results, Result{ProjectId: domain,RTDBUrl: url, Success: services.StatusError,Error: fmt.Errorf("Error creating request: %v", err), Body: nil})
 					continue
 				}
-
-				req.Header.Set("Authorization", "Bearer "+auth)
+				if auth != "" {
+					req.Header.Set("Authorization", "Bearer "+auth)
+				}
 				client := &http.Client{}
 				log.Printf("Trying bucket read from url: %s, for projectid: %s, auth type: %s\n", url, domain, authType)
 				resp, err := client.Do(req)
@@ -145,7 +146,9 @@ func WriteToRTDB(rtdbURLs map[string][]string, data,filePath string) ([]Result, 
 					continue
 				}
 				req.Header.Set("Content-Type", "application/json")
-				req.Header.Set("Authorization", "Bearer "+auth)
+				if auth != "" {
+					req.Header.Set("Authorization", "Bearer "+auth)
+				}
 				client := &http.Client{}
 				resp, err := client.Do(req)
 				if err != nil {
@@ -198,7 +201,9 @@ func DeleteFromRTDB(rtdbURLs map[string][]string) []Result {
 					continue
 				}
 				req.Header.Set("Content-Type", "application/json")
-				req.Header.Set("Authorization", "Bearer "+auth)
+				if auth != "" {
+					req.Header.Set("Authorization", "Bearer "+auth)
+				}
 
 				client := &http.Client{}
 				resp, err := client.Do(req)

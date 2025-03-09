@@ -60,7 +60,9 @@ func BucketDelete(buckets []string) []DeleteCheckResult {
 			for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
 				authType = credentials.CredTypes[authTypeIdx]
 				cred := credentialStore.GetToken(authType)
-				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+				if cred != "" {
+					req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+				}
 				resp, err = http.DefaultClient.Do(req)
 				if err != nil || (resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden) {
 					// log.Printf("Failed with auth type: %s, err: %v", authType, err)

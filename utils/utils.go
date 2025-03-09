@@ -4,15 +4,74 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/spf13/viper"
 )
+
+const (
+	githubRawURL = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/config.yaml"
+)
+
+func downloadConfigFile() error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	configPath := filepath.Join(homeDir, ".agneyastra", "config.yaml")
+
+	// Skip download if the file already exists
+	if _, err := os.Stat(configPath); err == nil {
+		fmt.Println("Config file already exists at:", configPath)
+		return nil
+	}
+
+	// Ensure the directory exists
+	if err := os.MkdirAll(filepath.Dir(configPath), 0755); err != nil {
+		return err
+	}
+
+	// Download file
+	resp, err := http.Get(githubRawURL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Check for successful HTTP response
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to download config: HTTP %d", resp.StatusCode)
+	}
+
+	// Write the downloaded file to disk
+	out, err := os.Create(configPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Config file downloaded to:", configPath)
+	return nil
+}
+
+func Init() {
+
+	downloadConfigFile()
+
+}
 
 func ReadApiKeysFromFile(filePath string) ([]string, map[string][]string, error) {
 	var apiKeys []string

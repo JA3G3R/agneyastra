@@ -35,7 +35,9 @@ func recursiveContentReadFromBucket(bucket string, prefix string, authType strin
 		for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
 
 			cred := credentialStore.GetToken(credentials.CredTypes[authTypeIdx])
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+			if cred != "" {
+				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cred))
+			}
 			resp, err = http.DefaultClient.Do(req)
 			if err != nil {
 				return KeysResponseRecursive{},isVulnerable,authType, fmt.Errorf("failed to make request: %w", err)
