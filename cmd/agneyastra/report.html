@@ -54,7 +54,7 @@
 <body>
     <div class="navbar">
         <h1>Agneyastra Report</h1>
-        <span>March 9, 2025</span>
+        <span>March 10, 2025</span>
     </div>
     <div class="content">
         
@@ -67,32 +67,6 @@
                 <h3>Firestore Configuration</h3>
                 
                     <h4>Delete</h4>
-                    
-                        <h4>Project ID / Bucket Name: agneyastra-testing2</h4>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Auth Type</th>
-                                    <th>Vulnerable</th>
-                                    <th>Vulnerable Config</th>
-                                    <th>Remediation</th>
-                                    <th>Error</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>public</td>
-                                    <td>vulnerable:true</td>
-                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
-                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="details">
-                            <h4>Details:</h4>
-                            <p>null</p>
-                        </div>
                     
                 
                     <h4>Read</h4>
@@ -110,10 +84,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>public</td>
+                                    <td>signup</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow read: if true; // Allows unrestricted public access to storage objects.</td>
-                                    <td>Disable public read access: &#39;allow read: if request.auth != null;&#39; or allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td>allow read: if request.auth != null; // Permits access to all authenticated users without role/userid validation.</td>
+                                    <td>Restrict to specific roles or verified users: &#39;allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow read: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -139,10 +113,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>public</td>
+                                    <td>anon,signup</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow write: if true; // Allows public write access to storage objects.</td>
-                                    <td>Disable public write access: &#39;allow write: if request.auth != null;&#39; or allow write: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td>allow write: if request.auth == null; // Allows unauthenticated access to write storage objects.</td>
+                                    <td>Restrict to authenticated users: &#39;allow write: if request.auth != null;&#39; or &#39;allow write: if request.auth.token.role == &#34;editor&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow write: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
