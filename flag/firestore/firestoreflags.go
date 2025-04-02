@@ -142,6 +142,7 @@ func runAuthSubcommands(authFlag string) {
 func Init() {
 
 	FirestoreCmd.PersistentFlags().BoolVarP(&allFlag, "all", "a", false, "Check all services for misconfigurations")
+	FirestoreCmd.PersistentFlags().StringVar(&authFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 	// FirestoreCmd.Flags().StringVar(&rootAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")
 
 	firestorereadCmd.Flags().StringVar(&readAuthFlag, "auth", "", "Run specific auth subcommand(s): [all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in]")

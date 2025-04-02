@@ -11,6 +11,7 @@ import (
 )
 
 var allFlag bool
+var authFlag bool
 var readAuthFlag string
 var uploadAuthFlag string
 var deleteAuthFlag string
@@ -110,7 +111,7 @@ func runAuthSubcommands(authFlag string) {
 func Init(){
 
 	RtdbCmd.PersistentFlags().BoolVarP(&allFlag, "all", "a", false, "Check all services for misconfigurations")
-
+	// RtdbCmd.PersistentFlags().StringVar(&authFlag
 	rtdbwriteCmd.Flags().String("file", "", "Path to a file containing the data to write")
 	rtdbwriteCmd.Flags().String("json", "", "Raw JSON data to write")
 	rtdbwriteCmd.MarkFlagsMutuallyExclusive("json", "file")

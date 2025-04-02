@@ -165,6 +165,7 @@ func init() {
 	RootCmd.PersistentFlags().BoolVarP(&config.Debug,"debug","d", false, "Enable Debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
 	RootCmd.PersistentFlags().BoolVar(&config.SecretsExtract, "secrets-extract", false, "Extract secrets from extracted data")
+	RootCmd.PersistentFlags().BoolVar(&config.AssetExtract, "assets-extract", false, "Extract assets(domains,ips,emails etc.) from extracted data")
 
 	// Add subcommands
 	RootCmd.AddCommand(auth.AuthCmd)

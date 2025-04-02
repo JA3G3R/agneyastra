@@ -17,4 +17,5 @@ var SecretsExtract bool
 var PentestDataFilePath string
 var SecretsRegexFile string
 var ProjectId string
+var AssetExtract bool
 // to avoid cyclic dependency between packages

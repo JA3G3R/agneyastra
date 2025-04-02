@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"regexp"
 	"sync"
@@ -404,7 +403,6 @@ func FirestoreReadDocument(projectIDs []string) []Result {
 			req1, err := http.NewRequest("POST", url1, bytes.NewBuffer([]byte(data)))
 			
 			if auth != "" {
-
 				req1.Header.Set("Authorization", fmt.Sprintf("Bearer %s",auth))
 			}
 			
