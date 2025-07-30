@@ -13,7 +13,7 @@ func RunRtdbRead(dump bool, apiKey string) {
 
 	log.Printf("RunRtdbRead called with dump: %v, apiKey: %v\n", dump, apiKey)
 	// Fetch the project config using the API key and the project IDs
-	
+
 	readData := rtdb.ReadFromRTDB(config.RTDBUrls[apiKey], dump, apiKey)
 	// log.Printf("RTDB data: %v\n", readData)
 	readreport := map[string][]report.ServiceResult{}
@@ -30,27 +30,27 @@ func RunRtdbRead(dump bool, apiKey string) {
 			vulnconf = services.VulnConfigs["bucket"]["read"][auth_type]
 			readreport[data.ProjectId] = append(readreport[data.ProjectId], report.ServiceResult{
 				Vulnerable: data.Success,
-				Error: data.Error.Error(),
-				AuthType: data.AuthType,
-				Remedy: remedy,
+				Error:      data.Error.Error(),
+				AuthType:   data.AuthType,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 				Details: map[string]string{
-				"status_code": data.StatusCode,
-				"rtdb_url": data.RTDBUrl,
+					"status_code": data.StatusCode,
+					"rtdb_url":    data.RTDBUrl,
 				},
 			})
-		} 
-		
+		}
+
 	}
 	// fmt.Printf("Writing to report: %v\n", readreport)
 
-	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "read", report.ServiceResult{}, readreport)
+	report.GlobalReport.AddServiceReport(apiKey, "rtdb", "read", report.ServiceResult{}, readreport)
 
 }
 
 func RunRtdbWrite(data, filepath string, apiKey string) {
 
-	uploadResults, err := rtdb.WriteToRTDB(config.RTDBUrls[apiKey], data , filepath)
+	uploadResults, err := rtdb.WriteToRTDB(config.RTDBUrls[apiKey], data, filepath)
 	if err != nil {
 		log.Printf("Error performing RTDB write check: %v", err)
 		return
@@ -73,19 +73,19 @@ func RunRtdbWrite(data, filepath string, apiKey string) {
 			vulnconf = services.VulnConfigs["bucket"]["write"][auth_type]
 			writeReport[result.ProjectId] = append(writeReport[result.ProjectId], report.ServiceResult{
 				Details: map[string]string{
-					"rtdb_url": result.RTDBUrl,
+					"rtdb_url":    result.RTDBUrl,
 					"status_code": result.StatusCode,
 				},
 				Vulnerable: result.Success,
-				Error: err,
-				AuthType: result.AuthType,
-				Remedy: remedy,
+				Error:      err,
+				AuthType:   result.AuthType,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 			})
-		} 
+		}
 	}
 	// fmt.Printf("Writing to report: %v\n", writeReport)
-	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "write", report.ServiceResult{},writeReport)
+	report.GlobalReport.AddServiceReport(apiKey, "rtdb", "write", report.ServiceResult{}, writeReport)
 
 }
 
@@ -102,7 +102,7 @@ func RunRtdbDelete(apiKey string) {
 		}
 		var remedy string
 		var vulnconf string
-		// if result.Success == services.StatusVulnerable {
+		if result.Success == services.StatusVulnerable {
 			auth_type := result.AuthType
 			if result.AuthType == "" {
 				auth_type = "public"
@@ -111,19 +111,19 @@ func RunRtdbDelete(apiKey string) {
 			vulnconf = services.VulnConfigs["bucket"]["delete"][auth_type]
 			deleteReport[result.ProjectId] = append(deleteReport[result.ProjectId], report.ServiceResult{
 				Details: map[string]string{
-					"rtdb_url": result.RTDBUrl,
+					"rtdb_url":    result.RTDBUrl,
 					"status_code": result.StatusCode,
 				},
 				Vulnerable: result.Success,
-				Error: err,
-				AuthType: result.AuthType,
-				Remedy: remedy,
+				Error:      err,
+				AuthType:   result.AuthType,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 			})
-		// } 
+		}
 	}
 	// fmt.Printf("Writing to report: %v\n", deleteReport)
 
-	report.GlobalReport.AddServiceReport(apiKey,"rtdb", "delete", report.ServiceResult{},deleteReport)
+	report.GlobalReport.AddServiceReport(apiKey, "rtdb", "delete", report.ServiceResult{}, deleteReport)
 
 }

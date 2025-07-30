@@ -27,20 +27,19 @@ func RunBucketRead(dumpDir string, apiKey string) {
 			remedy = services.Remedies["bucket"]["read"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["read"][auth_type]
 			readreport[data.Bucket] = append(readreport[data.Bucket], report.ServiceResult{
-				Vulnerable:   data.Success,
-				Error:   data.Error.Error(),
-				Details: map[string]bucket.KeysResponseRecursive{"Contents": data.Data,},
-				AuthType:  data.AuthType,
-				Remedy:  remedy,
+				Vulnerable: data.Success,
+				Error:      data.Error.Error(),
+				Details:    map[string]bucket.KeysResponseRecursive{"Contents": data.Data},
+				AuthType:   auth_type,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 			})
-		} 
-
+		}
 
 	}
 	// fmt.Printf("Writing to report: %v\n", readreport)
 
-	report.GlobalReport.AddServiceReport(apiKey,"bucket", "read",report.ServiceResult{},readreport)
+	report.GlobalReport.AddServiceReport(apiKey, "bucket", "read", report.ServiceResult{}, readreport)
 	if dumpDir != "" {
 		bucket.DownloadBucketContents(dumpDir, bucketData)
 	}
@@ -72,17 +71,17 @@ func RunBucketWrite(uploadFile string, apiKey string) {
 			remedy = services.Remedies["bucket"]["write"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["write"][auth_type]
 			writeReport[result.Bucket] = append(writeReport[result.Bucket], report.ServiceResult{
-				Vulnerable:   result.Success,
-				Error:   err,
-				Details: map[string]string{"status_code": result.StatusCode},
-				AuthType: result.AuthType,
-				Remedy:  remedy,
+				Vulnerable: result.Success,
+				Error:      err,
+				Details:    map[string]string{"status_code": result.StatusCode},
+				AuthType:   auth_type,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 			})
-		} 
+		}
 	}
 	// fmt.Printf("Writing to report: %v\n", writeReport)
-	report.GlobalReport.AddServiceReport(apiKey,"bucket", "write",report.ServiceResult{}, writeReport)
+	report.GlobalReport.AddServiceReport(apiKey, "bucket", "write", report.ServiceResult{}, writeReport)
 
 }
 
@@ -106,18 +105,18 @@ func RunBucketDelete(apiKey string) {
 			}
 			remedy = services.Remedies["bucket"]["delete"][auth_type]
 			vulnconf = services.VulnConfigs["bucket"]["delete"][auth_type]
-			deleteReport[result.Bucket] = append(deleteReport[result.Bucket],report.ServiceResult{
-				Vulnerable:   result.Success,
-				Error:   err,
-				Details: map[string]string{"status_code": result.StatusCode,},
-				AuthType: result.AuthType,
-				Remedy:  remedy,
+			deleteReport[result.Bucket] = append(deleteReport[result.Bucket], report.ServiceResult{
+				Vulnerable: result.Success,
+				Error:      err,
+				Details:    map[string]string{"status_code": result.StatusCode},
+				AuthType:   auth_type,
+				Remedy:     remedy,
 				VulnConfig: vulnconf,
 			})
-		} 
+		}
 	}
 	// fmt.Printf("Writing to report: %v\n", deleteReport)
 
-	report.GlobalReport.AddServiceReport(apiKey,"bucket", "delete",report.ServiceResult{},deleteReport)
+	report.GlobalReport.AddServiceReport(apiKey, "bucket", "delete", report.ServiceResult{}, deleteReport)
 
 }

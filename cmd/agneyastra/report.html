@@ -54,24 +54,129 @@
 <body>
     <div class="navbar">
         <h1>Agneyastra Report</h1>
-        <span>March 10, 2025</span>
+        <span>July 30, 2025</span>
     </div>
     <div class="content">
         
-            <h2>API Key: AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI </h2>
+            <h2>API Key: AIzaSyBsXB1_bti9dGxSiKZTfTl_8fRl9-QY_cI </h2>
             <div class="auth-report">
                 <h3>Authentication Report</h3>
                 
+                    <h3>Auth Type: anon-auth</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>vulnerable:true</td>
+                                <td>Anonymous Authentication enabled in Firebase project.</td>
+                                <td>Disable Anonymous Authentication</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>{
+  &#34;expiresIn&#34;: &#34;3600&#34;,
+  &#34;idToken&#34;: &#34;eyJhbGciOiJSUzI1NiIsImtpZCI6IjZkZTQwZjA0ODgxYzZhMDE2MTFlYjI4NGE0Yzk1YTI1MWU5MTEyNTAiLCJ0eXAiOiJKV1QifQ.eyJwcm92aWRlcl9pZCI6ImFub255bW91cyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9lY29pbi1mOWM1YyIsImF1ZCI6ImVjb2luLWY5YzVjIiwiYXV0aF90aW1lIjoxNzUzODU4NzI0LCJ1c2VyX2lkIjoiOEc4eHBBb1B3MVFxY05iWHJLZnNwTnI2V1k0MyIsInN1YiI6IjhHOHhwQW9QdzFRcWNOYlhyS2ZzcE5yNldZNDMiLCJpYXQiOjE3NTM4NTg3MjQsImV4cCI6MTc1Mzg2MjMyNCwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6e30sInNpZ25faW5fcHJvdmlkZXIiOiJhbm9ueW1vdXMifX0.KFXhHbuxMmyCNFHqUCZ76PxyNza9I18jureuTyPhs_xud3MwTi2rsTM5nYUWPq54nMzBl7IGPs-Nt8FUOPQ0dToG9RimoM8HUSXz2bml71qhAsMLRfxQVCwZCCEGZt0u3wJ-jr0b9DAyZpR3CX_tCLXw2D0S7UKo111ysHm3EcQ2qmjd_gfu1LXJRXbqpB0Fs0uXzips3qtM9F_5bcyzFJAQMgK4elNpuNgQL9fUp25-ACRA_Q8p5il_-WCIdYbnejaTS6USW1wBQX1tHqLcyZS3tLEUzip55xhaQXS9OKAOKVetqJfL4-Y-6eoYNTaSyspQyV9S0ZXhQZqIpQqtdQ&#34;,
+  &#34;localId&#34;: &#34;8G8xpAoPw1QqcNbXrKfspNr6WY43&#34;,
+  &#34;refreshToken&#34;: &#34;AMf-vByCfybBrFEEU0BWvKmA7GSNTvaTosWjONdKlA_JY_VDl8-_w0nEs4sCO1hGi0SNVOfzJJr3OcVlCMzs4yt-30-fPOBgl5z41jroBvNLR_Yr5b8XScJg1GkPVtfHUeTimJ4xn5k9h7xNz4tXAkaZe4FPHGAEtzjSu_aqk52N4QsbCS01WVQ&#34;
+}</pre>
+                    </div>
+                
+                    <h3>Auth Type: custom-token-login</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to log in with custom token, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+                    <h3>Auth Type: send-signin-link</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>error</td>
+                                <td></td>
+                                <td></td>
+                                <td>failed to send sign-in link, status code: 400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>null</pre>
+                    </div>
+                
+                    <h3>Auth Type: signup</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vulnerable</th>
+                                <th>Vulnerable Config</th>
+                                <th>Remediation</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>vulnerable:true</td>
+                                <td>User Signup Enabled in Firebase project.</td>
+                                <td>Disable User Signup from Firebase Console</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="details">
+                        <h4>Details:</h4>
+                        <pre>{
+  &#34;email&#34;: &#34;cdglglnyhi@example.com&#34;,
+  &#34;expiresIn&#34;: &#34;3600&#34;,
+  &#34;idToken&#34;: &#34;eyJhbGciOiJSUzI1NiIsImtpZCI6IjZkZTQwZjA0ODgxYzZhMDE2MTFlYjI4NGE0Yzk1YTI1MWU5MTEyNTAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZWNvaW4tZjljNWMiLCJhdWQiOiJlY29pbi1mOWM1YyIsImF1dGhfdGltZSI6MTc1Mzg1ODcyNSwidXNlcl9pZCI6IjY3ajJ1WWpIZ0hiamYyeE9KZTN4TjJ6UTJWazIiLCJzdWIiOiI2N2oydVlqSGdIYmpmMnhPSmUzeE4yelEyVmsyIiwiaWF0IjoxNzUzODU4NzI1LCJleHAiOjE3NTM4NjIzMjUsImVtYWlsIjoiY2RnbGdsbnloaUBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJjZGdsZ2xueWhpQGV4YW1wbGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.WVBZ-rlxPJSQyLkA4yXOKdGkLkbL4Th9dulVCTtuqTrnegsuvUIgOowHVuKS--1sAWMJJKGascob1yPh-bbu0HGQptWCPChBqt3MeAnNE9B-f2_pQYc8kaBoR0qzDqXnInILa1jni8sFwyNEa9SDRgEgB6j-z5X3vi6Fd2jwveGN9bSSMa6vCow1zZZf3wLedOEBXTFoDpBDPwvMb665fchjMbQ_LKv9ARsyQED7LU7puRkIreTYcsxrbgOs1o3mU98Ehz7flvKhPyLfZ7sUihWpB6RjoaTqNGDx2H11NrBH2mLQy6Fw8u052svsdcy0Hflj-QzaKFu_h6KNJxFvZw&#34;,
+  &#34;localId&#34;: &#34;67j2uYjHgHbjf2xOJe3xN2zQ2Vk2&#34;,
+  &#34;password&#34;: &#34;-HlY=bd7\u0026Dvr&#34;,
+  &#34;refreshToken&#34;: &#34;AMf-vBy7_3PFw1gunPvPc7MGqhBm-dznbSPYKXvF35j_NBIuwgQu5Z-FI5XuK16fUPH-GhJoFhwImdWUvtmgfsR1jatlAK5HFrc6QQXdCjGB1MbRoISZF7gp3eWTCPsKC5yCTurTPoRXX5f5iCMoNhSfezFrHdW1tXryhR8YOLW_GuYEnD7udXzR2r1wlOtk1CmmgkOGDJvfiO1YZu6aAMzGbG_OCk2MUQ&#34;
+}</pre>
+                    </div>
+                
             </div>
             
-                <h3>Firestore Configuration</h3>
+                <h3>Bucket Configuration</h3>
                 
                     <h4>Delete</h4>
                     
-                
-                    <h4>Read</h4>
-                    
-                        <h4>Project ID / Bucket Name: agneyastra-testing2</h4>
+                        <h4>Project ID / Bucket Name: 603332537782</h4>
                         <table>
                             <thead>
                                 <tr>
@@ -84,10 +189,163 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>signup</td>
+                                    <td></td>
                                     <td>vulnerable:true</td>
-                                    <td>allow read: if request.auth != null; // Permits access to all authenticated users without role/userid validation.</td>
-                                    <td>Restrict to specific roles or verified users: &#39;allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow read: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;status_code&#34;: &#34;&#34;
+}</p>
+                        </div>
+                    
+                        <h4>Project ID / Bucket Name: ecoin</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;status_code&#34;: &#34;&#34;
+}</p>
+                        </div>
+                    
+                        <h4>Project ID / Bucket Name: ecoin-f9c5c</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;status_code&#34;: &#34;&#34;
+}</p>
+                        </div>
+                    
+                
+                    <h4>Read</h4>
+                    
+                
+                    <h4>Write</h4>
+                    
+                        <h4>Project ID / Bucket Name: ecoin-f9c5c</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow write: if true; // Allows public write access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow write: if request.auth != null;&#39; or allow write: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;status_code&#34;: &#34;200&#34;
+}</p>
+                        </div>
+                    
+                
+            
+                <h3>Firestore Configuration</h3>
+                
+                    <h4>Delete</h4>
+                    
+                        <h4>Project ID / Bucket Name: ecoin-f9c5c</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>null</p>
+                        </div>
+                    
+                
+                    <h4>Read</h4>
+                    
+                        <h4>Project ID / Bucket Name: ecoin-f9c5c</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow read: if true; // Allows unrestricted public access to storage objects.</td>
+                                    <td>Disable public read access: &#39;allow read: if request.auth != null;&#39; or allow read: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
@@ -100,7 +358,13 @@
                 
                     <h4>Write</h4>
                     
-                        <h4>Project ID / Bucket Name: agneyastra-testing2</h4>
+                
+            
+                <h3>Rtdb Configuration</h3>
+                
+                    <h4>Delete</h4>
+                    
+                        <h4>Project ID / Bucket Name: 603332537782</h4>
                         <table>
                             <thead>
                                 <tr>
@@ -113,18 +377,85 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>anon,signup</td>
+                                    <td>public</td>
                                     <td>vulnerable:true</td>
-                                    <td>allow write: if request.auth == null; // Allows unauthenticated access to write storage objects.</td>
-                                    <td>Restrict to authenticated users: &#39;allow write: if request.auth != null;&#39; or &#39;allow write: if request.auth.token.role == &#34;editor&#34;;&#39; or &#39;match /user_files/{userId}/{allPaths=**} { allow write: if request.auth != null &amp;&amp; request.auth.uid == userId; }&#39;.</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="details">
                             <h4>Details:</h4>
-                            <p>null</p>
+                            <p>{
+  &#34;rtdb_url&#34;: &#34;https://603332537782.firebaseio.com/agneyastrapoc6eXJZk.json&#34;,
+  &#34;status_code&#34;: &#34;404&#34;
+}</p>
                         </div>
+                    
+                        <h4>Project ID / Bucket Name: ecoin</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;rtdb_url&#34;: &#34;https://ecoin.firebaseio.com/agneyastrapoc6eXJZk.json&#34;,
+  &#34;status_code&#34;: &#34;404&#34;
+}</p>
+                        </div>
+                    
+                        <h4>Project ID / Bucket Name: ecoin-f9c5c</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Auth Type</th>
+                                    <th>Vulnerable</th>
+                                    <th>Vulnerable Config</th>
+                                    <th>Remediation</th>
+                                    <th>Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>public</td>
+                                    <td>vulnerable:true</td>
+                                    <td>allow delete: if true; // Allows public delete access to storage objects.</td>
+                                    <td>Disable public write access: &#39;allow delete: if request.auth != null;&#39; or allow delete: if request.auth.token.role == &#34;&lt;user-id&gt;&#34;;&#39;.</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="details">
+                            <h4>Details:</h4>
+                            <p>{
+  &#34;rtdb_url&#34;: &#34;https://ecoin-f9c5c-default-rtdb.firebaseio.com/agneyastrapoc6eXJZk.json&#34;,
+  &#34;status_code&#34;: &#34;404&#34;
+}</p>
+                        </div>
+                    
+                
+                    <h4>Read</h4>
+                    
+                
+                    <h4>Write</h4>
                     
                 
             
