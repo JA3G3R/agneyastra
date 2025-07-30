@@ -14,8 +14,8 @@ import (
 // CheckFirebaseDelete tries to delete a file from a list of Firebase Storage buckets
 func BucketDelete(buckets []string) []DeleteCheckResult {
 	var results []DeleteCheckResult
-	fileName := "agneyastradeletetest"+utils.RandomString(8)
-	// Loop through each bucket		
+	fileName := "agneyastradeletetest" + utils.RandomString(8)
+	// Loop through each bucket
 	for _, bucket := range buckets {
 		result := DeleteCheckResult{Bucket: bucket, FileName: fileName}
 
@@ -86,7 +86,7 @@ func BucketDelete(buckets []string) []DeleteCheckResult {
 				result.Error = fmt.Errorf("")
 				result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
 				result.AuthType = "public"
-			} 
+			}
 		} else {
 			result.Success = services.StatusUnknown
 			result.Error = fmt.Errorf("Status: %d, Response: %s", resp.StatusCode, string(respBody))
@@ -99,9 +99,7 @@ func BucketDelete(buckets []string) []DeleteCheckResult {
 	return results
 }
 
-
-
-func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error){
+func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error) {
 
 	var results []UploadCheckResult
 	// Loop through each bucket
@@ -109,9 +107,9 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 		result := UploadCheckResult{Bucket: bucket}
 
 		// file, err := os.Open(filePath) // Open your file
-		
+
 		// defer file.Close()
-		
+
 		// //fetch the fileContent
 		url := fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s.appspot.com/o?name=poc.txt", bucket)
 		req, err := getBucketReq(filePath, url, "")
@@ -128,7 +126,7 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 		// Execute the request
 		resp, err := client.Do(req)
 		defer resp.Body.Close()
-		if err != nil {	
+		if err != nil {
 			result.Success = services.StatusError
 			result.Error = fmt.Errorf("HTTP request failed: %v", err)
 			result.StatusCode = ""
@@ -147,9 +145,9 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 			var authType string
 			for authTypeIdx := 0; authTypeIdx < len(credentials.CredTypes); authTypeIdx++ {
 				authType = credentials.CredTypes[authTypeIdx]
-				cred := credentialStore.GetToken(authType) 
+				cred := credentialStore.GetToken(authType)
 				req, err = getBucketReq(filePath, url, cred)
-				if err != nil {	
+				if err != nil {
 					continue
 				}
 				resp, err = http.DefaultClient.Do(req)
@@ -179,7 +177,7 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 				result.Error = fmt.Errorf("")
 				result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
 				result.AuthType = "public"
-			} 
+			}
 		} else {
 			_, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
@@ -199,21 +197,22 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 }
 
 // Function to check whether we can list files/folders in Firebase Storage bucket
-func BucketRead(buckets []string) ([]BucketData) {
+func BucketRead(buckets []string) []BucketData {
 
 	var bucketResults []BucketData
 
 	for _, bucket := range buckets {
 		// fmt.Printf("Attempting to read bucket %s\n", bucket)
-		bucketContents, vulnerable,authType, err := recursiveContentReadFromBucket(bucket, "","public", false)
+		bucketContents, vulnerable, authType, err := recursiveContentReadFromBucket(bucket, "", "public", 0, false)
+		log.Printf("Bucket: %s, AuthType: %s, Vulnerable: %v, Error: %v\n", bucket, authType, vulnerable, err)
 		if vulnerable && err != nil {
 			log.Printf("Error reading bucket %s: %v", bucket, err)
-			bucketResults = append(bucketResults, BucketData{Bucket: bucket,AuthType: authType, Success: services.StatusError, Error: err, Data: KeysResponseRecursive{}})
+			bucketResults = append(bucketResults, BucketData{Bucket: bucket, AuthType: authType, Success: services.StatusError, Error: err, Data: KeysResponseRecursive{}})
 			continue
-		} else if vulnerable{
-			bucketResults = append(bucketResults, BucketData{Bucket: bucket, AuthType: authType, Data: bucketContents,Success: services.StatusVulnerable, Error: fmt.Errorf("")})
+		} else if vulnerable {
+			bucketResults = append(bucketResults, BucketData{Bucket: bucket, AuthType: authType, Data: bucketContents, Success: services.StatusVulnerable, Error: fmt.Errorf("")})
 		} else {
-			bucketResults = append(bucketResults, BucketData{Bucket: bucket, AuthType: authType, Data: bucketContents,Success: services.StatusSafe, Error: fmt.Errorf("")})
+			bucketResults = append(bucketResults, BucketData{Bucket: bucket, AuthType: authType, Data: bucketContents, Success: services.StatusSafe, Error: fmt.Errorf("")})
 		}
 	}
 

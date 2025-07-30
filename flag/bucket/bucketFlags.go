@@ -29,7 +29,7 @@ var BucketCmd = &cobra.Command{
 			log.Println("Running all firebase storage bucket misconfiguration checks")
 			for _, subCmd := range cmd.Commands() {
 				if subCmd.Run != nil {
-					// log.Printf("Running subcommand: %s", subCmd.Name())
+					log.Printf("Running subcommand: %s", subCmd.Name())
 					subCmd.Run(subCmd, nil)
 				}
 			}

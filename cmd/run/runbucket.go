@@ -37,7 +37,7 @@ func RunBucketRead(dumpDir string, apiKey string) {
 		}
 
 	}
-	// fmt.Printf("Writing to report: %v\n", readreport)
+	// log.Printf("Writing to report: %v\n", readreport)
 
 	report.GlobalReport.AddServiceReport(apiKey, "bucket", "read", report.ServiceResult{}, readreport)
 	if dumpDir != "" {
