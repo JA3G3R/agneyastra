@@ -8,21 +8,22 @@ import (
 
 	"github.com/JA3G3R/agneyastra/services"
 )
+
 type ServiceResult struct {
-	Vulnerable services.Status
-	Error string
-	AuthType string
-	VulnConfig string
-	Remedy string
-	Details any
+	Vulnerable services.Status `json: "vulnerable", omitempty`
+	Error      string          `json: "error", omitempty`
+	AuthType   string          `json: "auth_type", omitempty`
+	VulnConfig string          `json: "vuln_config", omitempty`
+	Remedy     string          `json: "remedy", omitempty`
+	Details    any             `json: "details", omitempty`
 }
 
 type APIKeyReport struct {
-	APIKey   string   `json:"api_key"`
-	CorrelationScore float64  `json:"correlation_score"`	
-	AuthReport map[string]ServiceResult                  `json:"auth"`
-	Services map[string]map[string]map[string]ServiceResult      `json:"services"` // Flexible for service-specific formats
-	Secrets map[string]map[string][]string      `json:"secrets"` // service -> secret_type -> secrets
+	APIKey           string                                         `json: "api_key"`
+	CorrelationScore float64                                        `json: "correlation_score"`
+	AuthReport       map[string]ServiceResult                       `json: "auth"`
+	Services         map[string]map[string]map[string]ServiceResult `json: "services"`           // Flexible for service-specific formats
+	Secrets          map[string]map[string][]string                 `json: "secrets", omitempty` // service -> secret_type -> secrets
 }
 
 type Report struct {
@@ -83,14 +84,11 @@ func (r *Report) AddSecrets(apiKey string, serviceType string, secrets map[strin
 	apiKeyReport.Secrets[serviceType] = secrets
 }
 
-
 // AddServiceReport adds or updates a service-specific report for a given API key.
-func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,authResult ServiceResult,data map[string][]ServiceResult) {
+func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string, authResult ServiceResult, data map[string][]ServiceResult) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	
-	
 	var apiKeyReport *APIKeyReport
 	for i := range r.APIKeys {
 		if r.APIKeys[i].APIKey == apiKey {
@@ -106,7 +104,7 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 		r.APIKeys = append(r.APIKeys, newReport)
 		apiKeyReport = &r.APIKeys[len(r.APIKeys)-1]
 	}
-	
+
 	if serviceName == "auth" {
 		if apiKeyReport.AuthReport == nil {
 			apiKeyReport.AuthReport = make(map[string]ServiceResult)
@@ -123,18 +121,18 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 		// for bucket, result := range data {
 		// 	apiKeyReport.Services[serviceName][subServiceName][bucket] = result
 		// }
-		
-		if serviceName == "rtdb" && subServiceName == "read"{
+
+		if serviceName == "rtdb" && subServiceName == "read" {
 			log.Printf("Adding service report for: %s, %s, %s\n", serviceName, subServiceName)
 			log.Printf("data: %v\n", data)
 		}
 		for bucket, results := range data {
 			// result contains a list of ServiceResult objects.
 			for _, result := range results {
-				
-	// Check if the bucket key already exists.
+
+				// Check if the bucket key already exists.
 				if existingResult, exists := apiKeyReport.Services[serviceName][subServiceName][bucket]; exists {
-				// Check if both existing and current results are vulnerable.
+					// Check if both existing and current results are vulnerable.
 					if existingResult.Vulnerable == services.StatusVulnerable && result.Vulnerable == services.StatusVulnerable {
 						if !strings.Contains(existingResult.AuthType, "public") {
 
@@ -146,7 +144,7 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 									break
 								}
 							}
-	
+
 							// Add result.AuthType only if it's not already in the list
 							if !isPresent {
 								if existingResult.AuthType == "" {
@@ -160,13 +158,13 @@ func (r *Report) AddServiceReport(apiKey, serviceName, subServiceName string,aut
 							// Update the map with the modified result.
 							apiKeyReport.Services[serviceName][subServiceName][bucket] = existingResult
 						}
-						
+
 					}
 				} else {
 					apiKeyReport.Services[serviceName][subServiceName][bucket] = result
 				}
 			}
-		// If the bucket doesn't exist or isn't vulnerable, add the result directly.
+			// If the bucket doesn't exist or isn't vulnerable, add the result directly.
 		}
 	}
 }
@@ -182,5 +180,5 @@ func (r *Report) ReportToJSON() (string, error) {
 		return "", err
 	}
 	return string(jsonData), nil
-	
+
 }

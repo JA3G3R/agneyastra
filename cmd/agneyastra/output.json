@@ -2,9 +2,9 @@ Config file already exists at: /home/bhavarth/.agneyastra/config.yaml
 {
   "api_keys": [
     {
-      "api_key": "AIzaSyB-IobHSGAAsJmaKouWMtHShl-d5sX98b0",
-      "correlation_score": 0,
-      "auth": {
+      "APIKey": "AIzaSyB-IobHSGAAsJmaKouWMtHShl-d5sX98b0",
+      "CorrelationScore": 0,
+      "AuthReport": {
         "anon-auth": {
           "Vulnerable": "error",
           "Error": "failed to sign up anonymously, status code: 400",
@@ -36,16 +36,16 @@ Config file already exists at: /home/bhavarth/.agneyastra/config.yaml
           "VulnConfig": "User Signup Enabled in Firebase project.",
           "Remedy": "Disable User Signup from Firebase Console",
           "Details": {
-            "email": "fclsxqogpa@example.com",
+            "email": "fsyzyeeixr@example.com",
             "expiresIn": "3600",
-            "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZkZTQwZjA0ODgxYzZhMDE2MTFlYjI4NGE0Yzk1YTI1MWU5MTEyNTAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3JhcHAtNTljODkiLCJhdWQiOiJjcmFwcC01OWM4OSIsImF1dGhfdGltZSI6MTc1Mzg3MTkwOSwidXNlcl9pZCI6Im1tamtXeGR2Qm1SMEczVFNJcG91OTd1bVpvQTIiLCJzdWIiOiJtbWprV3hkdkJtUjBHM1RTSXBvdTk3dW1ab0EyIiwiaWF0IjoxNzUzODcxOTA5LCJleHAiOjE3NTM4NzU1MDksImVtYWlsIjoiZmNsc3hxb2dwYUBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJmY2xzeHFvZ3BhQGV4YW1wbGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.hModcXIZGc5ok1r6fmPsR0HEhM7TsDSy0OITq6bll8vLvXPy9VG2gGXO2zlVj8PUno9TIk7BxgAB9oC1Tum2CraqbEhUahSj2-zYShDkZ2SuOtiSDFluwWlXyOkOZ3pASXXj131nI5izKDXeZqsV6NI-_jHofzku-p1orAwiSYACVr8wPP_SFJLnOPvGgeraquE5xWqmbBwVzPmih4xizajKgacCvyd4fU0MHe_OUhCs7aqgliTEmWMijt8anNg-4MKz14J-zMACZcbgcPloMYqhv58gbrIfH_SNAU-sxTXQFLUI1NKuAcIcMPm8by1c9mDGC3JpDepe0YGqnjMdNA",
-            "localId": "mmjkWxdvBmR0G3TSIpou97umZoA2",
-            "password": "13u(13r9tvrq",
-            "refreshToken": "AMf-vBxjMcEK2B_Vilzii-8M9AjLVK_C1KQlEKrbX1Uddi0QcIXI5OlFf2KFBEfnmMuZvOcJrgEodfAkb6qfZN3aqSZRdjOQv27Llpzfxk_825Ztak8Ul1kNH0tgBWJ3HYxf--PTybKDEqlQNPzRVPw1Psp-iKUNkKih7nPNbdvNut4kCzjFHLIdkMhntfmR_4Q2FCaxEiKBPRSIjDmnSJX8tr0ARGdezA"
+            "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk1MWRkZTkzMmViYWNkODhhZmIwMDM3YmZlZDhmNjJiMDdmMDg2NmIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3JhcHAtNTljODkiLCJhdWQiOiJjcmFwcC01OWM4OSIsImF1dGhfdGltZSI6MTc1Mzg5MjczOSwidXNlcl9pZCI6IkNaRU0weVN1cGlNRHFJR1VCTUl4a0VWTWZPczEiLCJzdWIiOiJDWkVNMHlTdXBpTURxSUdVQk1JeGtFVk1mT3MxIiwiaWF0IjoxNzUzODkyNzM5LCJleHAiOjE3NTM4OTYzMzksImVtYWlsIjoiZnN5enllZWl4ckBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJmc3l6eWVlaXhyQGV4YW1wbGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.pLICFvIa69c7wiyKmf2HTDws-KmcQzKt4Z4pj0WHyVn-zan_-fMe4hKdBxt1-kiOB56N0kDZp-O016G2FEod5QHRdJJK3uFyvp9r4F04iy0YatigkBak6hXnAHqWJJcHywgLZjILiZbBMvqmXTBqRNGG-qdEeF2tvKEfWAC6K61AtUYoT8ZH5ly8imBghgA7Fqo27Jb0qSvHcbK5KYfaEZ6ItuSzjfaNOnNDtfJRjfgBpqP0SI9XUhXcw-6OvxpLwv8L9nKXv7jj3jWG1Voa7vja3weKAeVlkvsg-O8cRH5UOyjGfO-Ot0MhoAkOKKARphMZoUfitFOjQwrR5bheFg",
+            "localId": "CZEM0ySupiMDqIGUBMIxkEVMfOs1",
+            "password": "9\u0026cZxhtIvHnP",
+            "refreshToken": "AMf-vByn_ziNWKNOj5IKRnlYV5yvhXIrpR5u96RS-KGa-QZS_2fC5KHFA4aclDapjqFVezr_9YnVdGP4QafLBhiYTVgGUwjhsVA0wVINlH3paOggFijI1YxZ9iehp8mZEOdZGdzTK5qP6Nj6QJkPe31iyWRnLpdfVheeHNZ7srZdlBf8ILt7JPwbkmirMb2_0mRfvjmERSfCZm1F8K8HUzUTQxzZ_T8bXA"
           }
         }
       },
-      "services": {
+      "Services": {
         "bucket": {
           "delete": {
             "1043141250035": {
@@ -1327,7 +1327,7 @@ Config file already exists at: /home/bhavarth/.agneyastra/config.yaml
               "VulnConfig": "allow delete: if true; // Allows public delete access to storage objects.",
               "Remedy": "Disable public write access: 'allow delete: if request.auth != null;' or allow delete: if request.auth.token.role == \"\u003cuser-id\u003e\";'.",
               "Details": {
-                "rtdb_url": "https://1043141250035.firebaseio.com/agneyastrapocwh553y.json",
+                "rtdb_url": "https://1043141250035.firebaseio.com/agneyastrapoc2tTzmX.json",
                 "status_code": "404"
               }
             },
@@ -1338,7 +1338,7 @@ Config file already exists at: /home/bhavarth/.agneyastra/config.yaml
               "VulnConfig": "allow delete: if true; // Allows public delete access to storage objects.",
               "Remedy": "Disable public write access: 'allow delete: if request.auth != null;' or allow delete: if request.auth.token.role == \"\u003cuser-id\u003e\";'.",
               "Details": {
-                "rtdb_url": "https://crapp-59c89-default-rtdb.firebaseio.com/agneyastrapocwh553y.json",
+                "rtdb_url": "https://crapp-59c89-default-rtdb.firebaseio.com/agneyastrapoc2tTzmX.json",
                 "status_code": "404"
               }
             }
@@ -1347,7 +1347,7 @@ Config file already exists at: /home/bhavarth/.agneyastra/config.yaml
           "write": {}
         }
       },
-      "secrets": null
+      "Secrets": null
     }
   ]
 }

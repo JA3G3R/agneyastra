@@ -176,7 +176,7 @@ func BucketUpload(buckets []string, filePath string) ([]UploadCheckResult, error
 				result.Success = services.StatusSafe
 				result.Error = fmt.Errorf("")
 				result.StatusCode = fmt.Sprintf("%d", resp.StatusCode)
-				result.AuthType = "public"
+				result.AuthType = ""
 			}
 		} else {
 			_, err := ioutil.ReadAll(resp.Body)
