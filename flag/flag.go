@@ -155,7 +155,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&apiKey, "key", "", "Firebase API key (required)")
 	RootCmd.PersistentFlags().StringVar(&projectId, "project-id", "", "Firebase project ID")
 	RootCmd.PersistentFlags().StringVar(&config.ReportPath, "report-path", "./report.html", "Path to store the HTML report (default: ./report.html)")
-	RootCmd.PersistentFlags().StringVar(&config.TemplateFile, "template-file", "./template.html", "Template file to use for report (default: ./template.html)")
+	RootCmd.PersistentFlags().StringVar(&config.TemplateFile, "template-file", "~/.agneyastra/template.html", "Template file to use for report (default: ./template.html)")
 	RootCmd.PersistentFlags().StringVar(&config.PentestDataFilePath, "pentest-data", "", "Path to the pentest data file")
 	RootCmd.PersistentFlags().StringVar(&ConfigPath, "config", "", "Custom config file path")
 	RootCmd.PersistentFlags().StringVar(&config.ApiKeyFile, "key-file", "", "Path to a file containing Firebase API keys")

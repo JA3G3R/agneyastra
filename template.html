@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agneyastra Report</title>
+    <style>
+        :root {
+            --bg-main: #121212;
+            --bg-surface: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #aaa;
+            --border-color: #2c2c2c;
+            --accent-low: #f44336;
+            --accent-medium: #ffc107;
+            --accent-high: #4caf50;
+            --code-bg: #1b1b1b;
+            --json-key: #82aaff;
+            --json-string: #c3e88d;
+            --json-number: #f78c6c;
+            --json-boolean: #c792ea;
+            --json-null: #c792ea;
+        }
+
+        :root[data-theme="light"] {
+            --bg-main: #ffffff;
+            --bg-surface: #f5f5f5;
+            --text-main: #1a1a1a;
+            --text-muted: #444;
+            --border-color: #ccc;
+            --accent-low: #d32f2f;
+            --accent-medium: #ffa000;
+            --accent-high: #388e3c;
+            --code-bg: #f0f0f0;
+            --json-key: #1a237e;
+            --json-string: #388e3c;
+            --json-number: #e65100;
+            --json-boolean: #6a1b9a;
+            --json-null: #6a1b9a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        h2,
+        h3,
+        h4,
+        h5 {
+            color: var(--text-main);
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: var(--bg-surface);
+            font-size: 0.95rem;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border-color);
+            padding: 0.6em 0.8em;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+        }
+
+        th {
+            background-color: #2d2d2d;
+            color: #ddd;
+        }
+
+        :root[data-theme="light"] th {
+            background-color: #e0e0e0;
+            color: #111;
+        }
+
+        td {
+            color: var(--text-main);
+        }
+
+        .details {
+            background-color: var(--code-bg);
+            border-left: 4px solid var(--border-color);
+            padding: 1em;
+            margin-top: 0.5em;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-main);
+        }
+
+        .score {
+            font-weight: 500;
+            padding-left: 0.5em;
+        }
+
+        .score.low {
+            color: var(--accent-low);
+        }
+
+        .score.medium {
+            color: var(--accent-medium);
+        }
+
+        .score.high {
+            color: var(--accent-high);
+        }
+
+        p {
+            color: var(--text-muted);
+        }
+    </style>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css"
+        id="hljs-theme" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const root = document.documentElement;
+            const btn = document.getElementById('theme-toggle');
+            const hljsTheme = document.getElementById('hljs-theme');
+
+            const applyTheme = (theme) => {
+                root.setAttribute('data-theme', theme);
+                hljsTheme.href = theme === 'light'
+                    ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css'
+                    : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css';
+                localStorage.setItem('theme', theme);
+            };
+
+            btn.addEventListener('click', () => {
+                const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+            });
+
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            applyTheme(savedTheme);
+            hljs.highlightAll();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>Agneyastra Report</h1>
+        <div>
+            <span>{{.Date}}</span>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle theme">🌓</button>
+        </div>
+    </div>
+
+    <!-- ... Keep your report template as-is below this -->
+    <div class="content">
+        {{range .APIKeys}}
+        <h2>API Key: {{.APIKey}}
+            {{if .CorrelationScore}}
+            <span
+                class="score {{if lt .CorrelationScore 3.0}}low{{else if lt .CorrelationScore 7.0}}medium{{else}}high{{end}}">
+                (Correlation Score: {{.CorrelationScore}})
+            </span>
+            {{end}}
+        </h2>
+
+        <div>
+            <h3>Authentication Report</h3>
+            {{range $authType, $authReport := .AuthReport}}
+            <h4>Auth Type: {{$authType}}</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vulnerable</th>
+                        <th>Vuln Config</th>
+                        <th>Remediation</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{$authReport.Vulnerable}}</td>
+                        <td>{{$authReport.VulnConfig}}</td>
+                        <td>{{$authReport.Remedy}}</td>
+                        <td>{{$authReport.Error}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="details">
+                <h4>Details:</h4>
+                <pre><code class="language-json">{{toJson $authReport.Details}}</code></pre>
+            </div>
+            {{end}}
+        </div>
+
+        {{range $service, $subservices := .Services}}
+        <h3>{{capitalize $service}} Configuration</h3>
+        {{range $action, $projects := $subservices}}
+        <h4>{{capitalize $action}}</h4>
+        {{range $projectID, $serviceResult := $projects}}
+        <h5>Project / Bucket: {{$projectID}}</h5>
+        <table>
+            <thead>
+                <tr>
+                    <th>Auth Type</th>
+                    <th>Vulnerable</th>
+                    <th>Vuln Config</th>
+                    <th>Remediation</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{$serviceResult.AuthType}}</td>
+                    <td>{{$serviceResult.Vulnerable}}</td>
+                    <td>{{$serviceResult.VulnConfig}}</td>
+                    <td>{{$serviceResult.Remedy}}</td>
+                    <td>{{$serviceResult.Error}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="details">
+            <h4>Details:</h4>
+            <pre><code class="language-json">{{toJson $serviceResult.Details}}</code></pre>
+        </div>
+        {{end}}
+        {{end}}
+        {{end}}
+
+        <div>
+            <h3>Secrets</h3>
+            {{if .Secrets}}
+            {{range $service, $subservices := .Secrets}}
+            <h4>Service: {{$service}}</h4>
+            {{range $subservice, $secretTypes := $subservices}}
+            <h5>Sub-Service: {{$subservice}}</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Secret Type</th>
+                        <th>Secret</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range $secretType, $secret := $secretTypes}}
+                    <tr>
+                        <td>{{$secretType}}</td>
+                        <td><code>{{$secret}}</code></td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+            {{end}}
+            {{end}}
+            {{else}}
+            <p>No secrets found for this API key.</p>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</body>
+
+</html>

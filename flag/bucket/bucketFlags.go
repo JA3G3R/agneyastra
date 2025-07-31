@@ -3,6 +3,7 @@ package bucket
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/JA3G3R/agneyastra/cmd/run"
 	"github.com/JA3G3R/agneyastra/flag/auth"
@@ -20,7 +21,7 @@ var deleteAuthFlag string
 var BucketCmd = &cobra.Command{
 	Use:   "bucket",
 	Short: "Perform Storage Bucket misconfiguration checks",
-	Long: `Bucket commands for identifying misconfigurations in read, write, and delete operations.`,
+	Long:  `Bucket commands for identifying misconfigurations in read, write, and delete operations.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if authFlag != "" {
 			runAuthSubcommands(authFlag)
@@ -60,6 +61,21 @@ var bucketUploadCmd = &cobra.Command{
 			runAuthSubcommands(uploadAuthFlag)
 		}
 		file := viper.GetString("services.bucket.upload.filename")
+		// if file does not exist, create a dummy file in /tmp dir with the same name and content agneyastra poc
+		if file == "" {
+			file = "agneyastra_poc.txt"
+		}
+		if _, err := os.Stat(file); os.IsNotExist(err) {
+			log.Printf("File %s does not exist, creating a dummy file in /tmp", file)
+			tmpFile := filepath.Join(os.TempDir(), filepath.Base(file))
+			if _, err := os.Stat(tmpFile); os.IsNotExist(err) {
+				err = os.WriteFile(tmpFile, []byte("Agneyastra bucket upload test POC."), 0644)
+				if err != nil {
+					log.Fatalf("Failed to create dummy file for bucket upload: %v", err)
+				}
+			}
+			file = tmpFile
+		}
 		// log.Printf("Uploading file: %s\n", file)
 		for _, apiKey := range config.ApiKeys {
 			run.RunBucketWrite(file, apiKey)
@@ -84,11 +100,11 @@ var bucketDeleteCmd = &cobra.Command{
 
 func runAuthSubcommands(authFlag string) {
 	authCmdMap := map[string]*cobra.Command{
-		"anon-auth":         auth.AnonAuthCmd,
-		"sign-up":           auth.SignUpCmd,
-		"send-signin-link":  auth.SendSigninLinkCmd,
+		"anon-auth":          auth.AnonAuthCmd,
+		"sign-up":            auth.SignUpCmd,
+		"send-signin-link":   auth.SendSigninLinkCmd,
 		"custom-token-login": auth.CustomTokenLoginCmd,
-		"sign-in":           auth.SignInCmd,
+		"sign-in":            auth.SignInCmd,
 	}
 	args := []string{"no-report"}
 	if authFlag == "all" {
@@ -96,11 +112,13 @@ func runAuthSubcommands(authFlag string) {
 		for _, cmd := range authCmdMap {
 			// log.Printf("Running subcommand: %s\n", name)
 			cmd.SetArgs(args)
-			cmd.Run(cmd,args)	}
+			cmd.Run(cmd, args)
+		}
 	} else if cmd, exists := authCmdMap[authFlag]; exists {
 		log.Printf("Running specific auth subcommand: %s\n", authFlag)
 		cmd.SetArgs(args)
-		cmd.Run(cmd,args)} else {
+		cmd.Run(cmd, args)
+	} else {
 		log.Printf("Invalid auth flag: %s. Valid options: all, anon-auth, sign-up, send-signin-link, custom-token-login, sign-in\n", authFlag)
 		os.Exit(1)
 	}
@@ -118,5 +136,5 @@ func Init() {
 	viper.BindPFlag("services.bucket.upload.filename", bucketUploadCmd.Flags().Lookup("file"))
 	bucketUploadCmd.MarkFlagRequired("file")
 	BucketCmd.AddCommand(bucketReadCmd, bucketUploadCmd, bucketDeleteCmd)
-	
+
 }

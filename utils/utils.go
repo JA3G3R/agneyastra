@@ -17,7 +17,8 @@ import (
 )
 
 const (
-	githubRawURL = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/config.yaml"
+	githubRawURL         = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/config.yaml"
+	githubRawURLTemplate = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/template.yaml"
 )
 
 func downloadConfigFile() error {
@@ -70,7 +71,55 @@ func downloadConfigFile() error {
 func Init() {
 
 	downloadConfigFile()
+	downloadTemplate()
 
+}
+
+func downloadTemplate() error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+
+	templatePath := filepath.Join(homeDir, ".agneyastra", "template.yaml")
+
+	// Skip download if the file already exists
+	if _, err := os.Stat(templatePath); err == nil {
+		fmt.Println("Template file already exists at:", templatePath)
+		return nil
+	}
+
+	// Ensure the directory exists
+	if err := os.MkdirAll(filepath.Dir(templatePath), 0755); err != nil {
+		return err
+	}
+
+	// Download file
+	resp, err := http.Get(githubRawURLTemplate)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Check for successful HTTP response
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed to download template: HTTP %d", resp.StatusCode)
+	}
+
+	// Write the downloaded file to disk
+	out, err := os.Create(templatePath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Template file downloaded to:", templatePath)
+	return nil
 }
 
 func ReadApiKeysFromFile(filePath string) ([]string, map[string][]string, error) {
@@ -89,11 +138,11 @@ func ReadApiKeysFromFile(filePath string) ([]string, map[string][]string, error)
 		if line != "" {
 			// Split the line by commas
 			parts := strings.Split(line, ",")
-			var res []string 
-			for _, str := range parts { 
-				if str != "" { 
-					res = append(res, str) 
-				} 
+			var res []string
+			for _, str := range parts {
+				if str != "" {
+					res = append(res, str)
+				}
 			}
 			parts = res
 			apiKey := strings.TrimSpace(parts[0]) // The first part is the API key
@@ -123,7 +172,7 @@ func ReadApiKeysFromFile(filePath string) ([]string, map[string][]string, error)
 }
 
 func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
-	
+
 	url := fmt.Sprintf("https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key=%s", apiKey)
 
 	resp, err := http.Get(url)
@@ -149,7 +198,6 @@ func GetProjectConfig(apiKey string) (*ProjectConfig, error) {
 
 	return &projectConfig, nil
 }
-
 
 func ExtractDomainsFromProjectConfig(config ProjectConfig) []string {
 	domainSet := make(map[string]struct{}) // Use a map to track unique domains
@@ -179,23 +227,22 @@ func ExtractDomainsFromProjectConfig(config ProjectConfig) []string {
 	return domains
 }
 
-
 func LoadConfig(path string) (Config, error) {
-    var config Config
+	var config Config
 
-    viper.SetConfigName("config")
-    viper.SetConfigType("yaml")
-    viper.AddConfigPath(path)
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(path)
 
-    if err := viper.ReadInConfig(); err != nil {
-        return config, fmt.Errorf("error reading config file: %w", err)
-    }
+	if err := viper.ReadInConfig(); err != nil {
+		return config, fmt.Errorf("error reading config file: %w", err)
+	}
 
-    if err := viper.Unmarshal(&config); err != nil {
-        return config, fmt.Errorf("error unmarshaling config: %w", err)
-    }
+	if err := viper.Unmarshal(&config); err != nil {
+		return config, fmt.Errorf("error unmarshaling config: %w", err)
+	}
 
-    return config, nil
+	return config, nil
 }
 
 func RandomString(length int) string {
