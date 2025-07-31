@@ -20,10 +20,6 @@ Firebase, a versatile platform by Google, powers countless web and mobile applic
 
 Agneyastra, a mythological weapon bestowed upon by the Agni (fire) Dev (god) is a divine weapon associated with the fire element. Presenting Agneyastra, a cutting-edge tool designed to empower bug bounty hunters and security professionals with unparalleled precision in detecting Firebase misconfigurations. With its comprehensive checks covering all of Firebase services, a correlation engine and Secret Extraction, and automated report generation, Agneyastra ensures that no vulnerability goes unnoticed, turning the tides in your favor.
 
-# 🔥 Agneyastra
-
-Agneyastra is an advanced reconnaissance and exploitation tool designed to identify and report misconfigurations in Firebase services. Tailored for security professionals and bug bounty hunters, it automates checks for unauthorized **Read**, **Write**, and **Delete** access across various Firebase products and correlates findings with organizational data for higher precision and impact.
-
 ---
 
 ## 🚀 Features
