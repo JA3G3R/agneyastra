@@ -20,20 +20,181 @@ Firebase, a versatile platform by Google, powers countless web and mobile applic
 
 Agneyastra, a mythological weapon bestowed upon by the Agni (fire) Dev (god) is a divine weapon associated with the fire element. Presenting Agneyastra, a cutting-edge tool designed to empower bug bounty hunters and security professionals with unparalleled precision in detecting Firebase misconfigurations. With its comprehensive checks covering all of Firebase services, a correlation engine and Secret Extraction, and automated report generation, Agneyastra ensures that no vulnerability goes unnoticed, turning the tides in your favor.
 
-Key Features:
+# 🔥 Agneyastra
 
-1. Checks for Misconfiguration in all the Firebase services.
-2. Correlation Engine and Secret Extraction.
-3. POC and Report Creation.
+Agneyastra is an advanced reconnaissance and exploitation tool designed to identify and report misconfigurations in Firebase services. Tailored for security professionals and bug bounty hunters, it automates checks for unauthorized **Read**, **Write**, and **Delete** access across various Firebase products and correlates findings with organizational data for higher precision and impact.
 
-## Installation Guide for Agneyastra
+---
 
-```go install  github.com/JA3G3R/agneyastra/cmd/agneyastra@latest```
+## 🚀 Features
+
+- 🔍 **Automated Firebase Misconfiguration Scanning**
+  - Checks for **Read**, **Write**, and **Delete** access in:
+    - Firestore
+    - Realtime Database
+    - Storage Buckets
+
+- 🧠 **Credential-Aware Access Simulation**
+  - Uses credentials in increasing order of privilege to simulate real-world access patterns.
+  - Starts with unauthenticated (public) access to detect outright exposed endpoints.
+
+- 🧩 **Correlation Engine**
+  - Optional but powerful module to determine whether a Firebase instance is likely associated with your target.
+  - Accepts inputs like subdomains, acquisitions, team member profiles, and more.
+  - Produces a confidence score to help prioritize targets.
+
+- 🛠️ **Proof of Concept Generation (Coming Soon)**
+  - Automatically create PoCs and remediation steps for responsible disclosure or internal reports.
+
+---
+
+## 🏗️ Installation
+
+```bash
+go install github.com/JA3G3R/agneyastra/cmd/agneyastra@latest
+```
+
+---
+
+## ⚙️ Usage
+
+Basic scan:
+```bash
+agneyastra --key <your-firebase-api-key> -all
+```
+
+Service Specific Scan (Does not try auth):
+```bash
+agneyastra bucket -a --key <your-firebase-api-key> 
+```
+
+Service Specific Scan (With Auth):
+```bash
+agneyastra bucket -a --key <your-firebase-api-key> --auth all
+```
 
 
-## Usage
+With correlation engine:
+```bash
+python agneyastra.py --key <your-firebase-api-key> -all  --pentest-data <your-pentest-data-file.json>
+```
 
-You need to add a config.yaml and template.html
+With Secret Extraction:
+```bash
+python agneyastra.py --key <your-firebase-api-key> -all  --secrets-extract
+```
+
+With Asset Extraction:
+```bash
+python agneyastra.py --key <your-firebase-api-key> -all  --assets-extract 
+```
+
+
+
+Show all options:
+```bash
+python agneyastra.py --help
+```
+
+---
+
+## File Formats
+
+### config.yaml
+
+This file is present at the path `~/.agneyastra/config.yaml`, and looks like:
+```
+general:
+  debug: false
+
+services:
+  auth:
+    send-link:
+      email: "<your-email>"
+    custom-token:
+      token: "<custom-jwt-token>"
+    signup:
+      email: "<custom-email>"
+      password: "<custom-password>"
+  bucket:
+    upload:
+      filename: "<path-to-file-for-testing-bucket-upload>"
+```
+You can either edit this file, or provide a file of your choice using the flag `--config`
+
+### template.html
+
+This file is present at the path `~/.agneyastra/template.html` and is used to generate the html report. To create a custom template, make sure that you use the same variables for placeholders. Either edit this file or provide your own using the flag `--template-file`
+
+
+---
+
+## 🧩 Supported Services
+
+| Firebase Service     | Read | Write | Delete |
+|----------------------|------|-------|--------|
+| Firestore            | ✅   | ✅    | ✅     |
+| Realtime Database    | ✅   | ✅    | ✅     |
+| Storage Buckets      | ✅   | ✅    | ✅     |
+
+
+---
+
+## 🔐 Authentication Strategy
+
+The tool obtains authentication token using the following authentication methods:
+1. **Public (No Authentication)**
+2. **Anonymous Authentication**
+3. **New User Sign Up**
+4. **Login Credentials** *(if provided by the user)*
+5.  **Custom JWT** *(if provided by the user)*
+
+The tool also checks whether the send sign-in link option is enabled in the project
+
+This enables realistic privilege escalation and vulnerability identification.
+
+---
+
+## 📊 Reporting
+
+Output formats supported:
+- JSON 
+- HTML
+
+Reports include:
+- Summary of vulnerabilities
+- Correlation confidence (if enabled)
+- Remediation suggestions *(planned)*
+
+---
+
+## 📦 Requirements
+
+- Golang (1.22.0+)
+
+---
+
+## 🛡️ Disclaimer
+
+Agneyastra is intended **strictly for ethical testing, educational use, or environments you have explicit permission to test**. Unauthorized scanning of Firebase endpoints may be illegal and unethical. Use responsibly.
+
+---
+
+## 🧑‍💻 Contributing
+
+Contributions are welcome! Open an issue or pull request to discuss ideas or bugs.
+
+---
+
+
+## 💬 Contact
+
+Created by [Bhavarth Karmarkar](https://github.com/JA3G3R)  
+For inquiries or collaborations: bhavarth1905kr@gmail.com
+---
+
+## 🧪 Example Output
+
 
 ```
 ./agneyastra --key AIzaSyBv_y636JW_LYBcUQ7rN0b9Wukzop_gVEI --all
