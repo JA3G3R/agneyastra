@@ -72,24 +72,24 @@ agneyastra bucket -a --key <your-firebase-api-key> --auth all
 
 With correlation engine:
 ```bash
-python agneyastra.py --key <your-firebase-api-key> -all  --pentest-data <your-pentest-data-file.json>
+agneyastra --key <your-firebase-api-key> -all  --pentest-data <your-pentest-data-file.json>
 ```
 
 With Secret Extraction:
 ```bash
-python agneyastra.py --key <your-firebase-api-key> -all  --secrets-extract
+agneyastra --key <your-firebase-api-key> -all  --secrets-extract
 ```
 
 With Asset Extraction:
 ```bash
-python agneyastra.py --key <your-firebase-api-key> -all  --assets-extract 
+agneyastra --key <your-firebase-api-key> -all  --assets-extract 
 ```
 
 
 
 Show all options:
 ```bash
-python agneyastra.py --help
+agneyastra --help
 ```
 
 ---
