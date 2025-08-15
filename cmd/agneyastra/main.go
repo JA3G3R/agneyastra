@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	
+
 	// fmt.Println("executing flags")
 	utils.Init()
 	flags.Execute()
@@ -53,8 +53,7 @@ func main() {
 	// if err != nil {
 	// 	fmt.Println("encountered error when reading config file: ",err)
 	// }
-	
-	
+
 	// // Step 1: Fetch the project config using the API key
 	// fmt.Println("Fetching project config...")
 	// projectConfig, err := utils.GetProjectConfig(apiKey)
@@ -183,7 +182,7 @@ func main() {
 	// }
 
 	// for _, domain := range domains {
-		
+
 	// 	log.Printf("Checking Firestore Read document for domain: %s\n", domain)
 	// 	isVulnerable, documentDetails, err := services.FirestoreReadDocument(domains, documentDetails.DocumentID)
 	// 	if err != nil {
@@ -199,7 +198,4 @@ func main() {
 	// 	}
 	// }
 
-
-}	
-
-
+}

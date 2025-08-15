@@ -42,12 +42,12 @@ and remediation recommendations for each service.`,
 			config.ApiKeys = append(config.ApiKeys, apiKey)
 			if projectId != "" {
 				idsfromcli := strings.Split(projectId, ",")
-				var res []string 
-				for _, str := range idsfromcli { 
-					if str != "" { 
-						res = append(res, str) 
-					} 
-				} 
+				var res []string
+				for _, str := range idsfromcli {
+					if str != "" {
+						res = append(res, str)
+					}
+				}
 				projectIdsFromFile[apiKey] = res
 			}
 		} else {
@@ -64,7 +64,6 @@ and remediation recommendations for each service.`,
 			log.SetOutput(ioutil.Discard)
 		}
 
-
 		// Fetch project config
 
 		// fmt.Printf("Fetching project config using API key: %s\n", apiKey)
@@ -75,7 +74,7 @@ and remediation recommendations for each service.`,
 				continue
 			}
 			config.ProjectConfig[key] = *projectConfig
-			if len(projectIdsFromFile[key]) == 0 {			
+			if len(projectIdsFromFile[key]) == 0 {
 				config.ProjectIds[key] = utils.ExtractDomainsFromProjectConfig(*projectConfig)
 			} else {
 				config.ProjectIds[key] = projectIdsFromFile[key]
@@ -88,7 +87,6 @@ and remediation recommendations for each service.`,
 		if config.Debug {
 			log.Println("Debug mode enabled")
 		}
-
 
 		return nil
 	},
@@ -115,7 +113,6 @@ func Execute() {
 	}
 }
 
-
 func ApplyExitOnHelp(c *cobra.Command, exitCode int) {
 	helpFunc := c.HelpFunc()
 	c.SetHelpFunc(func(c *cobra.Command, s []string) {
@@ -126,25 +123,29 @@ func ApplyExitOnHelp(c *cobra.Command, exitCode int) {
 
 func InitConfig() {
 
-    if ConfigPath != "" {
-        viper.SetConfigFile(ConfigPath) // Use custom config path
-    } else {
-        viper.SetConfigName("config")  // Default config name
-        viper.SetConfigType("yaml")
-        viper.AddConfigPath(".")
-        viper.AddConfigPath("$HOME/.agneyastra")
-    }
+	if ConfigPath != "" {
+		viper.SetConfigFile(ConfigPath) // Use custom config path
+	} else {
+		viper.SetConfigName("config") // Default config name
+		viper.SetConfigType("yaml")
+		viper.AddConfigPath(".")
+		viper.AddConfigPath("$HOME/.agneyastra")
+	}
 
-    viper.SetEnvPrefix("AGNEYASTRA")
-    viper.AutomaticEnv()
+	if config.TemplateFile != "" {
+		viper.Set("template_file", config.TemplateFile)
+	} else {
+		viper.Set("templatefile", "~/.agneyastra/template.html")
+	}
+	viper.SetEnvPrefix("AGNEYASTRA")
+	viper.AutomaticEnv()
 
-    if err := viper.ReadInConfig(); err != nil {
-        log.Printf("Warning: Config file not found: %s\n", err)
-     }// else {
-    //     log.Printf("Using config file: %s\n", viper.ConfigFileUsed())
-    // }
+	if err := viper.ReadInConfig(); err != nil {
+		log.Printf("Warning: Config file not found: %s\n", err)
+	} // else {
+	//     log.Printf("Using config file: %s\n", viper.ConfigFileUsed())
+	// }
 }
-
 
 func init() {
 
@@ -162,7 +163,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&config.SecretsRegexFile, "secrets-regex-file", "", "Path to a file containing secrets regexes")
 
 	RootCmd.PersistentFlags().BoolVar(&config.Correlate, "correlate", false, "Correlate the results with the API key used")
-	RootCmd.PersistentFlags().BoolVarP(&config.Debug,"debug","d", false, "Enable Debug mode for detailed logging")
+	RootCmd.PersistentFlags().BoolVarP(&config.Debug, "debug", "d", false, "Enable Debug mode for detailed logging")
 	RootCmd.PersistentFlags().BoolVarP(&allServices, "all", "a", false, "Check all misconfigurations in all services")
 	RootCmd.PersistentFlags().BoolVar(&config.SecretsExtract, "secrets-extract", false, "Extract secrets from extracted data")
 	RootCmd.PersistentFlags().BoolVar(&config.AssetExtract, "assets-extract", false, "Extract assets(domains,ips,emails etc.) from extracted data")
@@ -175,8 +176,8 @@ func init() {
 	RootCmd.CompletionOptions.DisableDefaultCmd = true
 
 	// Bind Viper to flags
-    viper.BindPFlag("api_key", RootCmd.PersistentFlags().Lookup("key"))
-    viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("Debug"))
+	viper.BindPFlag("api_key", RootCmd.PersistentFlags().Lookup("key"))
+	viper.BindPFlag("debug", RootCmd.PersistentFlags().Lookup("Debug"))
 
 	auth.Init()
 	bucket.Init()

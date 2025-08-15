@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -18,7 +19,7 @@ import (
 
 const (
 	githubRawURL         = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/config.yaml"
-	githubRawURLTemplate = "https://raw.githubusercontent.com/JA3G3R/agneyastra/main/template.yaml"
+	githubRawURLTemplate = "https://raw.githubusercontent.com/JA3G3R/agneyastra/refs/heads/main/template.html"
 )
 
 func downloadConfigFile() error {
@@ -27,11 +28,11 @@ func downloadConfigFile() error {
 		return err
 	}
 
-	configPath := filepath.Join(homeDir, ".agneyastra", "config.yaml")
+	configPath := filepath.Join(homeDir, ".config/agneyastra", "config.yaml")
 
 	// Skip download if the file already exists
 	if _, err := os.Stat(configPath); err == nil {
-		fmt.Println("Config file already exists at:", configPath)
+		log.Println("Config file already exists at:", configPath)
 		return nil
 	}
 
@@ -70,8 +71,15 @@ func downloadConfigFile() error {
 
 func Init() {
 
-	downloadConfigFile()
-	downloadTemplate()
+	err := downloadConfigFile()
+	if err != nil {
+		log.Fatalf("Could not download Config file: %v\n", err)
+	}
+	err = downloadTemplate()
+	if err != nil {
+		log.Fatalf("Could not download Template file: %v\n", err)
+
+	}
 
 }
 
@@ -81,11 +89,11 @@ func downloadTemplate() error {
 		return err
 	}
 
-	templatePath := filepath.Join(homeDir, ".agneyastra", "template.yaml")
+	templatePath := filepath.Join(homeDir, ".config/agneyastra", "template.yaml")
 
 	// Skip download if the file already exists
 	if _, err := os.Stat(templatePath); err == nil {
-		fmt.Println("Template file already exists at:", templatePath)
+		log.Println("Template file already exists at:", templatePath)
 		return nil
 	}
 
