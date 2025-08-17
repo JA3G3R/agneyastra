@@ -98,7 +98,7 @@ agneyastra --help
 
 ### config.yaml
 
-This file is present at the path `~/.agneyastra/config.yaml`, and looks like:
+This file is present at the path `~/.config/agneyastra/config.yaml`, and looks like:
 ```
 general:
   debug: false
@@ -120,7 +120,7 @@ You can either edit this file, or provide a file of your choice using the flag `
 
 ### template.html
 
-This file is present at the path `~/.agneyastra/template.html` and is used to generate the html report. To create a custom template, make sure that you use the same variables for placeholders. Either edit this file or provide your own using the flag `--template-file`
+This file is present at the path `~/.config/agneyastra/template.html` and is used to generate the html report. To create a custom template, make sure that you use the same variables for placeholders. Either edit this file or provide your own using the flag `--template-file`
 
 
 ---
