@@ -74,6 +74,12 @@ func recursiveContentReadFromBucket(bucket string, prefix string, authType strin
 	if err != nil {
 		return KeysResponseRecursive{}, isVulnerable, authType, fmt.Errorf("failed to parse response JSON: %w", err)
 	}
+	// trim keys.Items to limit to 15 items
+	if len(keys.Items) > 15 {
+		keys.Items = keys.Items[:15]
+		// last item should be "..."
+		keys.Items = append(keys.Items, Item{Name: "...", Bucket: bucket + ".appspot.com"})
+	}
 	recPrefix := make(map[string]KeysResponseRecursive)
 	if keys.Prefixes == nil {
 		return KeysResponseRecursive{Prefixes: nil, Items: keys.Items}, isVulnerable, authType, nil
