@@ -4,7 +4,7 @@ general:
 services:
   auth:
     send-link:
-      email: "bhavarth1905kr@gmail.com"
+      email: ""
     custom-token:
       token: ""
     signup:
