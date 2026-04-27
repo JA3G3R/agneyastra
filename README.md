@@ -50,8 +50,13 @@ Agneyastra, a mythological weapon bestowed upon by the Agni (fire) Dev (god) is 
 go install github.com/JA3G3R/agneyastra/cmd/agneyastra@latest
 ```
 
----
+For Nix or NixOS is a pre-packed module available. The latest release is usually present in the `unstable` channel.
 
+```bash
+$ nix-env -iA nixos.agneyastra
+```
+
+---
 ## ⚙️ Usage
 
 Basic scan:
