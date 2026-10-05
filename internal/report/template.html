@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agneyastra Report</title>
+<style>
+  :root{
+    --bg:#0f1115; --surface:#171a21; --surface2:#1e222b; --border:#2a2f3a;
+    --text:#e6e8ec; --muted:#9aa3b2; --accent:#5b9dff;
+    --crit:#ff4d6d; --high:#ff8a3d; --med:#ffc857; --low:#4fc3f7; --info:#8b95a7;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  :root[data-theme="light"]{
+    --bg:#f6f7f9; --surface:#ffffff; --surface2:#f0f2f5; --border:#dfe3ea;
+    --text:#1a1d23; --muted:#5b6472; --accent:#2b6fff;
+    --crit:#d1004b; --high:#c2560d; --med:#a9791b; --low:#0277bd; --info:#5b6472;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Inter',-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  .wrap{max-width:1100px;margin:0 auto;padding:2rem 1.25rem 4rem}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  h1{font-size:1.5rem;margin:0}
+  .sub{color:var(--muted);font-size:.85rem;margin-top:.25rem}
+  .toggle{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.4rem .7rem;cursor:pointer;font-size:.8rem}
+  .chips{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 2rem}
+  .chip{border:1px solid var(--border);border-radius:999px;padding:.3rem .8rem;font-size:.8rem;background:var(--surface)}
+  .chip b{font-variant-numeric:tabular-nums}
+  .key-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+  .key-head{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+  .key-id{font-family:var(--mono);font-size:1rem;font-weight:600}
+  .meta{color:var(--muted);font-size:.8rem;display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.35rem}
+  .badge{display:inline-block;border-radius:6px;padding:.1rem .5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#fff}
+  .b-critical{background:var(--crit)} .b-high{background:var(--high)} .b-medium{background:var(--med);color:#111}
+  .b-low{background:var(--low);color:#111} .b-info{background:var(--info)}
+  table{width:100%;border-collapse:collapse;margin-top:.9rem;font-size:.85rem}
+  th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+  code,.mono{font-family:var(--mono);font-size:.82rem}
+  .poc{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.35rem .5rem;margin-top:.35rem;overflow-x:auto;white-space:pre;color:var(--muted)}
+  .section-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:1.1rem 0 .3rem}
+  .br-list{display:flex;flex-wrap:wrap;gap:.4rem}
+  .br-item{border:1px solid var(--border);border-radius:8px;padding:.35rem .6rem;font-size:.8rem;background:var(--surface2)}
+  .empty{color:var(--muted);font-style:italic;font-size:.85rem;margin-top:.5rem}
+  .remedy{color:var(--muted);font-size:.8rem;margin-top:.25rem}
+  details summary{cursor:pointer;color:var(--accent);font-size:.8rem}
+  a{color:var(--accent)}
+  footer{color:var(--muted);font-size:.78rem;margin-top:2rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Agneyastra — Google/Firebase API-key blast-radius report</h1>
+      <div class="sub">{{.Tool}} {{.Version}} · {{.Scan.KeysScanned}} key(s) · {{.Scan.DurationMS}}ms · active mode: {{.Scan.ActiveMode}} · generated {{.Scan.FinishedAt}}</div>
+    </div>
+    <button class="toggle" onclick="var r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">Toggle theme</button>
+  </header>
+
+  <div class="chips">
+    <span class="chip">Findings <b>{{.Summary.Findings}}</b></span>
+    <span class="chip">Vulnerable keys <b>{{.Summary.VulnerableKeys}}</b></span>
+    <span class="chip"><span class="badge b-critical">crit</span> <b>{{index .Summary.BySeverity "critical"}}</b></span>
+    <span class="chip"><span class="badge b-high">high</span> <b>{{index .Summary.BySeverity "high"}}</b></span>
+    <span class="chip"><span class="badge b-medium">med</span> <b>{{index .Summary.BySeverity "medium"}}</b></span>
+    <span class="chip"><span class="badge b-low">low</span> <b>{{index .Summary.BySeverity "low"}}</b></span>
+    <span class="chip"><span class="badge b-info">info</span> <b>{{index .Summary.BySeverity "info"}}</b></span>
+    <span class="chip">Blast-radius APIs <b>{{.Summary.BlastRadiusEnabled}}</b></span>
+  </div>
+
+  {{range .Results}}
+  <div class="key-card">
+    <div class="key-head">
+      <div>
+        <div class="key-id">{{.APIKeyMasked}}</div>
+        <div class="meta">
+          <span>{{.KeyFormat}}</span>
+          <span>valid: {{.Valid}}</span>
+          {{if .Projects}}<span>projects: {{range $i,$p := .Projects}}{{if $i}}, {{end}}{{$p.ID}}{{if $p.Numeric}} (number){{end}}{{if $p.Validated}} ✓{{end}}{{end}}</span>{{end}}
+        </div>
+      </div>
+    </div>
+
+    {{if .AuthProviders}}
+    <div class="meta">auth providers:
+      anon={{.AuthProviders.Anonymous}} ·
+      signup={{.AuthProviders.EmailPasswordSignup}} ·
+      email-link={{.AuthProviders.EmailLink}} ·
+      custom-token={{.AuthProviders.CustomToken}}
+    </div>
+    {{end}}
+
+    {{if .Findings}}
+    <div class="section-title">Findings</div>
+    <table>
+      <thead><tr><th>Sev</th><th>Service / Check</th><th>Access</th><th>Resource</th><th>Detail</th></tr></thead>
+      <tbody>
+      {{range .Findings}}
+        <tr>
+          <td><span class="badge b-{{.Severity}}">{{.Severity}}</span></td>
+          <td><span class="mono">{{.Service}}</span><br><span class="meta">{{.Check}}{{if .AuthChain}} · via {{range $i,$a := .AuthChain}}{{if $i}}→{{end}}{{$a}}{{end}}{{end}}</span></td>
+          <td>{{if .Access}}{{.Access}}{{else}}—{{end}}</td>
+          <td class="mono">{{.Resource}}</td>
+          <td>
+            <div><b>{{.Title}}</b></div>
+            {{if .Detail}}<div class="meta">{{.Detail}}</div>{{end}}
+            {{if .Remediation}}<div class="remedy">↳ {{.Remediation}}</div>{{end}}
+            {{if .PoC}}<details><summary>PoC</summary><div class="poc">{{.PoC}}</div></details>{{end}}
+          </td>
+        </tr>
+      {{end}}
+      </tbody>
+    </table>
+    {{else}}
+      <div class="empty">No Firebase/auth findings.</div>
+    {{end}}
+
+    {{if .BlastRadius}}
+    <div class="section-title">Google API blast radius ({{len .BlastRadius}})</div>
+    <div class="br-list">
+      {{range .BlastRadius}}
+        <span class="br-item"><span class="badge b-{{.Severity}}">{{.Severity}}</span> {{.API}} <span class="meta">({{.Category}})</span></span>
+      {{end}}
+    </div>
+    {{end}}
+
+    {{if .Errors}}
+    <details style="margin-top:.8rem"><summary>Notes ({{len .Errors}})</summary>
+      {{range .Errors}}<div class="meta">• {{.}}</div>{{end}}
+    </details>
+    {{end}}
+  </div>
+  {{end}}
+
+  <footer>Generated by agneyastra. For authorized security testing only.</footer>
+</div>
+</body>
+</html>

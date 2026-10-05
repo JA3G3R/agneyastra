@@ -1,0 +1,20 @@
+# agneyastra configuration — every field is optional.
+# Values here supply inputs for the authenticated-access-chain checks. They can
+# also be provided via CLI flags, which take precedence. This file is embedded in
+# the binary; a copy is only written to ~/.config/agneyastra/config.yaml for your
+# convenience and is never fetched over the network.
+auth:
+  signup:
+    email: ""          # if empty, a random address is used for the sign-up probe
+    password: ""
+  custom-token:
+    token: ""          # a Firebase custom JWT to test custom-token sign-in
+  user:
+    email: ""          # existing account credentials to test privileged access
+    password: ""
+  send-link:
+    email: ""          # ONLY used with --active; delivers a real sign-in email
+
+bucket:
+  upload:
+    filename: ""       # optional file for the --active storage upload PoC

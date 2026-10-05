@@ -1,0 +1,2222 @@
+{
+  "tool": "agneyastra",
+  "version": "2.0.0",
+  "scan": {
+    "started_at": "2026-08-10T00:03:32Z",
+    "finished_at": "2026-08-10T00:04:12Z",
+    "duration_ms": 40378,
+    "active_mode": true,
+    "keys_scanned": 56
+  },
+  "results": [
+    {
+      "api_key_masked": "AIzaSyA8...0nvY",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "fireescape-integ-tests",
+          "number": "982463428621",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "fireescape-integ-tests.firebaseapp.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "fireescape-integ-tests",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_3f41958f",
+            "document": "agneyastra-poc-bb13b9644b49",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "fireescape-integ-tests",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_3f41958f",
+            "document": "agneyastra-poc-bb13b9644b49"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        },
+        {
+          "service": "firebase.rtdb",
+          "check": "delete",
+          "resource": "https://fireescape-integ-tests.firebaseio.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Realtime Database entries can be deleted by unauthorized users",
+          "evidence": {
+            "method": "create-then-delete",
+            "path": "agneyastra-poc-8e05f09151ea"
+          },
+          "remediation": "Set RTDB rules so `.write` (which governs delete) requires proper authorization.",
+          "poc": "curl -X DELETE 'https://fireescape-integ-tests.firebaseio.com/agneyastra-poc-8e05f09151ea.json'"
+        },
+        {
+          "service": "firebase.rtdb",
+          "check": "read",
+          "resource": "https://fireescape-integ-tests.firebaseio.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Realtime Database is readable by unauthorized users",
+          "evidence": {
+            "has_data": true
+          },
+          "remediation": "Set RTDB rules so `.read` requires proper authorization (never `\".read\": true` or a bare `auth != null`).",
+          "poc": "curl 'https://fireescape-integ-tests.firebaseio.com/.json'"
+        },
+        {
+          "service": "firebase.rtdb",
+          "check": "write",
+          "resource": "https://fireescape-integ-tests.firebaseio.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Realtime Database accepts unauthorized writes",
+          "evidence": {
+            "path": "agneyastra-poc-8e05f09151ea"
+          },
+          "remediation": "Set RTDB rules so `.write` requires proper authorization.",
+          "poc": "curl -X PUT 'https://fireescape-integ-tests.firebaseio.com/agneyastra-poc-8e05f09151ea.json' -d '{\"x\":1}'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "delete",
+          "resource": "fireescape-integ-tests.appspot.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage objects can be deleted by unauthorized users",
+          "evidence": {
+            "method": "create-then-delete",
+            "object": "agneyastra-poc-7524b6a46583.txt"
+          },
+          "remediation": "Restrict deletes: `allow delete: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X DELETE 'https://firebasestorage.googleapis.com/v0/b/fireescape-integ-tests.appspot.com/o/agneyastra-poc-7524b6a46583.txt'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "read",
+          "resource": "fireescape-integ-tests.appspot.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket contents are listable",
+          "evidence": {
+            "item_count": 15,
+            "prefix_count": 0,
+            "sample": [
+              "00000ab8-99ee-4100-9667-17daa499996f/download.dat",
+              "00000ab8-99ee-4100-9667-17daa499996f/metadata.dat",
+              "00000ab8-99ee-4100-9667-17daa499996f/prefix/\\%:😊 /empty.dat",
+              "00000ab8-99ee-4100-9667-17daa499996f/prefix/empty.dat",
+              "000016bd-071a-4553-ab06-bf329f5a4f1a/download.dat",
+              "000016bd-071a-4553-ab06-bf329f5a4f1a/metadata.dat",
+              "000016bd-071a-4553-ab06-bf329f5a4f1a/prefix/\\%:😊 /empty.dat",
+              "000016bd-071a-4553-ab06-bf329f5a4f1a/prefix/empty.dat",
+              "00002734-ba91-4d4a-ac4c-dd8fd5e8db7f/download.dat",
+              "00002734-ba91-4d4a-ac4c-dd8fd5e8db7f/metadata.dat"
+            ]
+          },
+          "remediation": "Set Storage rules to require proper authorization, e.g. `allow read: if request.auth != null && <ownership/role check>;` — never `allow read: if true;` or a bare `request.auth != null`.",
+          "poc": "curl 'https://firebasestorage.googleapis.com/v0/b/fireescape-integ-tests.appspot.com/o?maxResults=15'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "write",
+          "resource": "fireescape-integ-tests.appspot.com",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket accepts unauthorized uploads",
+          "evidence": {
+            "object": "agneyastra-poc-7524b6a46583.txt"
+          },
+          "remediation": "Restrict writes: `allow write: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X POST 'https://firebasestorage.googleapis.com/v0/b/fireescape-integ-tests.appspot.com/o?name=agneyastra-poc-7524b6a46583.txt' --data-binary @poc.txt"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "fireescape-integ-tests",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "medium",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": null
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/fireescape-integ-tests/databases/(default)/documents/users?key=AIzaSyA8vmApnrHNFE0bApF4hoZ11srVL_n0nvY'"
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAf...u3_Q",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "layanan-cs-samsung",
+          "number": "343694971798",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "layanan-cs-samsung.firebaseapp.com",
+        "layanan-cs-samsung.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "layanan-cs-samsung",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_75325f53",
+            "document": "agneyastra-poc-203ce89a9f7f",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "layanan-cs-samsung",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_75325f53",
+            "document": "agneyastra-poc-203ce89a9f7f"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "layanan-cs-samsung",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "medium",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": null
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/layanan-cs-samsung/databases/(default)/documents/users?key=AIzaSyAfkQwr2eeOyyyEDH_ztDfoTKyYo9mu3_Q'"
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBF...vvuU",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "ghmessagingapitests-dab42",
+          "number": "635258614906",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "ghmessagingapitests-dab42.firebaseapp.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_8ea7e35f",
+            "document": "agneyastra-poc-04907e6d1b36",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": [
+              "users"
+            ]
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/ghmessagingapitests-dab42/databases/(default)/documents/users?key=AIzaSyBF2RrAIm4a0mO64EShQfqfd2AFnzAvvuU'"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_8ea7e35f",
+            "document": "agneyastra-poc-04907e6d1b36"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyC5...9kxc",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "mmp-cwc",
+          "number": "337145605995",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "mmp-cwc.firebaseapp.com",
+        "mmp-cwc.web.app",
+        "pradeepparmar902.github.io",
+        "www.mmp-cwc.com",
+        "mmp-cwc.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "mmp-cwc",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_77506d89",
+            "document": "agneyastra-poc-a77b50ea092e",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "mmp-cwc",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": [
+              "users"
+            ]
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/mmp-cwc/databases/(default)/documents/users?key=AIzaSyC5fpnnlP8h062_E5Z6WLoVjDa1_2H9kxc'"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "mmp-cwc",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_77506d89",
+            "document": "agneyastra-poc-a77b50ea092e"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        },
+        {
+          "service": "firebase.storage",
+          "check": "delete",
+          "resource": "mmp-cwc.firebasestorage.app",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage objects can be deleted by unauthorized users",
+          "evidence": {
+            "method": "create-then-delete",
+            "object": "agneyastra-poc-072ec4800392.txt"
+          },
+          "remediation": "Restrict deletes: `allow delete: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X DELETE 'https://firebasestorage.googleapis.com/v0/b/mmp-cwc.firebasestorage.app/o/agneyastra-poc-072ec4800392.txt'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "read",
+          "resource": "mmp-cwc.firebasestorage.app",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket contents are listable",
+          "evidence": {
+            "item_count": 15,
+            "prefix_count": 0,
+            "sample": [
+              "gallery/photo_1784964624699.png",
+              "gallery/photo_1784970419806.png",
+              "gallery/photo_1785474438410.jpg",
+              "logos/logo_1784970542638.png",
+              "logos/logo_1784970647901.png",
+              "logos/logo_1785424617291.png",
+              "public_uploads/file_1784973143504_nmt16.png",
+              "public_uploads/file_1784990202272_f9tob.jpg",
+              "public_uploads/file_1784990404868_wjkwm.jpg",
+              "public_uploads/file_1784990828898_v18nh.jpg"
+            ]
+          },
+          "remediation": "Set Storage rules to require proper authorization, e.g. `allow read: if request.auth != null && <ownership/role check>;` — never `allow read: if true;` or a bare `request.auth != null`.",
+          "poc": "curl 'https://firebasestorage.googleapis.com/v0/b/mmp-cwc.firebasestorage.app/o?maxResults=15'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "write",
+          "resource": "mmp-cwc.firebasestorage.app",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket accepts unauthorized uploads",
+          "evidence": {
+            "object": "agneyastra-poc-072ec4800392.txt"
+          },
+          "remediation": "Restrict writes: `allow write: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X POST 'https://firebasestorage.googleapis.com/v0/b/mmp-cwc.firebasestorage.app/o?name=agneyastra-poc-072ec4800392.txt' --data-binary @poc.txt"
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyD6...wIjc",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "archery-app-70e20",
+          "number": "1025324581093",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "archery-app-70e20.firebaseapp.com",
+        "archery-app-70e20.web.app",
+        "bsk65.github.io"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.storage",
+          "check": "delete",
+          "resource": "archery-app-70e20.firebasestorage.app",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage objects can be deleted by unauthorized users",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "method": "create-then-delete",
+            "object": "agneyastra-poc-953e1a6072b2.txt"
+          },
+          "remediation": "Restrict deletes: `allow delete: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X DELETE 'https://firebasestorage.googleapis.com/v0/b/archery-app-70e20.firebasestorage.app/o/agneyastra-poc-953e1a6072b2.txt'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "read",
+          "resource": "archery-app-70e20.firebasestorage.app",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket contents are listable",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "item_count": 15,
+            "prefix_count": 0,
+            "sample": [
+              "courses/1776787812362/t0_1777219385967.jpg",
+              "courses/1776787812362/t0_1777219388225.jpg",
+              "courses/1776787812362/t10_1777220073448.jpg",
+              "courses/1776787812362/t11_1777220104865.jpg",
+              "courses/1776787812362/t12_1777219802903.jpg",
+              "courses/1776787812362/t13_1777219855378.jpg",
+              "courses/1776787812362/t14_1777219923439.jpg",
+              "courses/1776787812362/t16_1776868917904.jpg",
+              "courses/1776787812362/t17_1776868821286.jpg",
+              "courses/1776787812362/t18_1776868772592.jpg"
+            ]
+          },
+          "remediation": "Set Storage rules to require proper authorization, e.g. `allow read: if request.auth != null && <ownership/role check>;` — never `allow read: if true;` or a bare `request.auth != null`.",
+          "poc": "curl 'https://firebasestorage.googleapis.com/v0/b/archery-app-70e20.firebasestorage.app/o?maxResults=15'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "write",
+          "resource": "archery-app-70e20.firebasestorage.app",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket accepts unauthorized uploads",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "object": "agneyastra-poc-953e1a6072b2.txt"
+          },
+          "remediation": "Restrict writes: `allow write: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X POST 'https://firebasestorage.googleapis.com/v0/b/archery-app-70e20.firebasestorage.app/o?name=agneyastra-poc-953e1a6072b2.txt' --data-binary @poc.txt"
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyD8...h8k4",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "vdiyagohilcharitable",
+          "number": "190768077495",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "vdiyagohilcharitable.firebaseapp.com",
+        "vdiyagohilcharitable.web.app",
+        "pradeepparmar902.github.io",
+        "datacraze.tech",
+        "vdiyagohilcharitabletrust.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.storage",
+          "check": "delete",
+          "resource": "vdiyagohilcharitable.firebasestorage.app",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage objects can be deleted by unauthorized users",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "method": "create-then-delete",
+            "object": "agneyastra-poc-1fc8fb01dce5.txt"
+          },
+          "remediation": "Restrict deletes: `allow delete: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X DELETE 'https://firebasestorage.googleapis.com/v0/b/vdiyagohilcharitable.firebasestorage.app/o/agneyastra-poc-1fc8fb01dce5.txt'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "read",
+          "resource": "vdiyagohilcharitable.firebasestorage.app",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket contents are listable",
+          "evidence": {
+            "item_count": 15,
+            "prefix_count": 0,
+            "sample": [
+              "gallery/photo_1780504385220.jpeg",
+              "gallery/photo_1780504426144.jpeg",
+              "gallery/photo_1780504620310.jpeg",
+              "gallery/photo_1781023918086.JPG",
+              "gallery/photo_1781031739908.mp4",
+              "gallery/photo_1781289931504.jpeg",
+              "gallery/photo_1781290796893.jpeg",
+              "gallery/photo_1781290814818.png",
+              "gallery/photo_1781328730330.JPG",
+              "gallery/photo_1781329121557.jpg"
+            ]
+          },
+          "remediation": "Set Storage rules to require proper authorization, e.g. `allow read: if request.auth != null && <ownership/role check>;` — never `allow read: if true;` or a bare `request.auth != null`.",
+          "poc": "curl 'https://firebasestorage.googleapis.com/v0/b/vdiyagohilcharitable.firebasestorage.app/o?maxResults=15'"
+        },
+        {
+          "service": "firebase.storage",
+          "check": "write",
+          "resource": "vdiyagohilcharitable.firebasestorage.app",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Storage bucket accepts unauthorized uploads",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "object": "agneyastra-poc-1fc8fb01dce5.txt"
+          },
+          "remediation": "Restrict writes: `allow write: if request.auth != null && <ownership/role check>;`.",
+          "poc": "curl -X POST 'https://firebasestorage.googleapis.com/v0/b/vdiyagohilcharitable.firebasestorage.app/o?name=agneyastra-poc-1fc8fb01dce5.txt' --data-binary @poc.txt"
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDL...lQH4",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "test-b-care",
+          "number": "153641116643",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "test-b-care.firebaseapp.com",
+        "test-b-care.web.app",
+        "bcarebcare.netlify.app",
+        "insurance-dashboard-23z1.onrender.com",
+        "insurance-client-app.onrender.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "test-b-care",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_2c7745a1",
+            "document": "agneyastra-poc-ba60ec6714c9",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "test-b-care",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": [
+              "settings"
+            ]
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/test-b-care/databases/(default)/documents/users?key=AIzaSyDLj7Vhfu48SA0CcYX-4v1bNw4yJ5IlQH4'"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "test-b-care",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_2c7745a1",
+            "document": "agneyastra-poc-ba60ec6714c9"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDS...cS7g",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "ghmessagingapitests-dab42",
+          "number": "635258614906",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "ghmessagingapitests-dab42.firebaseapp.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "evidence": {
+            "collection": "agneyastra_bc034917",
+            "document": "agneyastra-poc-a354cf7b5447",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "evidence": {
+            "readable_collections": [
+              "users"
+            ]
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/ghmessagingapitests-dab42/databases/(default)/documents/users?key=AIzaSyDSb51JiIcB6OJpwwMicseKRhhrOq1cS7g'"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "ghmessagingapitests-dab42",
+          "access": "public",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "evidence": {
+            "collection": "agneyastra_bc034917",
+            "document": "agneyastra-poc-a354cf7b5447"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDe...STPo",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "clashchat-54dc0",
+          "number": "308163713864",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "clashchat-54dc0.firebaseapp.com",
+        "clashchat-54dc0.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.firestore",
+          "check": "delete",
+          "resource": "clashchat-54dc0",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore documents can be deleted by unauthorized users",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "collection": "agneyastra_d2403f05",
+            "document": "agneyastra-poc-c79199619da6",
+            "method": "create-then-delete"
+          },
+          "remediation": "Tighten Firestore rules so deletes require proper authorization."
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "read",
+          "resource": "clashchat-54dc0",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore is readable by unauthorized users",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "readable_collections": [
+              "users"
+            ]
+          },
+          "remediation": "Tighten Firestore rules so reads require proper authorization (never `allow read: if true;` or a bare `request.auth != null`).",
+          "poc": "curl 'https://firestore.googleapis.com/v1/projects/clashchat-54dc0/databases/(default)/documents/users?key=AIzaSyDe9v0qLvAkqx8yB4FwVMVnPH9DODZSTPo'"
+        },
+        {
+          "service": "firebase.firestore",
+          "check": "write",
+          "resource": "clashchat-54dc0",
+          "access": "signup",
+          "status": "vulnerable",
+          "severity": "high",
+          "confidence": "confirmed",
+          "title": "Cloud Firestore accepts unauthorized writes",
+          "auth_chain": [
+            "signup"
+          ],
+          "evidence": {
+            "collection": "agneyastra_d2403f05",
+            "document": "agneyastra-poc-c79199619da6"
+          },
+          "remediation": "Tighten Firestore rules so writes require proper authorization."
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyA2...5BTU",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "udconecta-4bfff",
+          "number": "929149692768",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "udconecta-4bfff.firebaseapp.com",
+        "udconecta-4bfff.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAQ...PiMU",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "animoxkart-7962f",
+          "number": "218901776540",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "animoxkart-7962f.firebaseapp.com",
+        "animoxkart-7962f.web.app",
+        "www.animoxkart.in",
+        "animoxkart.in",
+        "animoxkart.com",
+        "www.animoxkart.com"
+      ],
+      "auth_providers": {
+        "anonymous": true,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "anon",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Anonymous authentication enabled",
+          "detail": "Any unauthenticated attacker can mint a valid Firebase ID token, satisfying rules that only check request.auth != null.",
+          "remediation": "Disable Anonymous sign-in in Firebase Console > Authentication > Sign-in method (unless required, and then never treat request.auth != null as authorization)."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBG...-IxA",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "oila-hisobchi",
+          "number": "571641132083",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "oila-hisobchi.firebaseapp.com",
+        "oila-hisobchi.web.app",
+        "oila-hisobchi-app-xnq3.vercel.app"
+      ],
+      "auth_providers": {
+        "anonymous": true,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "anon",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Anonymous authentication enabled",
+          "detail": "Any unauthenticated attacker can mint a valid Firebase ID token, satisfying rules that only check request.auth != null.",
+          "remediation": "Disable Anonymous sign-in in Firebase Console > Authentication > Sign-in method (unless required, and then never treat request.auth != null as authorization)."
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBZ...62zI",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "accusermanagement",
+          "number": "8286394417",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "accusermanagement.firebaseapp.com",
+        "accusermanagement.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyCX...N5dI",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "lagoy-2ba9f",
+          "number": "295849639584",
+          "id_source": "authorized_domain",
+          "validated": false
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "lagoy-2ba9f.firebaseapp.com",
+        "lagoy-2ba9f.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDB...b8dQ",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "memorymastery",
+          "number": "439635305999",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "memorymastery.firebaseapp.com",
+        "memorymastery.web.app",
+        "nirav2000.github.io"
+      ],
+      "auth_providers": {
+        "anonymous": true,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "anon",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Anonymous authentication enabled",
+          "detail": "Any unauthenticated attacker can mint a valid Firebase ID token, satisfying rules that only check request.auth != null.",
+          "remediation": "Disable Anonymous sign-in in Firebase Console > Authentication > Sign-in method (unless required, and then never treat request.auth != null as authorization)."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDC...Ui1Q",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "team-manager-meenz",
+          "number": "867182154476",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "team-manager-meenz.firebaseapp.com",
+        "team-manager-meenz.web.app",
+        "tt-team-manager.vercel.app"
+      ],
+      "auth_providers": {
+        "anonymous": true,
+        "email_password_signup": true,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "anon",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Anonymous authentication enabled",
+          "detail": "Any unauthenticated attacker can mint a valid Firebase ID token, satisfying rules that only check request.auth != null.",
+          "remediation": "Disable Anonymous sign-in in Firebase Console > Authentication > Sign-in method (unless required, and then never treat request.auth != null as authorization)."
+        },
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "signup",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Public email/password sign-up enabled",
+          "detail": "Anyone can self-register an account, gaining an authenticated context to abuse rules that trust any signed-in user.",
+          "remediation": "Restrict sign-up (Identity Platform / Auth settings) or ensure rules check specific roles/UIDs rather than mere authentication."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDw...B1Ig",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "gen-lang-client-0748201330",
+          "number": "480947374422",
+          "id_source": "authorized_domain",
+          "validated": false
+        }
+      ],
+      "authorized_domains": [
+        "gen-lang-client-0748201330.firebaseapp.com",
+        "gen-lang-client-0748201330.web.app",
+        "ais-dev-iqfb7jx62j4j2a2cp3tikn-358452571693.europe-west2.run.app",
+        "ais-shared-iqfb7jx62j4j2a2cp3tikn-358452571693.europe-west2.run.app",
+        "ais-pre-iqfb7jx62j4j2a2cp3tikn-358452571693.europe-west2.run.app",
+        "tinker-tailor-x-rain-ventures-480947374422.us-west1.run.app",
+        "ais-dev-7nw2lr6ol7mwvz5csjcxbs-358452571693.europe-west2.run.app",
+        "ais-shared-7nw2lr6ol7mwvz5csjcxbs-358452571693.europe-west2.run.app",
+        "ais-pre-7nw2lr6ol7mwvz5csjcxbs-358452571693.europe-west2.run.app",
+        "career-playbook-x-rain-ventures-480947374422.us-west1.run.app",
+        "career-playbook-proposal-480947374422.us-west1.run.app",
+        "ais-dev-z2xgbtbdlxqqbwwitrgj3p-358452571693.europe-west2.run.app",
+        "ais-shared-z2xgbtbdlxqqbwwitrgj3p-358452571693.europe-west2.run.app",
+        "ais-pre-z2xgbtbdlxqqbwwitrgj3p-358452571693.europe-west2.run.app",
+        "rainshift-480947374422.us-west1.run.app",
+        "ais-dev-7tjojvvigpw6tysor3ykxp-358452571693.europe-west2.run.app",
+        "ais-shared-7tjojvvigpw6tysor3ykxp-358452571693.europe-west2.run.app",
+        "ais-pre-7tjojvvigpw6tysor3ykxp-358452571693.europe-west2.run.app",
+        "ais-dev-iechwvlfiebrqcx2f4txq2-358452571693.europe-west2.run.app",
+        "ais-shared-iechwvlfiebrqcx2f4txq2-358452571693.europe-west2.run.app",
+        "ais-pre-iechwvlfiebrqcx2f4txq2-358452571693.europe-west2.run.app",
+        "ais-mob-iechwvlfiebrqcx2f4txq2-358452571693.europe-west2.run.app",
+        "the-fonz-cofa-480947374422.us-west1.run.app",
+        "ais-mob-z2xgbtbdlxqqbwwitrgj3p-358452571693.europe-west2.run.app",
+        "ais-dev-4d7ewud2aau2375zosjkby-358452571693.europe-west2.run.app",
+        "ais-shared-4d7ewud2aau2375zosjkby-358452571693.europe-west2.run.app",
+        "ais-pre-4d7ewud2aau2375zosjkby-358452571693.europe-west2.run.app",
+        "ais-mob-4d7ewud2aau2375zosjkby-358452571693.europe-west2.run.app",
+        "brain-dump-planner-480947374422.us-west1.run.app",
+        "action-main.ai.studio",
+        "ais-dev-msiwuz3on3muhdtpcwp74p-358452571693.europe-west2.run.app",
+        "ais-shared-msiwuz3on3muhdtpcwp74p-358452571693.europe-west2.run.app",
+        "ais-pre-msiwuz3on3muhdtpcwp74p-358452571693.europe-west2.run.app",
+        "ais-mob-msiwuz3on3muhdtpcwp74p-358452571693.europe-west2.run.app",
+        "career-playbook-proposal-v2-480947374422.us-west1.run.app",
+        "career-playbook-proposal-v2.ai.studio",
+        "rainshift.ai.studio"
+      ],
+      "auth_providers": {
+        "anonymous": true,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [
+        {
+          "service": "firebase.auth",
+          "check": "provider",
+          "resource": "anon",
+          "status": "vulnerable",
+          "severity": "info",
+          "confidence": "confirmed",
+          "title": "Anonymous authentication enabled",
+          "detail": "Any unauthenticated attacker can mint a valid Firebase ID token, satisfying rules that only check request.auth != null.",
+          "remediation": "Disable Anonymous sign-in in Firebase Console > Authentication > Sign-in method (unless required, and then never treat request.auth != null as authorization)."
+        }
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyA4...P5sQ",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 151010553397 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=151010553397 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyA5...4wtM",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyA9...MrZU",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "test-fitness-tracker",
+          "number": "390873599685",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "test-fitness-tracker.firebaseapp.com",
+        "test-fitness-tracker.web.app",
+        "skidude3892.github.io",
+        "fitmerge.github.io"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyAG...Wm3s",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "blast_radius": [
+        {
+          "api": "YouTube Data",
+          "category": "youtube",
+          "enabled": true,
+          "severity": "low",
+          "detail": "Key is unrestricted for the YouTube Data API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://www.googleapis.com/youtube/v3/videos?part=id&chart=mostPopular&maxResults=1&key=AIzaSyAGBIe2ZEsxLewQgp6Z4iiX7YEyefsWm3s'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        }
+      ],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 20563989272 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=20563989272 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAN...DQgY",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAP...xOqo",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Requests to this API identitytoolkit method google.cloud.identitytoolkit.v1.ProjectConfigService.GetProjectConfig are blocked.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAQ...onec",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "hustlrzz",
+          "number": "970566023417",
+          "id_source": "authorized_domain",
+          "validated": false
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "hustlrzz.firebaseapp.com",
+        "hustlrzz.web.app",
+        "hustlrzz.vercel.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyAS...mLd4",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "useless-app-69364",
+          "number": "577622160802",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "useless-app-69364.firebaseapp.com",
+        "useless-app-69364.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyA_...prUs",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "gen-lang-client-0091658680",
+          "number": "88928365402",
+          "id_source": "authorized_domain",
+          "validated": false
+        }
+      ],
+      "authorized_domains": [
+        "gen-lang-client-0091658680.firebaseapp.com",
+        "gen-lang-client-0091658680.web.app",
+        "ais-dev-oc2b6ee72jdf2y6halbo6w-340749914572.europe-west2.run.app",
+        "ais-shared-oc2b6ee72jdf2y6halbo6w-340749914572.europe-west2.run.app",
+        "ais-pre-oc2b6ee72jdf2y6halbo6w-340749914572.europe-west2.run.app",
+        "ais-mob-oc2b6ee72jdf2y6halbo6w-340749914572.europe-west2.run.app",
+        "ais-dev-sfcvlpm75pxi3ihkqy275y-340749914572.europe-west2.run.app",
+        "ais-shared-sfcvlpm75pxi3ihkqy275y-340749914572.europe-west2.run.app",
+        "ais-pre-sfcvlpm75pxi3ihkqy275y-340749914572.europe-west2.run.app",
+        "ais-mob-sfcvlpm75pxi3ihkqy275y-340749914572.europe-west2.run.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyAd...wX7c",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 174671812400 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=174671812400 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAf...TyI4",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key expired. Please renew the API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyAn...YyIs",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "prueba2-74b50",
+          "number": "1037996761257",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "prueba2-74b50.firebaseapp.com"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyB-...ke-s",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: CONFIGURATION_NOT_FOUND",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyB8...FmqE",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key expired. Please renew the API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBZ...W-qI",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBc...NXsw",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBj...Ftaw",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key expired. Please renew the API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBp...QpQY",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "amc-ticketmanagement",
+          "number": "769130712470",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "amc-ticketmanagement.firebaseapp.com",
+        "amc-ticketmanagement.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyBq...RHtc",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 175809008936 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=175809008936 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyBu...lABE",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API Key not found. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyC4...WoKE",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyCK...Lmlk",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: CONFIGURATION_NOT_FOUND",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyCN...1J-o",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 285090314734 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=285090314734 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyCg...EL8Q",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "safebank-d8bcf",
+          "number": "998881547746",
+          "id_source": "authorized_domain",
+          "validated": false
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "safebank-d8bcf.firebaseapp.com",
+        "safebank-d8bcf.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyCk...agEM",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyCx...u_QA",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "blast_radius": [
+        {
+          "api": "Geocoding",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Geocoding API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40,30&key=AIzaSyCxqPAlL6tmp-Wny3tC0e_byl-jOxzu_QA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Distance Matrix",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Distance Matrix API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615,-73.9976592&key=AIzaSyCxqPAlL6tmp-Wny3tC0e_byl-jOxzu_QA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Directions",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Directions API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood&key=AIzaSyCxqPAlL6tmp-Wny3tC0e_byl-jOxzu_QA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Static Maps",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Static Maps API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/staticmap?center=45,10&zoom=7&size=400x400&key=AIzaSyCxqPAlL6tmp-Wny3tC0e_byl-jOxzu_QA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Elevation",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Elevation API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/elevation/json?locations=39.7391536,-104.9847034&key=AIzaSyCxqPAlL6tmp-Wny3tC0e_byl-jOxzu_QA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        }
+      ],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 79737979152 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=79737979152 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyD2...m0mk",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key expired. Please renew the API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyD3...hrh0",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyD7...9wGU",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "blast_radius": [
+        {
+          "api": "Geolocation",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Geolocation API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl -X POST 'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU' -H 'Content-Type: application/json' -d '{\"considerIp\":true}'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Geocoding",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Geocoding API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/geocode/json?latlng=40,30&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Nearby",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Nearby API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=100&types=food&name=harbour&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Find",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Find API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum&inputtype=textquery&fields=formatted_address,name&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Autocomplete",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Autocomplete API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Bingh&types=%28cities%29&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Time Zone",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Time Zone API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/timezone/json?location=39.6034810,-119.6822510&timestamp=1331161200&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Place Details",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Place Details API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Text Search",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Text Search API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyD7YCzKCWHl3JwaJCrJ1G5cECrGa_W9wGU'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        }
+      ],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 896855877978 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=896855877978 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDJ...Ni9c",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Identity Toolkit API has not been used in project 577473082039 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/identitytoolkit.googleapis.com/overview?project=577473082039 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDM...50iM",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Requests from referer <empty> are blocked.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDM...DrlU",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDa...whMM",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "amc-ticketmanagement",
+          "number": "769130712470",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "amc-ticketmanagement.firebaseapp.com",
+        "amc-ticketmanagement.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyDg...X5Go",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Requests to this API identitytoolkit method google.cloud.identitytoolkit.v1.ProjectConfigService.GetProjectConfig are blocked.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDj...i6FA",
+      "key_format": "google_api_key",
+      "valid": true,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "blast_radius": [
+        {
+          "api": "Directions",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Directions API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/directions/json?origin=Disneyland&destination=Universal+Studios+Hollywood&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Nearby",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Nearby API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=100&types=food&name=harbour&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Autocomplete",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Autocomplete API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Bingh&types=%28cities%29&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Place Details",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Place Details API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Find",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Find API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum&inputtype=textquery&fields=formatted_address,name&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        },
+        {
+          "api": "Places Text Search",
+          "category": "maps",
+          "enabled": true,
+          "severity": "medium",
+          "detail": "Key is unrestricted for the Places Text Search API — usable by anyone who has the key, billed to the project owner.",
+          "poc": "curl 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Sydney&key=AIzaSyDjU_N0-sECGmhL4axudxG7SpwCKz_i6FA'",
+          "remediation": "Restrict this API key in Google Cloud Console > APIs & Services > Credentials: add application restrictions (HTTP referrer / IP / Android / iOS) and API restrictions so the key only works for the specific APIs it needs."
+        }
+      ],
+      "errors": [
+        "identity toolkit not accessible: PERMISSION_DENIED Requests to this API identitytoolkit method google.cloud.identitytoolkit.v1.ProjectConfigService.GetProjectConfig are blocked.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyDw..._5S8",
+      "key_format": "google_api_key",
+      "valid": true,
+      "projects": [
+        {
+          "id": "puranova",
+          "number": "458136042300",
+          "id_source": "authorized_domain",
+          "validated": true
+        }
+      ],
+      "authorized_domains": [
+        "localhost",
+        "puranova.firebaseapp.com",
+        "puranova.web.app"
+      ],
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": []
+    },
+    {
+      "api_key_masked": "AIzaSyDw...wHa8",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key expired. Please renew the API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzaSyNH...hDk-",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    },
+    {
+      "api_key_masked": "AIzayDNS...bX4A",
+      "key_format": "google_api_key",
+      "valid": false,
+      "auth_providers": {
+        "anonymous": false,
+        "email_password_signup": false,
+        "email_link": false,
+        "custom_token": false
+      },
+      "findings": [],
+      "errors": [
+        "API key rejected: INVALID_ARGUMENT API key not valid. Please pass a valid API key.",
+        "no resolvable string project ID (only a numeric project number, or none, was available); Firebase resource checks were skipped to avoid false positives"
+      ]
+    }
+  ],
+  "summary": {
+    "findings": 51,
+    "vulnerable_keys": 17,
+    "by_severity": {
+      "high": 34,
+      "info": 15,
+      "medium": 2
+    },
+    "by_service": {
+      "firebase.auth": 15,
+      "firebase.firestore": 21,
+      "firebase.rtdb": 3,
+      "firebase.storage": 12
+    },
+    "blast_radius_enabled": 20
+  }
+}

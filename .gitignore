@@ -2,3 +2,6 @@ test.go
 dump/
 **/report.html
 cmd/agneyastra/agneyastra
+# built binary at repo root
+/agneyastra
+report.html
